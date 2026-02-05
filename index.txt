@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PhoneStore RD | Official</title>
+    
+    <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
+      }
+    }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --apple: #0071e3; --bg: #ffffff; --whatsapp: #25d366; --dark: #1d1d1f; }
+
+        html, body { height: 100%; margin: 0; overflow-x: hidden; scroll-behavior: smooth; }
+        body { display: flex; flex-direction: column; background-color: var(--bg); color: var(--dark); font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* GOTA DE AGUA MEJORADA */
+        .watermark-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 25vw;
+            font-weight: 900;
+            color: rgba(0, 113, 227, 0.04);
+            z-index: -1;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            letter-spacing: -10px;
+        }
+
+        header { 
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(20px);
+            padding: 15px 5%; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #eee;
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .logo-box { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .ps-circle { 
+            width: 42px; height: 42px; background: var(--apple); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 800; font-size: 0.9rem;
+        }
+
+        .sub-nav { display: flex; gap: 8px; justify-content: center; border-top: 1px solid #f2f2f2; padding-top: 15px; margin-top: 15px; }
+        .nav-pill { 
+            background: #f5f5f7; color: var(--dark); padding: 10px 20px; border-radius: 25px; 
+            font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer;
+        }
+        .nav-pill.active { background: var(--apple); color: white; }
+
+        .section-container { padding: 30px 5%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+        @media (min-width: 768px) { .grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; } }
+
+        .card { 
+            background: rgba(255,255,255,0.8); border-radius: 20px; padding: 15px; border: 1px solid #eee;
+            text-align: center; transition: 0.3s;
+        }
+        .card img { width: 100%; height: 180px; object-fit: contain; }
+        .price-tag { font-size: 1.4rem; font-weight: 800; margin: 10px 0; }
+        .btn-action { background: var(--apple); color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; }
+
+        /* WHATSAPP */
+        .wp-float {
+            position: fixed; bottom: 20px; right: 20px; background: var(--whatsapp);
+            color: white; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 2000; text-decoration: none;
+        }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
+        .receipt-box { background: white; width: 100%; max-width: 400px; padding: 30px; border-radius: 30px; text-align: center; }
+
+        footer { background: var(--dark); color: white; padding: 40px; text-align: center; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="watermark-bg">PS RD</div>
+
+    <a href="https://wa.me/18098182320" class="wp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <div class="main-content">
+        <header>
+            <div class="header-top">
+                <div class="logo-box" id="logo-secure">
+                    <div class="ps-circle">PS</div>
+                    <div>
+                        <p style="font-weight: 800; font-size: 1.1rem; line-height: 1;">PhoneStore RD</p>
+                        <p style="font-size: 0.6rem; color: var(--apple); font-weight: 700;">IPHONE SPECIALISTS</p>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-nav">
+                <button onclick="showSection('iphones')" id="p-iphones" class="nav-pill active">iPhones</button>
+                <button onclick="showSection('accesorios')" id="p-accesorios" class="nav-pill">Accesorios</button>
+            </div>
+        </header>
+
+        <section id="admin-panel" style="display:none; padding: 30px; background: #fff; margin: 20px; border-radius: 20px; border: 2px solid var(--apple);">
+            <h3>Panel Administrativo</h3>
+            <input type="text" id="p-nombre" placeholder="Nombre" style="width:100%; padding:10px; margin:10px 0;">
+            <input type="number" id="p-precio" placeholder="Precio RD$" style="width:100%; padding:10px; margin:10px 0;">
+            <button onclick="guardarFirebase()" class="btn-action">PUBLICAR</button>
+        </section>
+
+        <div class="section-container" id="sec-iphones">
+            <h2 style="margin-bottom:20px;">Modelos Disponibles</h2>
+            <div class="grid" id="grid-iphones"></div>
+        </div>
+
+        <div class="section-container" id="sec-accesorios" style="display:none;">
+            <h2 style="margin-bottom:20px;">Accesorios</h2>
+            <div class="grid" id="grid-accesorios"></div>
+        </div>
+    </div>
+
+    <div id="modal-pago" class="modal">
+        <div class="receipt-box" id="modal-content">
+            <form id="form-order" action="https://formsubmit.co/angelitovdiaz12@gmail.com" method="POST" target="no-refresh">
+                <input type="hidden" name="_cc" value="anger1012@hotmail.com">
+                <div class="ps-circle" style="margin: 0 auto 15px;">PS</div>
+                <h3>Confirmar Pedido</h3>
+                <input type="text" name="Cliente" id="c-nombre" placeholder="Tu Nombre" required style="width:100%; padding:12px; margin:20px 0; border-radius:10px; border:1px solid #ddd;">
+                <button type="button" onclick="finalizar()" class="btn-action">GENERAR RECIBO</button>
+            </form>
+        </div>
+    </div>
+
+    <iframe name="no-refresh" style="display:none;"></iframe>
+
+    <footer>
+        <p>© 2026 PhoneStore RD</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+
+        // --- CODIGO CIFRADO (Base64) ---
+        // Esto evita que bots o curiosos vean tus llaves a primera vista
+        const _k = "QUl6YVN5Q2ktMWdNeVoweERjdGxJaWM3NU5EWkpUZU1XcTB4RWdF"; // API Key
+        const _p = "bWktdGllbmRhLWFhZjA3"; // Project ID
+        const _a = "QXZkMTIxMDk0"; // Admin Pass
+
+        const config = {
+            apiKey: atob(_k),
+            authDomain: `${atob(_p)}.firebaseapp.com`,
+            projectId: atob(_p),
+            storageBucket: `${atob(_p)}.firebasestorage.app`,
+            messagingSenderId: "688381765489",
+            appId: "1:688381765489:web:48f3b7d513b166f9be38d0"
+        };
+
+        const app = initializeApp(config);
+        const db = getFirestore(app);
+        let clicks = 0, pGlobal = [], temp = {};
+
+        // Seguridad de acceso
+        document.getElementById('logo-secure').onclick = () => {
+            clicks++;
+            if(clicks === 5) {
+                if(prompt("Acceso Propietario:") === atob(_a)) {
+                    document.getElementById('admin-panel').style.display = 'block';
+                }
+                clicks = 0;
+            }
+        };
+
+        window.showSection = (id) => {
+            document.getElementById('sec-iphones').style.display = id === 'iphones' ? 'block' : 'none';
+            document.getElementById('sec-accesorios').style.display = id === 'accesorios' ? 'block' : 'none';
+            document.getElementById('p-iphones').classList.toggle('active', id === 'iphones');
+            document.getElementById('p-accesorios').classList.toggle('active', id === 'accesorios');
+        };
+
+        window.finalizar = () => {
+            const cli = document.getElementById('c-nombre').value;
+            if(!cli) return alert("Nombre?");
+            document.getElementById('form-order').submit();
+            
+            const orden = Math.floor(Math.random()*90000);
+            document.getElementById('modal-content').innerHTML = `
+                <div style="text-align:left;">
+                    <h2 style="text-align:center;">VOUCHER RD</h2>
+                    <p><b>Orden:</b> #${orden}</p>
+                    <p><b>Cliente:</b> ${cli}</p>
+                    <p><b>Equipo:</b> ${temp.n}</p>
+                    <p style="font-size:1.5rem; color:var(--apple);"><b>RD$ ${temp.p.toLocaleString()}</b></p>
+                    <hr>
+                    <p style="font-size:0.7rem;">Capture este recibo y envíelo por WhatsApp.</p>
+                    <button class="btn-action" onclick="location.reload()">CERRAR</button>
+                </div>
+            `;
+            setTimeout(() => {
+                window.open(`https://wa.me/18098182320?text=Orden%20${orden}%20-%20${temp.n}%20-%20Cliente:%20${cli}`);
+            }, 2000);
+        };
+
+        window.abrir = (n, p) => { temp = {n,p}; document.getElementById('modal-pago').style.display='flex'; };
+
+        const render = (l, t) => {
+            const g = document.getElementById(t === 'iphone' ? 'grid-iphones' : 'grid-accesorios');
+            g.innerHTML = "";
+            l.forEach(p => {
+                g.innerHTML += `
+                    <div class="card">
+                        <img src="${p.img || 'https://via.placeholder.com/200'}">
+                        <h4>${p.nombre}</h4>
+                        <div class="price-tag">RD$ ${p.precio.toLocaleString()}</div>
+                        <button class="btn-action" onclick="abrir('${p.nombre}', ${p.precio})">ORDENAR</button>
+                    </div>
+                `;
+            });
+        };
+
+        onSnapshot(query(collection(db, "productos_tienda"), orderBy("fecha", "desc")), snap => {
+            pGlobal = snap.docs.map(d => d.data());
+            render(pGlobal.filter(p => p.tipo === 'iphone'), 'iphone');
+            render(pGlobal.filter(p => p.tipo === 'accesorio'), 'accesorio');
+        });
+    </script>
+</body>
+</html>
