@@ -88,7 +88,10 @@
                 <input type="text" id="c-name" placeholder="Nombre completo" required class="w-full p-5 bg-gray-50 rounded-2xl outline-none focus:ring-2 ring-blue-500 font-bold">
                 <input type="email" id="c-email" placeholder="Correo electrónico" required class="w-full p-5 bg-gray-50 rounded-2xl outline-none focus:ring-2 ring-blue-500 font-bold">
                 <input type="text" id="c-address" placeholder="Dirección de entrega" required class="w-full p-5 bg-gray-50 rounded-2xl outline-none focus:ring-2 ring-blue-500 font-bold">
-                <div class="bg-black p-8 rounded-[35px] text-white my-8"><p class="text-gray-400 text-xs font-bold uppercase mb-2">Total</p><div class="text-4xl font-black" id="price-total">RD$ 0</div></div>
+                <div class="bg-black p-8 rounded-[35px] text-white my-8">
+                    <p class="text-gray-400 text-xs font-bold uppercase mb-2">Total del Pedido</p>
+                    <div class="text-4xl font-black" id="price-total">RD$ 0</div>
+                </div>
                 <button type="submit" id="btn-submit" class="w-full py-6 bg-blue-600 text-white rounded-[25px] font-black text-lg shadow-xl uppercase tracking-widest hover:bg-blue-700 transition">Finalizar y recibir comprobante</button>
                 <button type="button" onclick="closeM()" class="w-full py-2 text-gray-400 font-bold text-xs uppercase mt-2">Cerrar</button>
             </form>
@@ -99,9 +102,15 @@
         <div class="modal-box !max-w-4xl">
             <h2 class="text-3xl font-black mb-8 text-blue-600 italic">Administración</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-8 rounded-[35px] mb-8 border border-gray-200">
-                <input type="text" id="in-name" placeholder="Modelo" class="p-5 rounded-2xl font-bold"><input type="number" id="in-price" placeholder="Precio RD$" class="p-5 rounded-2xl font-bold"><input type="text" id="in-url" placeholder="URL Foto" class="p-5 rounded-2xl"><select id="in-cat" class="p-5 rounded-2xl font-bold"><option value="phones">CELULARES</option><option value="accs">ACCESORIOS</option></select>
+                <input type="text" id="in-name" placeholder="Modelo" class="p-5 rounded-2xl font-bold">
+                <input type="number" id="in-price" placeholder="Precio RD$" class="p-5 rounded-2xl font-bold">
+                <input type="text" id="in-url" placeholder="URL Foto" class="p-5 rounded-2xl">
+                <select id="in-cat" class="p-5 rounded-2xl font-bold">
+                    <option value="phones">CELULARES</option>
+                    <option value="accs">ACCESORIOS</option>
+                </select>
                 <textarea id="in-desc" placeholder="Detalles técnicos..." class="p-5 rounded-2xl md:col-span-2 min-h-[100px]"></textarea>
-                <button onclick="saveToFirebase()" class="md:col-span-2 py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest">Publicar</button>
+                <button onclick="saveToFirebase()" class="md:col-span-2 py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest">Publicar Equipo</button>
             </div>
             <div id="admin-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
             <button onclick="closeM()" class="mt-8 text-gray-400 font-bold text-xs uppercase">Cerrar Panel</button>
@@ -111,25 +120,55 @@
     <footer class="bg-white border-t border-gray-100 pt-20 pb-10">
         <div class="max-w-[1400px] mx-auto px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-                <div><div class="flex items-center gap-3 mb-6"><div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black">V</div><h3 class="text-xl font-black tracking-tighter">VibePhone RD</h3></div><p class="text-gray-400 text-sm font-medium leading-relaxed">La tienda más confiable de Santo Domingo.</p></div>
-                <div><h4 class="font-black text-xs uppercase mb-6">Navegación</h4><ul class="space-y-4 text-sm font-bold text-gray-500"><li><button onclick="setTab('phones')" class="hover:text-blue-600 transition">Smartphones</button></li><li><button onclick="setTab('accs')" class="hover:text-blue-600 transition">Accesorios</button></li></ul></div>
-                <div><h4 class="font-black text-xs uppercase mb-6">Contacto</h4><ul class="space-y-4 text-sm font-bold text-gray-500"><li>+1 (809) 818-2320</li><li>Santo Domingo, RD</li></ul></div>
-                <div><h4 class="font-black text-xs uppercase mb-6">Redes</h4><div class="flex gap-4"><a href="https://www.instagram.com/vibephone_rd" target="_blank" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:text-purple-500 transition-all"><i class="fab fa-instagram"></i></a><a href="https://wa.me/8098182320" target="_blank" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:text-green-500 transition-all"><i class="fab fa-whatsapp"></i></a></div></div>
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black">V</div>
+                        <h3 class="text-xl font-black tracking-tighter">VibePhone RD</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm font-medium leading-relaxed">Tu tienda premium de confianza.</p>
+                </div>
+                <div><h4 class="font-black text-xs uppercase mb-6">Categorías</h4>
+                    <ul class="space-y-4 text-sm font-bold text-gray-500">
+                        <li><button onclick="setTab('phones')" class="hover:text-blue-600 transition">Smartphones</button></li>
+                        <li><button onclick="setTab('accs')" class="hover:text-blue-600 transition">Accesorios</button></li>
+                    </ul>
+                </div>
+                <div><h4 class="font-black text-xs uppercase mb-6">Contacto</h4>
+                    <p class="text-sm font-bold text-gray-500">+1 (809) 818-2320<br>Santo Domingo, RD</p>
+                </div>
+                <div><h4 class="font-black text-xs uppercase mb-6">Redes Sociales</h4>
+                    <div class="flex gap-4">
+                        <a href="https://www.instagram.com/vibephone_rd" target="_blank" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:text-purple-500 transition-all"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/8098182320" target="_blank" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:text-green-500 transition-all"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="text-[11px] font-black text-gray-300 uppercase">© 2026 VibePhone RD. Premium Technology.</div>
+            <div class="text-[11px] font-black text-gray-300 uppercase">© 2026 VibePhone RD. Premium Tech Store.</div>
         </div>
     </footer>
 
     <script>
+        // CONFIGURACIÓN FIREBASE
         const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
-        // --- VINCULACIÓN DE EMAILJS (TUS DATOS) ---
+        // CONFIGURACIÓN EMAILJS
         (function(){ emailjs.init("YFdmH2dv7ubtkjzod"); })();
 
         let currentTab = 'phones', currentProd = null, count = 0;
-        document.getElementById('logo-trigger').onclick = () => { count++; if(count === 5) { if(prompt("CLAVE ADMIN:") === "Avd121094") { document.getElementById('admin-modal').style.display='flex'; loadAdminItems(); } count = 0; } };
+
+        // ACCESO ADMIN (5 clics en logo)
+        document.getElementById('logo-trigger').onclick = () => { 
+            count++; 
+            if(count === 5) { 
+                if(prompt("CLAVE ACCESO:") === "Avd121094") { 
+                    document.getElementById('admin-modal').style.display='flex'; 
+                    loadAdminItems(); 
+                } 
+                count = 0; 
+            } 
+        };
 
         async function renderStore() {
             const grid = document.getElementById('store-grid');
@@ -138,7 +177,16 @@
             grid.innerHTML = "";
             qs.forEach(doc => {
                 const item = doc.data();
-                grid.innerHTML += `<div class="vibe-card"><img src="${item.url}"><div class="px-10 pb-4"><h3 class="text-2xl font-black italic">${item.n}</h3><p class="text-gray-400 text-xs font-medium mb-6 uppercase tracking-widest">${item.d}</p><p class="text-3xl font-black mb-8">RD$ ${Number(item.p).toLocaleString()}</p></div><button onclick="openForm('${item.n}', '${item.p}', '${item.url}')" class="btn-buy">Adquirir Equipo</button></div>`;
+                grid.innerHTML += `
+                <div class="vibe-card">
+                    <img src="${item.url}">
+                    <div class="px-10 pb-4">
+                        <h3 class="text-2xl font-black italic">${item.n}</h3>
+                        <p class="text-gray-400 text-xs font-medium mb-6 uppercase tracking-widest">${item.d}</p>
+                        <p class="text-3xl font-black mb-8">RD$ ${Number(item.p).toLocaleString()}</p>
+                    </div>
+                    <button onclick="openForm('${item.n}', '${item.p}', '${item.url}')" class="btn-buy">Adquirir Equipo</button>
+                </div>`;
             });
         }
 
@@ -150,32 +198,29 @@
             document.getElementById('buy-modal').style.display = 'flex';
         }
 
+        // ALGORITMO DE ENVÍO DE CORREO
         function handleOrderSubmit(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-submit');
-            btn.innerText = "PROCESANDO..."; btn.disabled = true;
+            btn.innerText = "ENVIANDO RECIBO..."; btn.disabled = true;
 
             const templateParams = {
                 order_id: document.getElementById('receipt-id').innerText,
-                email: document.getElementById('c-email').value,
-                name: currentProd.n,
-                image_url: currentProd.img,
-                units: "1",
-                price: Number(currentProd.p).toLocaleString(),
-                "cost.shipping": "GRATIS",
-                "cost.tax": "0",
-                "cost.total": Number(currentProd.p).toLocaleString()
+                user_email: document.getElementById('c-email').value,
+                product_name: currentProd.n,
+                product_price: Number(currentProd.p).toLocaleString(),
+                delivery_address: document.getElementById('c-address').value
             };
 
-            // VINCULACIÓN DE SERVICE ID Y TEMPLATE ID
-            emailjs.send('Avd121094', 'template_r0pc5qe', templateParams)
+            emailjs.send('Avd121094', 'template_v1i9y2e', templateParams)
                 .then(() => {
-                    alert("¡Gracias! Tu recibo ha sido enviado por correo.");
+                    alert("¡Éxito! Tu recibo ha sido enviado. Revisa tu bandeja de entrada.");
                     closeM(); btn.innerText = "Finalizar y recibir comprobante"; btn.disabled = false;
                     document.getElementById('email-form').reset();
-                }, (error) => {
-                    alert("Error al enviar. Intenta nuevamente."); 
-                    btn.disabled = false; btn.innerText = "Finalizar y recibir comprobante";
+                })
+                .catch((error) => {
+                    alert("Error de conexión. Asegúrate de que la plantilla esté guardada en EmailJS.");
+                    btn.innerText = "Finalizar y recibir comprobante"; btn.disabled = false;
                 });
         }
 
@@ -190,12 +235,15 @@
             const list = document.getElementById('admin-list');
             const qs = await db.collection("productos").get();
             list.innerHTML = "";
-            qs.forEach(doc => { list.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-2 font-bold text-xs"><span>${doc.data().n}</span><button onclick="deleteItem('${doc.id}')" class="text-red-500">Eliminar</button></div>`; });
+            qs.forEach(doc => { 
+                list.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-2 font-bold text-xs"><span>${doc.data().n}</span><button onclick="deleteItem('${doc.id}')" class="text-red-500">Eliminar</button></div>`; 
+            });
         }
 
         async function deleteItem(id) { if(confirm("¿Eliminar?")) { await db.collection("productos").doc(id).delete(); loadAdminItems(); } }
         function setTab(t) { currentTab = t; renderStore(); }
         function closeM() { document.querySelectorAll('.modal-blur').forEach(m => m.style.display='none'); }
+        
         renderStore();
     </script>
 </body>
