@@ -18,28 +18,30 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--vibe-bg); color: #1d1d1f; scroll-behavior: smooth; overflow-x: hidden; }
         .nav-glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid #5e5ce6; }
         
-        /* VIDEO HERO SECTION */
-        .video-hero { position: relative; height: 70vh; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: black; }
-        .video-hero iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; object-fit: cover; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.2), rgba(255,255,255,1)); z-index: 10; }
-        .hero-content { position: relative; z-index: 20; text-align: center; color: white; padding: 20px; }
+        /* VIDEO HERO AJUSTADO PARA MÓVIL */
+        .video-hero { position: relative; height: 50vh; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: black; }
+        @media (min-width: 768px) { .video-hero { height: 70vh; } }
 
-        /* Grid Original */
+        .video-hero iframe { position: absolute; top: 50%; left: 50%; width: 177.77vh; height: 100vh; min-width: 100vw; min-height: 56.25vw; transform: translate(-50%, -50%); pointer-events: none; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.3), #fff); z-index: 10; }
+        
+        /* Contenedor de texto con márgenes de seguridad */
+        .hero-content { position: relative; z-index: 20; text-align: center; color: white; width: 100%; padding: 0 25px; }
+
+        /* Grid de Productos */
         .product-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 20px; padding: 20px; max-width: 1400px; margin: 0 auto; }
-        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; padding: 40px 20px; } }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; } }
         @media (min-width: 1100px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
         
-        .vibe-card { background: #f5f5f7; border-radius: 40px; overflow: hidden; transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; text-align: center; }
-        .vibe-card:hover { transform: scale(1.02); background: #fbfbfb; box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
-        .vibe-card img, .vibe-card video { width: 100%; height: 300px; object-fit: contain; padding: 30px; }
+        .vibe-card { background: #f5f5f7; border-radius: 35px; overflow: hidden; transition: 0.4s; display: flex; flex-direction: column; text-align: center; }
+        .vibe-card img, .vibe-card video { width: 100%; height: 250px; object-fit: contain; padding: 20px; }
         
-        .btn-buy { background: var(--vibe-gradient); color: white; padding: 18px 32px; border-radius: 40px; font-weight: 800; font-size: 16px; margin: 0 40px 40px 40px; transition: 0.3s; cursor: pointer; border: none; }
+        .btn-buy { background: var(--vibe-gradient); color: white; padding: 16px 25px; border-radius: 30px; font-weight: 800; font-size: 14px; margin: 0 30px 30px 30px; cursor: pointer; border: none; }
         
-        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: white; border-radius: 45px; width: 100%; max-width: 650px; padding: 40px; max-height: 90vh; overflow-y: auto; }
-        .wsp-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); z-index: 1500; }
+        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); z-index: 2000; align-items: center; justify-content: center; padding: 15px; }
+        .modal-box { background: white; border-radius: 35px; width: 100%; max-width: 600px; padding: 30px; max-height: 90vh; overflow-y: auto; }
         
-        .form-input { width: 100%; padding: 1.25rem; background: #f9f9fb; border-radius: 1.25rem; border: 2px solid transparent; font-weight: 600; outline: none; }
+        .wsp-float { position: fixed; bottom: 25px; right: 25px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 1500; }
     </style>
 </head>
 <body>
@@ -47,44 +49,48 @@
     <a href="https://wa.me/8098182320" target="_blank" class="wsp-float"><i class="fab fa-whatsapp"></i></a>
 
     <nav class="nav-glass">
-        <div class="max-w-[1400px] mx-auto px-8 py-5 flex justify-between items-center">
-            <div class="flex items-center gap-4 cursor-pointer" id="logo-trigger">
-                <div class="w-12 h-12 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg">V</div>
-                <div><h1 class="text-2xl font-black tracking-tighter leading-none">VibePhone RD</h1><span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest leading-none">Premium Store</span></div>
+        <div class="max-w-[1400px] mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer" id="logo-trigger">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md">V</div>
+                <div><h1 class="text-lg font-black tracking-tighter leading-none">VibePhone RD</h1><span class="text-[9px] font-bold text-blue-600 uppercase tracking-widest leading-none">Premium Store</span></div>
             </div>
-            <div class="flex gap-6 md:gap-10 text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400">
-                <button onclick="setTab('phones')" class="hover:text-blue-600 transition">Smartphones</button>
-                <button onclick="setTab('accs')" class="hover:text-blue-600 transition">Accesorios</button>
+            <div class="flex gap-4 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                <button onclick="setTab('phones')" class="hover:text-blue-600">Equipos</button>
+                <button onclick="setTab('accs')" class="hover:text-blue-600">Accesorios</button>
             </div>
         </div>
     </nav>
 
     <section class="video-hero">
-        <iframe src="https://www.youtube.com/embed/keYat4iSYAQ?autoplay=1&mute=1&loop=1&playlist=keYat4iSYAQ&controls=0&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/keYat4iSYAQ?autoplay=1&mute=1&loop=1&playlist=keYat4iSYAQ&controls=0&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allow="autoplay; encrypted-media"></iframe>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h2 class="text-5xl md:text-8xl font-black tracking-tighter mb-4 italic">VibePhone RD.</h2>
-            <p class="text-lg md:text-xl font-medium max-w-2xl mx-auto text-white/90">La nueva era de la tecnología premium ha llegado a Santo Domingo.</p>
+            <h2 class="text-4xl md:text-7xl font-black tracking-tighter mb-3 italic leading-tight">VibePhone RD.</h2>
+            <p class="text-sm md:text-lg font-medium max-w-xl mx-auto text-white/90 px-4">Tecnología premium a tu alcance en Santo Domingo.</p>
         </div>
     </section>
 
-    <section class="max-w-[1200px] mx-auto px-8 my-24">
-        <div class="bg-gray-50 rounded-[50px] p-12 md:p-20 border border-gray-100 shadow-sm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <span class="text-blue-600 font-black uppercase tracking-widest text-sm italic">Tu satisfacción es nuestra meta</span>
-                    <h3 class="text-4xl md:text-5xl font-extrabold mt-4 mb-6 tracking-tight text-zinc-800">Comprometidos con la excelencia.</h3>
-                    <p class="text-gray-600 text-lg leading-relaxed mb-8">Ofrecemos equipos auténticos con garantía real. Aparta tu equipo hoy mismo con nuestro trato exclusivo.</p>
-                    <div class="flex flex-wrap gap-4">
-                        <div class="flex items-center gap-3 bg-blue-600 px-6 py-4 rounded-2xl text-white shadow-xl">
-                            <i class="fas fa-handshake-angle text-xl"></i>
-                            <div><p class="text-[10px] font-bold uppercase opacity-80 leading-none">Trato Directo</p><p class="text-sm font-black uppercase tracking-tighter">Entrega Personalizada</p></div>
-                        </div>
+    <section class="max-w-[1200px] mx-auto px-6 my-16">
+        <div class="bg-gray-50 rounded-[40px] p-8 md:p-16 border border-gray-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="px-2">
+                    <span class="text-blue-600 font-black uppercase tracking-widest text-[10px] italic">Tu satisfacción es nuestra meta</span>
+                    <h3 class="text-3xl md:text-5xl font-extrabold mt-3 mb-5 tracking-tight text-zinc-800 leading-tight">Comprometidos con la excelencia.</h3>
+                    <p class="text-gray-500 text-base leading-relaxed mb-6">Equipos auténticos con garantía real. Aparta el tuyo hoy con nuestro trato exclusivo.</p>
+                    <div class="flex items-center gap-3 bg-blue-600 px-5 py-3 rounded-2xl text-white w-max shadow-lg">
+                        <i class="fas fa-handshake-angle"></i>
+                        <span class="text-xs font-black uppercase tracking-tighter">Entrega Personalizada</span>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white p-8 rounded-3xl border border-gray-100 text-center"><i class="fas fa-shield-alt text-3xl mb-4 text-blue-600"></i><h4 class="font-black text-xs uppercase">100% Seguro</h4></div>
-                    <div class="bg-white p-8 rounded-3xl border border-gray-100 text-center"><i class="fas fa-star text-3xl mb-4 text-yellow-500"></i><h4 class="font-black text-xs uppercase">Calidad TOP</h4></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-6 rounded-3xl text-center shadow-sm border border-gray-50">
+                        <i class="fas fa-shield-alt text-2xl mb-2 text-blue-600"></i>
+                        <h4 class="font-black text-[9px] uppercase">100% Seguro</h4>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl text-center shadow-sm border border-gray-50">
+                        <i class="fas fa-star text-2xl mb-2 text-yellow-500"></i>
+                        <h4 class="font-black text-[9px] uppercase">Calidad Top</h4>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,78 +98,31 @@
 
     <main id="store-grid" class="product-grid"></main>
 
-    <div id="buy-modal" class="modal-blur">
-        <div class="modal-box">
-            <div class="flex justify-between items-start mb-6">
-                <div><h2 class="text-3xl font-black">Finalizar Pedido</h2><p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Reporte de Pago</p></div>
-                <div class="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl font-black text-xs" id="receipt-id"></div>
-            </div>
-            
-            <div id="prod-summary" class="bg-gray-50 rounded-[30px] p-4 mb-6 flex items-center gap-4 border border-gray-100"></div>
-            
-            <form id="email-form" onsubmit="handleOrderSubmit(event)" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <input type="text" id="c-name" placeholder="Nombre completo" required class="form-input">
-                    <input type="tel" id="c-phone" placeholder="WhatsApp" required class="form-input">
-                </div>
-                <input type="email" id="c-email" placeholder="Correo electrónico" required class="form-input">
-
-                <div class="bg-blue-50 p-6 rounded-[30px] border border-blue-100">
-                    <h4 class="text-blue-700 font-black text-xs uppercase mb-4 flex items-center gap-2">
-                        <i class="fas fa-university"></i> Datos de la Transferencia
-                    </h4>
-                    <div class="space-y-3">
-                        <select id="t-bank" required class="form-input !bg-white">
-                            <option value="">¿Desde qué banco envías?</option>
-                            <option value="Banreservas">Banreservas</option>
-                            <option value="Banco Popular">Banco Popular</option>
-                            <option value="BHD">BHD</option>
-                            <option value="Otro">Otro Banco</option>
-                        </select>
-                        <input type="text" id="t-titular" placeholder="Titular de la cuenta" required class="form-input !bg-white">
-                        <input type="text" id="t-referencia" placeholder="Ref / Comprobante" required class="form-input !bg-white">
+    <footer class="bg-zinc-950 text-white pt-16 pb-10 mt-20 rounded-t-[50px]">
+        <div class="max-w-[1400px] mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-black font-black text-xl">V</div>
+                        <h3 class="text-xl font-black tracking-tighter">VibePhone RD</h3>
                     </div>
-                </div>
-
-                <textarea id="c-address" placeholder="Dirección o punto de entrega..." required class="form-input h-20"></textarea>
-                
-                <div class="bg-black p-6 rounded-[30px] text-white flex justify-between items-center">
-                    <div><p class="text-gray-400 text-[10px] font-bold uppercase">Total</p><div class="text-2xl font-black" id="price-total">RD$ 0</div></div>
-                </div>
-
-                <button type="submit" id="btn-submit" class="w-full py-5 bg-blue-600 text-white rounded-[25px] font-black text-lg shadow-xl uppercase tracking-widest hover:bg-blue-700 transition">Formalizar Mi Compra</button>
-                <button type="button" onclick="closeM()" class="w-full py-2 text-gray-400 font-bold text-xs uppercase">Cancelar</button>
-            </form>
-        </div>
-    </div>
-
-    <footer class="bg-zinc-950 text-white pt-24 pb-12 mt-20 rounded-t-[60px]">
-        <div class="max-w-[1400px] mx-auto px-10">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-black font-black text-2xl shadow-xl">V</div>
-                        <h3 class="text-2xl font-black tracking-tighter">VibePhone RD</h3>
-                    </div>
-                    <p class="text-zinc-500 text-lg max-w-sm">Tu aliado tecnológico premium en Santo Domingo. Calidad y garantía real.</p>
+                    <p class="text-zinc-500 text-sm leading-relaxed">Tu tienda premium en República Dominicana.</p>
                 </div>
                 <div>
-                    <h4 class="font-black text-xs uppercase mb-8 text-blue-500 tracking-widest">Contacto</h4>
-                    <ul class="text-zinc-400 font-bold text-sm space-y-4">
-                        <li><i class="fas fa-location-dot mr-2"></i> Santo Domingo, RD</li>
-                        <li><i class="fab fa-whatsapp mr-2 text-green-500"></i> +1 (809) 818-2320</li>
-                    </ul>
+                    <h4 class="font-black text-[10px] uppercase mb-6 text-blue-500 tracking-widest">Contacto</h4>
+                    <p class="text-zinc-400 text-sm mb-2"><i class="fab fa-whatsapp mr-2"></i> +1 (809) 818-2320</p>
+                    <p class="text-zinc-400 text-sm"><i class="fas fa-location-dot mr-2"></i> Santo Domingo, RD</p>
                 </div>
                 <div>
-                    <h4 class="font-black text-xs uppercase mb-8 text-blue-500 tracking-widest">Síguenos</h4>
-                    <div class="flex gap-4">
-                        <a href="https://www.instagram.com/vibephone_rd" target="_blank" class="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center text-2xl hover:bg-blue-600 transition shadow-lg"><i class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/8098182320" target="_blank" class="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center text-2xl hover:bg-green-600 transition shadow-lg"><i class="fab fa-whatsapp"></i></a>
+                    <h4 class="font-black text-[10px] uppercase mb-6 text-blue-500 tracking-widest">Síguenos</h4>
+                    <div class="flex gap-3">
+                        <a href="https://www.instagram.com/vibephone_rd" target="_blank" class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-xl hover:bg-blue-600 transition shadow-lg"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/8098182320" target="_blank" class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-xl hover:bg-green-600 transition shadow-lg"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="text-[10px] font-black text-zinc-800 uppercase tracking-[0.4em] text-center border-t border-zinc-900 pt-10">
-                © 2026 VibePhone RD. Premium Tech Store.
+            <div class="text-[9px] font-black text-zinc-800 uppercase tracking-[0.3em] text-center border-t border-zinc-900 pt-8">
+                © 2026 VibePhone RD.
             </div>
         </div>
     </footer>
@@ -174,70 +133,28 @@
         const db = firebase.firestore();
         (function(){ emailjs.init("YFdmH2dv7ubtkjzod"); })();
 
-        let currentTab = 'phones', currentProd = null, count = 0;
-
-        document.getElementById('logo-trigger').onclick = () => { 
-            count++; if(count === 5) { 
-                if(prompt("PASSWORD:") === "Avd121094") { document.getElementById('admin-modal').style.display='flex'; loadAdminItems(); } 
-                count = 0; 
-            } 
-        };
+        let currentTab = 'phones';
 
         async function renderStore() {
             const grid = document.getElementById('store-grid');
-            grid.innerHTML = '<div class="col-span-full py-20 text-center font-black animate-pulse text-zinc-300">CARGANDO STOCK...</div>';
+            grid.innerHTML = '<div class="col-span-full py-10 text-center font-black animate-pulse text-zinc-300">CARGANDO...</div>';
             const qs = await db.collection("productos").where("cat", "==", currentTab).get();
             grid.innerHTML = "";
             qs.forEach(doc => {
                 const item = doc.data();
-                const media = item.vid ? `<video src="${item.vid}" autoplay muted loop playsinline class="rounded-t-[40px]"></video>` : `<img src="${item.url}">`;
                 grid.innerHTML += `
                 <div class="vibe-card">
-                    ${media}
-                    <div class="px-10 pb-4">
-                        <h3 class="text-2xl font-black italic uppercase">${item.n}</h3>
-                        <p class="text-3xl font-black mb-8 mt-4 text-blue-600">RD$ ${Number(item.p).toLocaleString()}</p>
+                    <img src="${item.url}">
+                    <div class="px-6 pb-2">
+                        <h3 class="text-lg font-black uppercase text-zinc-800">${item.n}</h3>
+                        <p class="text-xl font-black mt-2 mb-6 text-blue-600">RD$ ${Number(item.p).toLocaleString()}</p>
                     </div>
-                    <button onclick="openForm('${item.n}', '${item.p}', '${item.url}')" class="btn-buy shadow-lg">Me interesa</button>
+                    <button onclick="window.location.href='https://wa.me/8098182320?text=Hola, me interesa el ${item.n}'" class="btn-buy">Consultar</button>
                 </div>`;
             });
         }
 
-        function openForm(n, p, img) {
-            currentProd = { n, p, img };
-            document.getElementById('receipt-id').innerText = "VIBE-" + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('prod-summary').innerHTML = `<img src="${img}" class="w-16 h-16 object-contain"><div><p class="font-black text-sm uppercase">${n}</p></div>`;
-            document.getElementById('price-total').innerText = "RD$ " + Number(p).toLocaleString();
-            document.getElementById('buy-modal').style.display = 'flex';
-        }
-
-        function handleOrderSubmit(event) {
-            event.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            btn.innerText = "PROCESANDO..."; btn.disabled = true;
-
-            const templateParams = {
-                order_id: document.getElementById('receipt-id').innerText,
-                user_email: document.getElementById('c-email').value,
-                user_phone: document.getElementById('c-phone').value,
-                client_name: document.getElementById('c-name').value,
-                product_name: currentProd.n,
-                product_price: Number(currentProd.p).toLocaleString(),
-                delivery_address: document.getElementById('c-address').value,
-                bank_name: document.getElementById('t-bank').value,
-                titular: document.getElementById('t-titular').value,
-                reference: document.getElementById('t-referencia').value
-            };
-
-            emailjs.send('Avd121094', 'template_v1i9y2e', templateParams)
-                .then(() => {
-                    alert("¡PEDIDO FORMALIZADO! Recibirás un correo de confirmación.");
-                    closeM(); btn.innerText = "Formalizar Mi Compra"; btn.disabled = false;
-                });
-        }
-
         function setTab(t) { currentTab = t; renderStore(); }
-        function closeM() { document.querySelectorAll('.modal-blur').forEach(m => m.style.display='none'); }
         renderStore();
     </script>
 </body>
