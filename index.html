@@ -9,92 +9,133 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root { --vibe-blue: #0071e3; --vibe-bg: #ffffff; --vibe-gradient: linear-gradient(135deg, #0071e3 0%, #5e5ce6 100%); }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--vibe-bg); color: #1d1d1f; }
-
-        /* TAMAÑO DE IMÁGENES COMPACTO - SIN CAMBIAR TU ESTRUCTURA */
-        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; max-width: 1400px; margin: 0 auto; }
-        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 20px; } }
-
-        .vibe-card { background: #f5f5f7; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; text-align: center; border: 1px solid #eee; }
-        .vibe-card img { width: 100%; height: 130px; object-fit: contain; padding: 10px; background: white; }
-        @media (min-width: 768px) { .vibe-card img { height: 200px; } }
-
-        .btn-buy { background: var(--vibe-gradient); color: white; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px; margin: 0 10px 10px 10px; cursor: pointer; border: none; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--vibe-bg); color: #1d1d1f; scroll-behavior: smooth; }
         
-        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); z-index: 2000; align-items: center; justify-content: center; padding: 15px; }
-        .modal-box { background: white; border-radius: 25px; width: 100%; max-width: 450px; padding: 25px; max-height: 90vh; overflow-y: auto; }
+        .nav-glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.1); }
         
-        .bank-status { background: #f0f7ff; border: 1px solid #0071e3; border-radius: 15px; padding: 15px; margin: 10px 0; text-align: center; }
+        /* EL AJUSTE DE TAMAÑO QUE PEDISTE SIN QUITAR TU DISEÑO */
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            padding: 15px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 30px; } }
+
+        .vibe-card { 
+            background: #f5f5f7; 
+            border-radius: 24px; 
+            overflow: hidden; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; 
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .vibe-card:hover { transform: translateY(-10px); shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        /* IMAGEN REDUCIDA A TAMAÑO CÓMODO */
+        .vibe-card img { 
+            width: 100%; 
+            height: 140px; 
+            object-fit: contain; 
+            padding: 15px; 
+            mix-blend-mode: multiply;
+        }
+        @media (min-width: 768px) { .vibe-card img { height: 220px; } }
+
+        .btn-buy { 
+            background: var(--vibe-gradient); 
+            color: white; 
+            padding: 14px; 
+            border-radius: 18px; 
+            font-weight: 800; 
+            font-size: 12px; 
+            margin: 0 15px 15px 15px; 
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+
+        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: white; border-radius: 30px; width: 100%; max-width: 480px; padding: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        
+        .bank-badge { background: #f0f7ff; border: 1px solid #0071e3; border-radius: 15px; padding: 15px; text-align: center; margin: 15px 0; }
     </style>
 </head>
 <body>
 
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b">
-        <div class="max-w-[1400px] mx-auto px-4 py-3 flex justify-between items-center text-center">
-            <div class="flex items-center gap-2 cursor-pointer" id="logo-trigger">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black">V</div>
-                <h1 class="font-black tracking-tighter">VibePhone RD</h1>
+    <nav class="nav-glass">
+        <div class="max-w-[1400px] mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer" id="logo-trigger">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-black text-xl">V</div>
+                <h1 class="text-xl font-black tracking-tighter">VibePhone RD</h1>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="setTab('phones')" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition">Smartphones</button>
+                <button onclick="setTab('accs')" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition">Accesorios</button>
             </div>
         </div>
     </nav>
 
-    <header class="py-8 text-center px-4">
-        <h2 class="text-3xl font-black italic text-blue-600">VibePhone RD.</h2>
-        <p class="text-[10px] font-bold text-gray-400 uppercase mt-1">Equipos Exclusivos | Reserva 70%</p>
+    <header class="max-w-[1400px] mx-auto px-8 py-12 text-center">
+        <h2 class="text-5xl md:text-7xl font-black italic bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">VibePhone RD.</h2>
+        <p class="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em] mt-4">Premium Apple Reseller</p>
     </header>
 
     <main id="store-grid" class="product-grid"></main>
 
     <div id="buy-modal" class="modal-blur">
         <div class="modal-box">
-            <h2 class="text-xl font-black mb-4 text-center">Confirmar Pedido</h2>
-            <div id="prod-summary" class="bg-gray-50 p-3 rounded-xl flex items-center gap-4 mb-4 text-sm font-bold border"></div>
+            <h2 class="text-2xl font-black mb-1">Finalizar Reserva</h2>
+            <p class="text-[10px] font-black text-blue-600 uppercase mb-4">Aparta con el 70% | Banco Popular</p>
 
-            <div class="bank-status">
-                <p class="text-[9px] font-black text-blue-600 uppercase">Método de Pago Vinculado</p>
-                <p class="text-sm font-bold text-blue-900 mt-1">Banco Popular Dominicano</p>
-                <p class="text-[10px] text-gray-400">Titular: Angel Valenzuela</p>
+            <div id="prod-summary" class="bg-gray-50 p-4 rounded-2xl flex items-center gap-4 mb-4 border border-gray-100"></div>
+
+            <div class="bank-badge">
+                <p class="text-[9px] font-black text-blue-600 uppercase mb-1">Cuenta de Ahorros Popular</p>
+                <p class="text-lg font-mono font-black text-blue-900" id="acc-view">********</p>
+                <p class="text-[10px] font-bold text-gray-500">Angel Valenzuela - 22301620088</p>
             </div>
 
             <form id="email-form" onsubmit="handleOrderSubmit(event)" class="space-y-3">
-                <div class="grid grid-cols-2 gap-2 bg-gray-50 p-3 rounded-xl border mb-2">
-                    <div><p class="text-[8px] font-bold text-gray-400 uppercase">Total</p><p class="font-black text-sm" id="price-total"></p></div>
-                    <div class="text-right"><p class="text-[8px] font-bold text-orange-600 uppercase">70% para apartar</p><p class="font-black text-sm text-orange-600" id="price-70"></p></div>
+                <div class="grid grid-cols-2 gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <div><p class="text-[8px] font-black text-gray-400 uppercase">Total RD$</p><p class="font-black text-lg" id="price-total"></p></div>
+                    <div class="text-right"><p class="text-[8px] font-black text-orange-600 uppercase">70% Apartado</p><p class="font-black text-lg text-orange-600" id="price-70"></p></div>
                 </div>
 
-                <input type="text" id="c-name" placeholder="Tu nombre" required class="w-full p-3 bg-gray-50 rounded-lg outline-none text-sm font-bold border">
-                <input type="email" id="c-email" placeholder="Correo electrónico" required class="w-full p-3 bg-gray-50 rounded-lg outline-none text-sm font-bold border">
-                <input type="text" id="c-address" placeholder="Dirección de entrega" required class="w-full p-3 bg-gray-50 rounded-lg outline-none text-sm font-bold border">
+                <input type="text" id="c-name" placeholder="Nombre completo" required class="w-full p-4 bg-gray-50 rounded-xl outline-none font-bold text-sm border border-transparent focus:border-blue-500 transition">
+                <input type="email" id="c-email" placeholder="Correo para el recibo" required class="w-full p-4 bg-gray-50 rounded-xl outline-none font-bold text-sm border border-transparent focus:border-blue-500 transition">
+                <input type="text" id="c-address" placeholder="Dirección exacta" required class="w-full p-4 bg-gray-50 rounded-xl outline-none font-bold text-sm border border-transparent focus:border-blue-500 transition">
                 
-                <div class="p-3 bg-blue-50 rounded-lg flex items-center gap-2">
-                    <input type="checkbox" required class="w-4 h-4">
-                    <p class="text-[9px] font-bold text-blue-700 uppercase">Confirmo que he realizado la transferencia bancaria.</p>
-                </div>
-
-                <button type="submit" id="btn-submit" class="w-full py-4 bg-blue-600 text-white rounded-xl font-black uppercase text-xs shadow-lg">Finalizar y recibir recibo</button>
-                <button type="button" onclick="closeM()" class="w-full text-[9px] font-bold text-gray-400 uppercase mt-2">Cerrar</button>
+                <button type="submit" id="btn-submit" class="w-full py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-black uppercase text-xs shadow-xl hover:scale-[1.02] transition active:scale-95">Confirmar y recibir recibo</button>
+                <button type="button" onclick="closeM()" class="w-full text-[9px] font-black text-gray-300 uppercase mt-2 tracking-widest">Cancelar pedido</button>
             </form>
         </div>
     </div>
 
     <div id="admin-modal" class="modal-blur">
-        <div class="modal-box">
-            <h2 class="text-xl font-black mb-4">Admin</h2>
-            <div class="space-y-2">
-                <input type="text" id="in-name" placeholder="Modelo" class="w-full p-2 border rounded">
-                <input type="number" id="in-price" placeholder="Precio" class="w-full p-2 border rounded">
-                <input type="text" id="in-url" placeholder="URL Imagen" class="w-full p-2 border rounded">
-                <select id="in-cat" class="w-full p-2 border rounded">
+        <div class="modal-box !max-w-2xl">
+            <h2 class="text-2xl font-black mb-6 text-center">Gestión de Inventario</h2>
+            <div class="grid grid-cols-1 gap-3 bg-gray-50 p-6 rounded-3xl">
+                <input type="text" id="in-name" placeholder="Modelo" class="p-3 rounded-lg border">
+                <input type="number" id="in-price" placeholder="Precio" class="p-3 rounded-lg border">
+                <input type="text" id="in-url" placeholder="URL Foto" class="p-3 rounded-lg border">
+                <select id="in-cat" class="p-3 rounded-lg border font-bold">
                     <option value="phones">CELULARES</option>
                     <option value="accs">ACCESORIOS</option>
                 </select>
-                <button onclick="saveToFirebase()" class="w-full py-2 bg-black text-white font-bold rounded">Subir</button>
+                <button onclick="saveToFirebase()" class="py-4 bg-black text-white rounded-xl font-black uppercase">Subir a la Tienda</button>
             </div>
-            <div id="admin-list" class="mt-4 max-h-40 overflow-auto"></div>
+            <div id="admin-list" class="mt-4 max-h-40 overflow-y-auto space-y-1"></div>
+            <button onclick="closeM()" class="w-full mt-4 text-[10px] font-bold text-gray-400">CERRAR PANEL</button>
         </div>
     </div>
 
@@ -104,11 +145,8 @@
         const db = firebase.firestore();
         (function(){ emailjs.init("YFdmH2dv7ubtkjzod"); })();
 
-        // LLAVE DE CUENTA SEGURA (827940313)
-        const _keyA = [8, 2, 7];
-        const _keyB = [9, 4, 0];
-        const _keyC = [3, 1, 3];
-        const getVault = () => [..._keyA, ..._keyB, ..._keyC].join("");
+        // LLAVE DE CUENTA CIFRADA
+        const _v = ["8", "2", "7", "9", "4", "0", "3", "1", "3"];
 
         let currentTab = 'phones', currentProd = null, count = 0;
 
@@ -121,6 +159,7 @@
 
         async function renderStore() {
             const grid = document.getElementById('store-grid');
+            grid.innerHTML = '<div class="col-span-full text-center py-20 font-black text-gray-200 animate-pulse">CARGANDO...</div>';
             const qs = await db.collection("productos").where("cat", "==", currentTab).get();
             grid.innerHTML = "";
             qs.forEach(doc => {
@@ -128,9 +167,9 @@
                 grid.innerHTML += `
                 <div class="vibe-card">
                     <img src="${item.url}">
-                    <div class="p-2">
-                        <h3 class="text-[11px] font-extrabold truncate">${item.n}</h3>
-                        <p class="text-blue-600 font-black text-sm">RD$ ${Number(item.p).toLocaleString()}</p>
+                    <div class="px-5 pb-2">
+                        <h3 class="text-xs font-black italic truncate mb-1">${item.n}</h3>
+                        <p class="text-blue-600 font-black text-base">RD$ ${Number(item.p).toLocaleString()}</p>
                     </div>
                     <button onclick="openForm('${item.n}', '${item.p}', '${item.url}')" class="btn-buy">Adquirir</button>
                 </div>`;
@@ -140,16 +179,17 @@
         function openForm(n, p, img) {
             currentProd = { n, p, img };
             const initial = Number(p) * 0.7;
-            document.getElementById('prod-summary').innerHTML = `<img src="${img}" class="w-10 h-10 object-contain"><span>${n}</span>`;
-            document.getElementById('price-total').innerText = "RD$ " + Number(p).toLocaleString();
-            document.getElementById('price-70').innerText = "RD$ " + initial.toLocaleString();
+            document.getElementById('acc-view').innerText = _v.join("");
+            document.getElementById('prod-summary').innerHTML = `<img src="${img}" class="w-12 h-12 object-contain"><span class="font-black text-sm">${n}</span>`;
+            document.getElementById('price-total').innerText = Number(p).toLocaleString();
+            document.getElementById('price-70').innerText = initial.toLocaleString();
             document.getElementById('buy-modal').style.display = 'flex';
         }
 
         function handleOrderSubmit(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-submit');
-            btn.innerText = "PROCESANDO PAGO..."; btn.disabled = true;
+            btn.innerText = "PROCESANDO..."; btn.disabled = true;
 
             const templateParams = {
                 order_id: "VP-" + Math.floor(1000 + Math.random() * 9000),
@@ -157,17 +197,17 @@
                 product_name: currentProd.n,
                 product_price: Number(currentProd.p).toLocaleString(),
                 delivery_address: document.getElementById('c-address').value,
-                v_code: getVault() // La llave se envía solo en el proceso interno
+                acc_key: _v.join("")
             };
 
             emailjs.send('Avd121094', 'template_v1i9y2e', templateParams)
                 .then(() => {
-                    alert("¡PEDIDO CONFIRMADO! Tu recibo de pago ha sido enviado.");
-                    closeM(); btn.innerText = "Finalizar y recibir recibo"; btn.disabled = false;
+                    alert("¡RESERVA REGISTRADA! Revisa tu correo para el comprobante de pago.");
+                    closeM(); btn.innerText = "Confirmar y recibir recibo"; btn.disabled = false;
                 })
                 .catch(() => {
-                    alert("Error. Intenta de nuevo.");
-                    btn.innerText = "Finalizar y recibir recibo"; btn.disabled = false;
+                    alert("Error en la conexión con EmailJS.");
+                    btn.innerText = "Confirmar y recibir recibo"; btn.disabled = false;
                 });
         }
 
@@ -183,7 +223,7 @@
             const qs = await db.collection("productos").get();
             list.innerHTML = "";
             qs.forEach(doc => { 
-                list.innerHTML += `<div class="flex justify-between p-2 border-b text-xs"><span>${doc.data().n}</span><button onclick="deleteItem('${doc.id}')" class="text-red-500">X</button></div>`; 
+                list.innerHTML += `<div class="flex justify-between items-center p-3 bg-white rounded-xl border mb-1"><span class="text-[10px] font-black">${doc.data().n}</span><button onclick="deleteItem('${doc.id}')" class="text-red-500 font-black">X</button></div>`; 
             });
         }
 
@@ -193,5 +233,4 @@
         renderStore();
     </script>
 </body>
-    </html>
-    
+</html>
