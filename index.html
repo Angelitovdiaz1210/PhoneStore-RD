@@ -2,193 +2,286 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibePhone RD | Beyond Technology</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VibePhone RD | Tech Hub Master</title>
+    
+    <script src="https://www.paypal.com/sdk/js?client-id=AZkBcZLM9UNIZkNxdpwAllZuuyqH6W6pk7nJpLdIjBd0g4eZDAxOsqd4UdYIJYNK7VVxjOQy76x1fmhO&currency=USD"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;900&display=swap');
+        /* --- INTRO GBA ORIGINAL --- */
+        #gba-intro { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 1; transition: 0.8s; }
+        .gba-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
+        .gba-letters { display: flex; gap: 4px; font-size: 5.5rem; font-weight: 900; font-style: italic; letter-spacing: -6px; }
+        .letter { display: inline-block; transform: translateY(-300px); opacity: 0; animation: gba-drop 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        .l-v { color: #2b2b8c; animation-delay: 0.1s; } .l-i { color: #00a651; animation-delay: 0.2s; } 
+        .l-b { color: #fff200; animation-delay: 0.3s; } .l-e { color: #2b2b8c; animation-delay: 0.4s; } 
+        .rainbow-shine { position: absolute; top: 45%; left: 0; width: 100%; height: 10px; background: linear-gradient(90deg, transparent, #ff0000, #ffff00, #00ff00, #0000ff, transparent); opacity: 0; z-index: 10; transform: skewX(-20deg) translateX(-150%); }
+        .shine-active { animation: rainbow-swipe 0.8s ease-in-out forwards; animation-delay: 1.2s; }
+        .n-style { font-size: 1.6rem; color: #e60012; font-weight: 800; margin-top: 10px; opacity: 0; transform: scale(0.8); }
+        .n-active { animation: n-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 1.2s; }
+        @keyframes gba-drop { 0% { transform: translateY(-400px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes rainbow-swipe { 0% { transform: skewX(-20deg) translateX(-150%); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: skewX(-20deg) translateX(150%); opacity: 0; } }
+        @keyframes n-pop { to { opacity: 1; transform: scale(1); } }
 
-        body { font-family: 'Inter', sans-serif; background: #050505; color: white; overflow-x: hidden; }
+        /* --- DISEÑO LLAMATIVO --- */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; overflow-x: hidden; }
+        .glass-nav { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .hero-banner { position: relative; height: 70vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .video-container { position: absolute; inset: 0; z-index: -1; }
+        .video-container iframe { width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); filter: brightness(0.6); }
         
-        /* Logo con Animación de Pulso Futurista */
-        .logo-glow {
-            width: 42px; height: 42px;
-            background: #000;
-            border: 2px solid #2563eb;
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Syncopate', sans-serif;
-            font-weight: 700; color: #2563eb;
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
-            animation: pulse-blue 2s infinite;
-        }
+        .product-card { background: rgba(255, 255, 255, 0.03); border-radius: 40px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .product-card:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-15px); border-color: #2b2b8c; box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5); }
 
-        @keyframes pulse-blue {
-            0% { box-shadow: 0 0 0px rgba(37, 99, 235, 0.7); }
-            50% { box-shadow: 0 0 25px rgba(37, 99, 235, 0.9); }
-            100% { box-shadow: 0 0 0px rgba(37, 99, 235, 0.7); }
-        }
-
-        /* Hero Video Full Screen */
-        .hero-viewport { position: relative; width: 100%; height: 100vh; background: #000; }
-        .hero-viewport iframe { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; pointer-events: none; opacity: 0; transition: opacity 2s ease-in-out;
-            transform: scale(1.1);
-        }
-        .hero-viewport iframe.active { opacity: 0.5; }
-
-        /* Tarjetas Estilo Glassmorphism */
-        .product-card {
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 30px;
-            padding: 15px;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .product-card:hover {
-            border-color: #2563eb;
-            transform: translateY(-15px) scale(1.02);
-            background: rgba(20, 20, 20, 0.9);
-        }
-
-        .price-tag { font-family: 'Syncopate', sans-serif; color: #2563eb; font-size: 14px; }
-
-        /* Footer con Diálogos Mejorados */
-        .footer-dialog { font-size: 13px; color: #666; line-height: 1.8; }
-        .footer-dialog b { color: #fff; }
-
-        .btn-cyber {
-            background: #fff; color: #000;
-            font-weight: 900; text-transform: uppercase; font-size: 10px;
-            padding: 12px; border-radius: 12px; transition: 0.3s;
-        }
-        .btn-cyber:hover { background: #2563eb; color: #fff; box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); }
-
-        .wsp-neon {
-            position: fixed; bottom: 30px; right: 30px;
-            background: #25d366; color: white; width: 65px; height: 65px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 30px; z-index: 1000;
-            box-shadow: 0 0 30px rgba(37, 211, 102, 0.5);
-        }
+        .trust-tag { background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 100px; font-size: 10px; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); }
+        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
+        
+        /* FOOTER REINSTALADO */
+        footer { background: #000; border-top: 4px solid #2b2b8c; border-radius: 60px 60px 0 0; margin-top: 50px; }
+        .social-btn { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: #1a1a1a; transition: 0.3s; color: white; }
+        .social-btn:hover { background: #2b2b8c; transform: scale(1.1); }
     </style>
 </head>
-<body>
+<body onload="startGBA()">
 
-    <a href="https://wa.me/8098182320" target="_blank" class="wsp-neon"><i class="fab fa-whatsapp"></i></a>
-
-    <nav class="fixed top-0 w-full z-[200] px-6 py-5 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
-        <div class="flex items-center gap-4">
-            <div class="logo-glow text-xl">V</div>
-            <h1 class="font-black text-sm uppercase tracking-[0.3em]">VibePhone <span class="text-blue-600">RD</span></h1>
+    <div id="gba-intro">
+        <div class="gba-wrapper">
+            <div class="rainbow-shine" id="rainbow"></div>
+            <div class="gba-letters">
+                <span class="letter l-v">V</span><span class="letter l-i">I</span><span class="letter l-b">B</span><span class="letter l-e">E</span>
+            </div>
+            <div class="n-style" id="n-text">TECH HUB RD</div>
         </div>
-        <div class="flex gap-8">
-            <button onclick="setTab('phones')" class="text-[9px] font-black uppercase tracking-widest hover:text-blue-500 transition">Mobile</button>
-            <button onclick="setTab('accs')" class="text-[9px] font-black uppercase tracking-widest hover:text-blue-500 transition">Gear</button>
+    </div>
+
+    <nav class="fixed top-0 w-full z-[100] glass-nav">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-[#2b2b8c] to-[#00a651] rounded-2xl flex items-center justify-center text-white font-black italic shadow-2xl">V</div>
+                <span class="text-2xl font-black uppercase tracking-tighter italic text-white">VibePhone <span class="text-[#00a651]">RD</span></span>
+            </div>
+            <button onclick="toggleCart()" class="relative p-4 bg-white/5 rounded-2xl">
+                <i class="fas fa-shopping-bag text-white"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-[#2b2b8c] text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center font-black">0</span>
+            </button>
         </div>
     </nav>
 
-    <section class="hero-viewport">
-        <iframe class="active" src="https://www.youtube.com/embed/keYat4iSYAQ?autoplay=1&mute=1&loop=1&playlist=keYat4iSYAQ&controls=0&showinfo=0&rel=0&iv_load_policy=36?autoplay=1&mute=1&loop=1" frameborder="0"></iframe>
-        <iframe src="https://www.youtube.com/embed/keYat4iSYAQ?autoplay=1&mute=1&loop=1&playlist=keYat4iSYAQ&controls=0&showinfo=0&rel=0&iv_load_policy=37?autoplay=1&mute=1&loop=1" frameborder="0"></iframe>
-        <iframe src="https://www.youtube.com/embed/keYat4iSYAQ?autoplay=1&mute=1&loop=1&playlist=keYat4iSYAQ&controls=0&showinfo=0&rel=0&iv_load_policy=38?autoplay=1&mute=1&loop=1" frameborder="0"></iframe>
-        
-        <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-6 z-20">
-            <h2 class="text-5xl md:text-8xl font-black italic tracking-tighter leading-none mb-4">DEFINIENDO<br>EL <span class="text-blue-600 underline">VIBE.</span></h2>
-            <p class="max-w-md text-[10px] font-medium uppercase tracking-[0.5em] text-zinc-400">Exclusividad. Potencia. Garantía. Tu próximo nivel comienza hoy.</p>
+    <header class="hero-banner">
+        <div class="video-container"><iframe id="hero-video-iframe" src="" frameborder="0" allow="autoplay"></iframe></div>
+        <div class="relative z-10 text-center space-y-4">
+            <h1 class="text-8xl font-black italic tracking-tighter uppercase text-white">THE VIBE.</h1>
+            <p class="text-gray-400 font-bold uppercase tracking-[0.5em] text-xs">Exclusividad • Potencia • Autenticidad</p>
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-10"></div>
+    </header>
+
+    <section class="max-w-7xl mx-auto px-6 pt-20 text-center">
+        <div class="bg-white/5 p-12 rounded-[50px] border border-white/5">
+            <h2 class="text-4xl font-black italic mb-6">POTENCIA Y ESTILO REAL.</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto font-medium leading-relaxed mb-8 uppercase text-xs tracking-widest">
+                Seleccionamos tecnología original que define tu personalidad. Cada equipo en VibePhone RD es una pieza de ingeniería certificada para usuarios exigentes.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="trust-tag"><i class="fas fa-check-circle mr-2 text-green-500"></i>Equipos 100% Originales</span>
+                <span class="trust-tag"><i class="fas fa-gem mr-2 text-blue-500"></i>Calidad Premium</span>
+                <span class="trust-tag"><i class="fas fa-certificate mr-2 text-yellow-500"></i>Tech Hub RD Certificado</span>
+            </div>
+        </div>
     </section>
 
-    <main id="store-grid" class="max-w-[1300px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 px-6 pb-20 mt-[-100px] relative z-30"></main>
+    <main class="max-w-7xl mx-auto px-6 py-24">
+        <div id="store-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"></div>
+    </main>
 
-    <footer class="bg-[#080808] border-t border-white/5 pt-20 pb-10 px-8">
-        <div class="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
-            
-            <div class="space-y-6">
-                <div class="logo-glow">V</div>
-                <p class="footer-dialog">
-                    <b>VibePhone RD</b> no es solo una tienda de celulares, es un centro de tecnología avanzada en República Dominicana. Nuestra misión es conectar a cada cliente con el equipo que mejor define su estilo de vida, bajo los más altos estándares de <b>confiabilidad y soporte</b>.
-                </p>
-            </div>
-
-            <div class="space-y-6">
-                <h4 class="text-xs font-black uppercase tracking-widest text-blue-600">Nuestra Filosofía</h4>
-                <p class="footer-dialog">
-                    Creemos en la <b>transparencia total</b>. Cada dispositivo en nuestro catálogo pasa por un riguroso proceso de inspección. "Innovación que inspira, experiencia que conecta" es el algoritmo que guía nuestra atención personalizada.
-                </p>
-            </div>
-
-            <div class="space-y-6 text-right md:text-left">
-                <h4 class="text-xs font-black uppercase tracking-widest text-blue-600">Centro de Asistencia</h4>
-                <div class="space-y-3">
-                    <p class="text-sm font-bold">Santo Domingo, DN</p>
-                    <p class="text-blue-500 font-black text-2xl">809.818.2320</p>
-                    <button onclick="togglePrivacy()" class="text-[9px] text-zinc-500 underline hover:text-white uppercase tracking-widest">Compliance & Privacy</button>
+    <footer>
+        <div class="max-w-7xl mx-auto px-6 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black italic text-[#2b2b8c] uppercase">VibePhone RD</h3>
+                    <p class="text-gray-400 text-[10px] font-bold uppercase leading-relaxed">La casa del iPhone y la tecnología de vanguardia en RD. Calidad garantizada.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs uppercase mb-6 tracking-widest text-blue-500">Tienda</h4>
+                    <ul class="space-y-3 text-[10px] font-bold text-gray-500 uppercase">
+                        <li>iPhones</li><li>Android Series</li><li>Soporte Técnico</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs uppercase mb-6 tracking-widest text-blue-500">Contacto</h4>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-2">+1 809-818-2320</p>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-6">info@vibephonerd.com</p>
+                    <h4 class="font-black text-[9px] uppercase mb-2 text-gray-200">Horario:</h4>
+                    <p class="text-[9px] font-bold text-gray-500 uppercase">Lun - Sáb: 9:00 AM - 7:00 PM</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs uppercase mb-6 tracking-widest text-blue-500">Ubicación</h4>
+                    <div class="rounded-2xl overflow-hidden border border-gray-800 h-32 w-full grayscale invert opacity-50">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121059.0471115608!2d-69.9885732!3d18.4718609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf89f1107ea5ab%3A0xd6cde661f5a6e051!2sSanto%20Domingo!5e0!3m2!1ses!2sdo!4v1700000000000" width="100%" height="100%" style="border:0;" allowfullscreen=""></iframe>
+                    </div>
                 </div>
             </div>
-
-        </div>
-
-        <div class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[8px] text-zinc-700 tracking-[0.3em] font-bold uppercase">
-            <p>© 2026 VibePhone RD | All Rights Reserved</p>
-            <p>Powered by Next-Gen Innovation</p>
+            <div class="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-[9px] font-black text-gray-600 uppercase tracking-[5px]">© 2026 VIBEPHONE RD - TECH HUB OFFICIAL</p>
+                <div class="flex gap-4 opacity-20 grayscale invert">
+                    <i class="fab fa-cc-visa text-2xl"></i><i class="fab fa-cc-mastercard text-2xl"></i><i class="fab fa-cc-paypal text-2xl"></i>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <div id="privacy-modal" class="fixed inset-0 bg-black/95 z-[500] hidden flex items-center justify-center p-8 backdrop-blur-2xl">
-        <div class="bg-zinc-900 border border-blue-900/30 p-12 rounded-[40px] max-w-lg w-full text-center">
-            <h2 class="text-2xl font-black mb-6 tracking-widest">SISTEMA DE PRIVACIDAD</h2>
-            <p class="text-zinc-500 text-xs leading-relaxed mb-8 uppercase">Para cumplir con los estándares globales de Google AdSense, informamos que este portal utiliza cookies inteligentes para optimizar la oferta comercial y proteger la integridad de sus datos de navegación.</p>
-            <button onclick="togglePrivacy()" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-[10px] tracking-widest">CONFIRMAR Y ENTRAR</button>
+    <div id="admin-modal" class="modal-blur">
+        <div class="bg-slate-900 p-10 rounded-[50px] w-full max-w-4xl shadow-2xl border border-white/10 text-white">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-2xl font-black uppercase text-blue-500">Panel Maestro</h2>
+                <button onclick="closeAdmin()" class="text-4xl text-gray-500">×</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="space-y-4 text-black">
+                    <input type="number" id="v-tasa" placeholder="Tasa USD" class="w-full p-4 rounded-2xl outline-none font-bold">
+                    <input type="text" id="v-video-url" placeholder="URL Video YouTube" class="w-full p-4 rounded-2xl outline-none text-xs">
+                    <hr class="opacity-10">
+                    <input type="text" id="p-n" placeholder="Modelo" class="w-full p-4 rounded-2xl outline-none">
+                    <input type="text" id="p-cap" placeholder="Capacidad" class="w-full p-4 rounded-2xl outline-none">
+                    <input type="number" id="p-p" placeholder="Precio RD$" class="w-full p-4 rounded-2xl outline-none font-bold">
+                    <input type="text" id="p-u" placeholder="URL .PNG" class="w-full p-4 rounded-2xl outline-none text-xs">
+                    <button onclick="guardarAdmin()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase">Sincronizar</button>
+                </div>
+                <div class="bg-black/40 p-6 rounded-[40px] border border-white/5">
+                    <div id="admin-list" class="space-y-3 max-h-[400px] overflow-y-auto pr-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cart-modal" class="modal-blur">
+        <div class="bg-slate-900 p-10 rounded-[50px] w-full max-w-md border border-white/10 text-center text-white">
+            <h2 class="text-3xl font-black mb-8 uppercase text-blue-500">Recibo</h2>
+            <div id="cart-items" class="space-y-4 mb-8 border-b border-white/10 pb-8"></div>
+            <div class="flex justify-between text-2xl font-black mb-10">
+                <span>TOTAL:</span><span id="total-rd" class="text-green-500">RD$ 0</span>
+            </div>
+            <input type="text" id="cust-name" placeholder="Tu Nombre" class="w-full p-5 bg-white/5 rounded-2xl border border-white/10 mb-6 text-white outline-none">
+            <div id="paypal-button-container" class="mb-6"></div>
+            <button onclick="checkoutWhatsApp()" class="w-full bg-[#25d366] text-white py-5 rounded-2xl font-black uppercase flex items-center justify-center gap-3">
+                <i class="fab fa-whatsapp text-2xl"></i> Enviar a Tienda
+            </button>
+            <button onclick="toggleCart()" class="mt-8 text-gray-600 font-bold text-xs uppercase">Cerrar</button>
         </div>
     </div>
 
     <script>
-        // Firebase (Igual que antes)
         const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        let cart = [], TASA = 58.50;
 
-        // Carrusel de Videos (Sin sonido, en bucle)
-        let cur = 0;
-        const vids = document.querySelectorAll('.hero-viewport iframe');
-        setInterval(() => {
-            vids[cur].classList.remove('active');
-            cur = (cur + 1) % vids.length;
-            vids[cur].classList.add('active');
-        }, 8000);
+        function startGBA() {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            setTimeout(() => {
+                document.getElementById('rainbow').classList.add('shine-active');
+                document.getElementById('n-text').classList.add('n-active');
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1046, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(2093, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            }, 1200);
+            setTimeout(() => {
+                const intro = document.getElementById('gba-intro');
+                intro.style.opacity = '0';
+                setTimeout(() => intro.style.display = 'none', 800);
+            }, 4500);
+        }
 
-        // Lógica de Tienda
-        let currentTab = 'phones';
+        async function loadSettings() {
+            const doc = await db.collection("config").doc("hero").get();
+            if(doc.exists) {
+                const d = doc.data();
+                if(d.videoId) document.getElementById('hero-video-iframe').src = `https://www.youtube.com/embed/${d.videoId}?autoplay=1&mute=1&loop=1&playlist=${d.videoId}&controls=0&rel=0`;
+                if(d.tasa) { TASA = d.tasa; document.getElementById('v-tasa').value = TASA; }
+            }
+        }
+
         async function renderStore() {
             const grid = document.getElementById('store-grid');
-            grid.innerHTML = '<div class="col-span-full py-20 text-center font-black text-zinc-900 text-3xl animate-pulse">VIBE MODE: ON</div>';
-            const qs = await db.collection("productos").where("cat", "==", currentTab).get();
-            grid.innerHTML = "";
+            const list = document.getElementById('admin-list');
+            const qs = await db.collection("productos").get();
+            grid.innerHTML = ""; list.innerHTML = "";
             qs.forEach(doc => {
-                const item = doc.data();
-                grid.innerHTML += `
-                <div class="product-card">
-                    <img src="${item.url}" class="w-full aspect-[4/5] object-cover rounded-2xl mb-6 shadow-2xl" loading="lazy">
-                    <div class="px-2">
-                        <h3 class="text-[9px] font-black text-zinc-500 mb-1 uppercase tracking-tighter">${item.n}</h3>
-                        <p class="price-tag mb-6">RD$ ${Number(item.p).toLocaleString()}</p>
-                        <button onclick="window.location.href='https://wa.me/8098182320?text=Hola VibePhone, quiero info: ${item.n}'" class="btn-cyber w-full">Order Now</button>
+                const it = doc.data(); const id = doc.id;
+                grid.innerHTML += `<div class="product-card text-center">
+                    <img src="${it.url}" class="w-full h-44 object-contain mb-6">
+                    <h3 class="font-black text-sm uppercase text-white mb-1 italic">${it.n}</h3>
+                    <p class="text-[10px] text-gray-500 font-bold mb-6 uppercase tracking-widest">${it.cap || 'Certificado'}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-white font-black text-xl italic">RD$ ${it.p.toLocaleString()}</span>
+                        <button onclick="addToCart('${it.n}', ${it.p}, '${it.url}')" class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center hover:bg-[#2b2b8c] transition"><i class="fas fa-plus"></i></button>
                     </div>
+                </div>`;
+                list.innerHTML += `<div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5 text-[10px] font-black text-white">
+                    <span>${it.n}</span>
+                    <button onclick="borrarProd('${id}')" class="text-red-500 px-2"><i class="fas fa-trash"></i></button>
                 </div>`;
             });
         }
 
-        function setTab(t) { currentTab = t; renderStore(); }
-        function togglePrivacy() { document.getElementById('privacy-modal').classList.toggle('hidden'); }
+        function extractID(url) {
+            const reg = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const m = url.match(reg); return (m && m[2].length === 11) ? m[2] : url;
+        }
 
-        renderStore();
+        async function guardarAdmin() {
+            const vUrl = document.getElementById('v-video-url').value, tasa = document.getElementById('v-tasa').value;
+            const pN = document.getElementById('p-n').value, pC = document.getElementById('p-cap').value, pP = document.getElementById('p-p').value, pU = document.getElementById('p-u').value;
+            if(vUrl || tasa) {
+                let u = {}; if(vUrl) u.videoId = extractID(vUrl); if(tasa) u.tasa = parseFloat(tasa);
+                await db.collection("config").doc("hero").set(u, {merge:true});
+            }
+            if(pN && pP && pU) await db.collection("productos").add({ n: pN, cap: pC, p: parseInt(pP), url: pU });
+            alert("¡Hecho!"); location.reload();
+        }
+
+        async function borrarProd(id) { if(confirm("¿Borrar?")) { await db.collection("productos").doc(id).delete(); renderStore(); } }
+        window.onkeydown = (e) => { if(e.altKey && e.key === 'a') document.getElementById('admin-modal').style.display = 'flex'; };
+        function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
+        function addToCart(n, p, url) { cart.push({n, p, url}); updateUI(); }
+        function updateUI() {
+            const cont = document.getElementById('cart-items'); let total = 0; cont.innerHTML = "";
+            cart.forEach((it) => { total += it.p; cont.innerHTML += `<div class="flex justify-between text-xs font-black uppercase"><span>${it.n}</span><span>RD$ ${it.p.toLocaleString()}</span></div>`; });
+            document.getElementById('total-rd').innerText = "RD$ " + total.toLocaleString();
+            document.getElementById('cart-count').innerText = cart.length;
+            renderPayPal((total / TASA).toFixed(2));
+        }
+        function toggleCart() { const m = document.getElementById('cart-modal'); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; }
+        function renderPayPal(usd) {
+            document.getElementById('paypal-button-container').innerHTML = '';
+            if(usd > 0) paypal.Buttons({
+                createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: usd } }] }),
+                onApprove: (data, actions) => actions.order.capture().then(() => { alert('Pago Éxito'); cart = []; updateUI(); toggleCart(); })
+            }).render('#paypal-button-container');
+        }
+        function checkoutWhatsApp() {
+            const cliente = document.getElementById('cust-name').value || "Cliente";
+            let msg = `🛍️ *ORDEN VIBEPHONE RD*\n👤 *Cliente:* ${cliente}\n\n`;
+            cart.forEach(i => msg += `• ${i.n} - RD$ ${i.p.toLocaleString()}\n`);
+            msg += `\n💰 *TOTAL: ${document.getElementById('total-rd').innerText}*`;
+            window.location.href = `https://wa.me/18098182320?text=${encodeURIComponent(msg)}`;
+        }
+
+        loadSettings(); renderStore();
     </script>
 </body>
 </html>
