@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VibePhone RD | Tech Hub Master</title>
+    <title>VibePhone RD | Master Tech Hub</title>
     
     <script src="https://www.paypal.com/sdk/js?client-id=AZkBcZLM9UNIZkNxdpwAllZuuyqH6W6pk7nJpLdIjBd0g4eZDAxOsqd4UdYIJYNK7VVxjOQy76x1fmhO&currency=USD"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -13,56 +13,59 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* --- INTRO GBA --- */
-        #gba-intro { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 1; transition: 0.8s; cursor: pointer; }
+        :root { --vibe-blue: #2b2b8c; --vibe-green: #00a651; --vibe-red: #e60012; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; margin: 0; overflow-x: hidden; }
+
+        /* --- INTRO GBA MASTER --- */
+        #gba-intro { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .gba-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
-        .gba-letters { display: flex; gap: 4px; font-size: clamp(3rem, 15vw, 5.5rem); font-weight: 900; font-style: italic; letter-spacing: -4px; }
-        .letter { display: inline-block; transform: translateY(-300px); opacity: 0; animation: gba-drop 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-        .l-v { color: #2b2b8c; animation-delay: 0.1s; } .l-i { color: #00a651; animation-delay: 0.2s; } 
-        .l-b { color: #fff200; animation-delay: 0.3s; } .l-e { color: #2b2b8c; animation-delay: 0.4s; } 
-        .rainbow-shine { position: absolute; top: 45%; left: 0; width: 100%; height: 10px; background: linear-gradient(90deg, transparent, #ff0000, #ffff00, #00ff00, #0000ff, transparent); opacity: 0; z-index: 10; transform: skewX(-20deg) translateX(-150%); }
-        .shine-active { animation: rainbow-swipe 0.8s ease-in-out forwards; animation-delay: 1.2s; }
-        .n-style { font-size: clamp(1rem, 5vw, 1.6rem); color: #e60012; font-weight: 800; margin-top: 10px; opacity: 0; transform: scale(0.8); }
-        .n-active { animation: n-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 1.2s; }
-        @keyframes gba-drop { 0% { transform: translateY(-400px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-        @keyframes rainbow-swipe { 0% { transform: skewX(-20deg) translateX(-150%); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: skewX(-20deg) translateX(150%); opacity: 0; } }
-        @keyframes n-pop { to { opacity: 1; transform: scale(1); } }
+        .gba-letters { display: flex; gap: 6px; font-size: clamp(3.5rem, 12vw, 5.5rem); font-weight: 900; font-style: italic; letter-spacing: -3px; }
+        .letter { transform: translateY(-400px); opacity: 0; }
+        .drop-anim { animation: fall 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        @keyframes fall { to { transform: translateY(0); opacity: 1; } }
+        .l-v { color: var(--vibe-blue); animation-delay: 0.1s; } 
+        .l-i { color: var(--vibe-green); animation-delay: 0.2s; } 
+        .l-b { color: #fff200; animation-delay: 0.3s; } 
+        .l-e { color: var(--vibe-blue); animation-delay: 0.4s; }
+        .n-style { font-size: clamp(1rem, 5vw, 1.6rem); color: var(--vibe-red); font-weight: 800; margin-top: 10px; opacity: 0; transform: scale(0.8); }
+        .n-active { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; animation-delay: 0.6s; }
+        @keyframes pop { to { opacity: 1; transform: scale(1); } }
+        .rainbow-shine { position: absolute; top: 45%; left: 0; width: 100%; height: 12px; background: linear-gradient(90deg, transparent, #ff0000, #ffff00, #00ff00, #0000ff, transparent); opacity: 0; z-index: 10; transform: skewX(-25deg) translateX(-150%); }
+        .shine-active { animation: swipe 0.8s ease-in-out forwards; animation-delay: 0.6s; }
+        @keyframes swipe { 0% { transform: skewX(-25deg) translateX(-150%); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: skewX(-25deg) translateX(150%); opacity: 0; } }
 
-        /* --- UI COMPACTA --- */
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: white; overflow-x: hidden; width: 100%; }
-        .glass-nav { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        
-        /* LOGO NUEVO DISEÑO */
+        /* --- NUEVO LOGO VIBE --- */
         .vibe-logo-box { 
-            width: 42px; height: 42px; 
-            background: #000; 
-            border: 2px solid #2b2b8c;
-            box-shadow: 0 0 15px rgba(43, 43, 140, 0.6);
-            position: relative; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; transition: 0.3s;
-            user-select: none; -webkit-user-select: none;
+            width: 48px; height: 48px; background: #000; border: 3px solid var(--vibe-blue); 
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(43, 43, 140, 0.6); position: relative; overflow: hidden;
+            user-select: none; -webkit-user-select: none; transition: 0.3s; cursor: pointer;
         }
-        .vibe-logo-box::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(45deg, #2b2b8c, #00a651); opacity: 0.3;
-        }
-        .vibe-logo-text { font-size: 24px; font-weight: 900; font-style: italic; z-index: 1; color: white; text-shadow: 2px 2px 0 #2b2b8c; }
+        .vibe-logo-box::after { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, var(--vibe-blue), transparent); opacity: 0.4; }
+        .vibe-logo-text { font-size: 28px; font-weight: 900; font-style: italic; z-index: 2; color: white; text-shadow: 2px 2px 0 var(--vibe-blue); }
 
-        .hero-banner { position: relative; height: 50vh; min-height: 350px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .video-container { position: absolute; inset: 0; z-index: -1; }
-        .video-container iframe { width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); filter: brightness(0.5); }
-        .hero-title { font-size: clamp(3rem, 14vw, 7rem); line-height: 0.9; }
-
-        .product-card { background: rgba(255, 255, 255, 0.03); border-radius: 25px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .product-img { height: 140px; width: 100%; object-fit: contain; margin-bottom: 10px; }
-        .trust-tag { background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 100px; font-size: 8px; font-weight: 800; border: 1px solid rgba(255,255,255,0.1); }
+        /* --- UI & NAV --- */
+        .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .hero { height: 55vh; min-height: 400px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .hero iframe { position: absolute; width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; filter: brightness(0.4) contrast(1.1); z-index: -1; pointer-events: none; }
         
-        footer { background: #000; border-top: 4px solid #2b2b8c; border-radius: 40px 40px 0 0; margin-top: 40px; }
-        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 5000; align-items: center; justify-content: center; padding: 15px; }
+        /* --- PRODUCT CARDS --- */
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 40px; } }
+        .card { background: rgba(255,255,255,0.03); border-radius: 28px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; text-align: center; position: relative; }
+        .card:hover { background: rgba(255,255,255,0.06); transform: translateY(-5px); border-color: var(--vibe-blue); }
+        .card img { height: 140px; width: 100%; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
+        
+        /* --- FOOTER MASTER --- */
+        footer { background: #000; border-top: 5px solid var(--vibe-blue); border-radius: 45px 45px 0 0; margin-top: 60px; padding: 60px 25px 30px; }
+        .map-frame { width: 100%; height: 200px; border-radius: 25px; overflow: hidden; filter: invert(0.9) grayscale(1); border: 1px solid rgba(255,255,255,0.1); opacity: 0.4; }
+
+        /* --- MODALES --- */
+        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #111827; border-radius: 35px; width: 100%; max-width: 420px; border: 1px solid rgba(255,255,255,0.1); padding: 30px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
     </style>
 </head>
-<body onclick="playGBASound()">
+<body onclick="playIntro()">
 
     <div id="gba-intro">
         <div class="gba-wrapper">
@@ -71,102 +74,112 @@
                 <span class="letter l-v">V</span><span class="letter l-i">I</span><span class="letter l-b">B</span><span class="letter l-e">E</span>
             </div>
             <div class="n-style" id="n-text">TECH HUB RD</div>
-            <p class="text-[8px] text-gray-400 mt-10 font-bold animate-pulse uppercase">Toca para iniciar</p>
+            <p id="tap-msg" class="text-[10px] text-gray-400 mt-12 font-black animate-pulse uppercase tracking-[4px]">Toca la pantalla</p>
         </div>
     </div>
 
-    <nav class="fixed top-0 w-full z-[100] glass-nav">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div id="vibe-logo" class="vibe-logo-box" onmousedown="startPress()" onmouseup="endPress()" ontouchstart="startPress()" ontouchend="endPress()">
-                    <span class="vibe-logo-text">V</span>
-                </div>
-                <span class="text-md font-black uppercase tracking-tighter italic text-white">VibePhone <span class="text-[#00a651]">RD</span></span>
+    <nav class="fixed top-0 w-full z-50 glass-nav px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div id="logo-admin" class="vibe-logo-box" onmousedown="startTimer()" onmouseup="endTimer()" ontouchstart="startTimer()" ontouchend="endTimer()">
+                <span class="vibe-logo-text">V</span>
             </div>
-            <button onclick="toggleCart()" class="relative p-3 bg-white/5 rounded-xl border border-white/10">
-                <i class="fas fa-shopping-bag text-white text-sm"></i>
-                <span id="cart-count" class="absolute -top-1 -right-1 bg-[#2b2b8c] text-white text-[9px] w-5 h-5 rounded-full flex items-center justify-center font-black">0</span>
-            </button>
+            <div>
+                <h1 class="text-lg font-black italic tracking-tighter leading-none uppercase">VibePhone <span class="text-[#00a651]">RD</span></h1>
+                <span class="text-[7px] font-black tracking-[3px] text-blue-500 uppercase">Premium Tech Hub</span>
+            </div>
         </div>
+        <button onclick="openCart()" class="relative p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
+            <i class="fas fa-shopping-bag text-lg"></i>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-700 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black ring-2 ring-[#0f172a]">0</span>
+        </button>
     </nav>
 
-    <header class="hero-banner">
-        <div class="video-container"><iframe id="hero-video-iframe" src="" frameborder="0" allow="autoplay"></iframe></div>
-        <div class="relative z-10 text-center px-4">
-            <h1 class="hero-title font-black italic tracking-tighter uppercase text-white">THE VIBE.</h1>
-            <p class="text-gray-400 font-bold uppercase tracking-[0.3em] text-[9px] mt-2">Exclusividad • Potencia • Autenticidad</p>
+    <header class="hero">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#0f172a] z-0"></div>
+        <iframe id="hero-yt" src="" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        <div class="relative z-10 text-center">
+            <h2 class="text-6xl md:text-8xl font-black italic tracking-tighter uppercase text-white drop-shadow-2xl">THE VIBE.</h2>
+            <p class="text-[9px] md:text-xs font-black tracking-[0.4em] uppercase text-blue-400 mt-4">Autenticidad • Potencia • Exclusividad</p>
         </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-4 pt-10 text-center">
-        <div class="bg-white/5 p-8 rounded-[40px] border border-white/5">
-            <h2 class="text-xl font-black italic mb-4">POTENCIA Y ESTILO.</h2>
-            <p class="text-gray-400 text-[9px] uppercase tracking-widest leading-relaxed mb-6">Equipos originales seleccionados para usuarios exigentes.</p>
-            <div class="flex flex-wrap justify-center gap-2">
-                <span class="trust-tag"><i class="fas fa-check-circle text-green-500 mr-1"></i>100% Original</span>
-                <span class="trust-tag"><i class="fas fa-star text-yellow-500 mr-1"></i>Premium</span>
-                <span class="trust-tag"><i class="fas fa-shield-alt text-blue-500 mr-1"></i>Certificado RD</span>
-            </div>
-        </div>
-    </section>
-
-    <main class="max-w-7xl mx-auto px-4 py-10">
-        <div id="store-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+    <main class="max-w-7xl mx-auto">
+        <div class="product-grid" id="store-container"></div>
     </main>
 
     <footer>
-        <div class="max-w-7xl mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="space-y-4">
-                    <h3 class="text-xl font-black italic text-[#2b2b8c] uppercase">VibePhone RD</h3>
-                    <div class="flex gap-2">
-                        <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center"><i class="fab fa-instagram text-sm"></i></a>
-                        <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center"><i class="fab fa-tiktok text-sm"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-black text-[10px] uppercase mb-4 text-blue-500">Contacto</h4>
-                    <p class="text-[9px] font-bold text-gray-400 uppercase">+1 809-818-2320</p>
-                    <p class="text-[9px] font-bold text-gray-500 mt-2 uppercase">Lun - Sáb: 9AM - 7PM</p>
-                </div>
-                <div>
-                    <div class="rounded-xl overflow-hidden grayscale invert opacity-30 h-24">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.123456789!2d-69.9!3d18.4" width="100%" height="100%" style="border:0;"></iframe>
-                    </div>
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="space-y-6">
+                <h3 class="text-2xl font-black italic text-blue-600 uppercase">VibePhone RD</h3>
+                <p class="text-[11px] font-bold text-gray-500 uppercase leading-relaxed tracking-wider">
+                    Especialistas en la importación de tecnología certificada. El estándar más alto en dispositivos premium de República Dominicana.
+                </p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-xl hover:bg-blue-600 transition-all"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/18098182320" class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-xl hover:bg-green-600 transition-all"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
-            <p class="text-[8px] font-black text-gray-700 uppercase tracking-[3px] text-center mt-10">© 2026 VIBEPHONE RD - TECH HUB</p>
+            <div class="space-y-4">
+                <h4 class="text-xs font-black uppercase tracking-widest text-gray-300">Hub de Contacto</h4>
+                <div class="space-y-2">
+                    <p class="text-sm font-bold text-blue-400">+1 809-818-2320</p>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase">Lun - Sáb: 9:00 AM - 7:00 PM</p>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase">Santo Domingo, RD</p>
+                </div>
+            </div>
+            <div class="map-frame">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15137.9!2d-69.9!3d18.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2sdo!4v1700000000000" width="100%" height="100%" style="border:0;" allowfullscreen=""></iframe>
+            </div>
+        </div>
+        <div class="text-center mt-16 pt-8 border-t border-white/5">
+            <p class="text-[9px] font-black text-gray-800 uppercase tracking-[6px]">© 2026 VibePhone RD - Dominican Republic</p>
         </div>
     </footer>
 
-    <div id="cart-modal" class="modal-blur">
-        <div class="bg-slate-900 p-6 rounded-[30px] w-full max-w-sm border border-white/10 text-white text-center">
-            <h2 class="text-xl font-black mb-6 uppercase text-blue-500 italic">Mi Orden</h2>
-            <div id="cart-items" class="space-y-3 mb-6 max-h-[150px] overflow-y-auto border-b border-white/5 pb-4"></div>
-            <div class="flex justify-between text-lg font-black mb-6"><span>TOTAL:</span><span id="total-rd" class="text-green-500">RD$ 0</span></div>
-            <input type="text" id="cust-name" placeholder="Tu Nombre" class="w-full p-3 bg-white/5 rounded-xl border border-white/10 mb-4 text-sm outline-none">
-            <div id="paypal-button-container" class="mb-4"></div>
-            <button onclick="checkoutWhatsApp()" class="w-full bg-[#25d366] py-4 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-            <button onclick="toggleCart()" class="mt-4 text-gray-600 text-[10px] uppercase font-black">Cerrar</button>
+    <div id="modal-cart" class="modal-blur">
+        <div class="modal-content">
+            <h2 class="text-2xl font-black italic text-center text-blue-500 mb-8 uppercase">Resumen de Orden</h2>
+            <div id="cart-list" class="space-y-4 mb-8 max-h-48 overflow-y-auto pr-2 custom-scrollbar border-b border-white/5 pb-4"></div>
+            <div class="flex justify-between items-center text-xl font-black mb-8 px-2">
+                <span>TOTAL:</span><span id="cart-total" class="text-green-500">RD$ 0</span>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div class="relative">
+                    <input type="text" id="cust-name" placeholder="Nombre Completo del Cliente" class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl text-xs font-bold uppercase tracking-widest outline-none focus:border-blue-500 transition-all text-white placeholder:text-gray-600">
+                </div>
+            </div>
+
+            <div id="paypal-container" class="mb-4 min-h-[50px]"></div>
+            
+            <button onclick="checkoutWA()" class="w-full bg-[#25d366] py-4 rounded-2xl font-black text-[11px] uppercase flex items-center justify-center gap-3 hover:opacity-90 active:scale-95 transition-all">
+                <i class="fab fa-whatsapp text-lg"></i> Confirmar por WhatsApp
+            </button>
+            <button onclick="closeCart()" class="mt-6 w-full text-gray-600 font-black text-[10px] uppercase tracking-widest hover:text-white transition-all">Volver a la tienda</button>
         </div>
     </div>
 
-    <div id="admin-modal" class="modal-blur">
-        <div class="bg-slate-900 p-6 rounded-[30px] w-full max-w-lg border border-white/10 text-white">
+    <div id="modal-admin" class="modal-blur">
+        <div class="modal-content !max-w-xl">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-lg font-black uppercase text-blue-500 italic">Panel Maestro</h2>
-                <button onclick="closeAdmin()" class="text-2xl text-gray-500">×</button>
+                <h2 class="text-xl font-black text-blue-500 italic uppercase">Panel de Control</h2>
+                <button onclick="closeAdmin()" class="text-2xl text-gray-500 hover:text-white">&times;</button>
             </div>
-            <div class="space-y-3 text-black">
-                <input type="number" id="v-tasa" placeholder="Tasa USD" class="w-full p-3 rounded-xl text-sm">
-                <input type="text" id="v-video-url" placeholder="YouTube URL" class="w-full p-3 rounded-xl text-xs">
-                <hr class="opacity-10">
-                <input type="text" id="p-n" placeholder="Modelo" class="w-full p-3 rounded-xl">
-                <input type="number" id="p-p" placeholder="Precio RD$" class="w-full p-3 rounded-xl font-bold">
-                <input type="text" id="p-u" placeholder="Imagen URL" class="w-full p-3 rounded-xl text-xs">
-                <button onclick="guardarAdmin()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-black uppercase text-xs">Sincronizar Stock</button>
-                <div id="admin-list" class="bg-black/20 p-4 rounded-xl max-h-[120px] overflow-y-auto space-y-2 mt-4 text-white text-[9px] font-bold"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-black">
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-gray-400 uppercase">Ajustes del Hub</label>
+                    <input type="number" id="adm-tasa" placeholder="Tasa del Dólar (RD$)" class="w-full p-3 rounded-xl font-bold">
+                    <input type="text" id="adm-vid" placeholder="YouTube Video ID o URL" class="w-full p-3 rounded-xl">
+                </div>
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-gray-400 uppercase">Nuevo Producto</label>
+                    <input type="text" id="adm-n" placeholder="Nombre del Equipo" class="w-full p-3 rounded-xl font-bold">
+                    <input type="number" id="adm-p" placeholder="Precio en RD$" class="w-full p-3 rounded-xl font-bold">
+                    <input type="text" id="adm-u" placeholder="URL Imagen (.png)" class="w-full p-3 rounded-xl">
+                </div>
             </div>
+            <button onclick="saveAdmin()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black uppercase text-xs mt-6 tracking-widest shadow-lg shadow-blue-900/40">Sincronizar Cambios</button>
+            <div id="admin-product-list" class="mt-6 bg-black/40 p-4 rounded-2xl max-h-40 overflow-y-auto border border-white/5 space-y-2"></div>
         </div>
     </div>
 
@@ -174,107 +187,146 @@
         const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        let cart = [], TASA = 58.50, soundPlayed = false, pressTimer;
+        let cart = [], TASA = 58.50, isStarted = false, pressTimer;
 
-        // ACCESO ADMIN POR PRESION LOGO (3 segundos)
-        function startPress() { pressTimer = setTimeout(() => { document.getElementById('admin-modal').style.display = 'flex'; }, 3000); }
-        function endPress() { clearTimeout(pressTimer); }
-        
-        // ACCESO ADMIN POR PC (Alt + A)
-        window.onkeydown = (e) => { if(e.altKey && e.key.toLowerCase() === 'a') document.getElementById('admin-modal').style.display = 'flex'; };
+        // --- ACCESO ADMIN (ALT+A o 3 SEGUNDOS LOGO) ---
+        function startTimer() { pressTimer = setTimeout(() => { document.getElementById('modal-admin').style.display = 'flex'; loadAdminList(); }, 3000); }
+        function endTimer() { clearTimeout(pressTimer); }
+        window.onkeydown = (e) => { if(e.altKey && e.key.toLowerCase() === 'a') { document.getElementById('modal-admin').style.display = 'flex'; loadAdminList(); } };
+        function closeAdmin() { document.getElementById('modal-admin').style.display = 'none'; }
 
-        function playGBASound() {
-            if (soundPlayed) return; soundPlayed = true;
+        // --- INTRO GBA AUDIO SYNC ---
+        function playIntro() {
+            if (isStarted) return; isStarted = true;
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            document.getElementById('rainbow').classList.add('shine-active');
-            document.getElementById('n-text').classList.add('n-active');
-            function ding(freq, time, vol) {
+            document.getElementById('tap-msg').style.display = 'none';
+            document.querySelectorAll('.letter').forEach(l => l.classList.add('drop-anim'));
+
+            const ding = (freq, time, vol) => {
                 const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
                 osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, time);
-                gain.gain.setValueAtTime(vol, time); gain.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
+                gain.gain.setValueAtTime(vol, time); gain.gain.exponentialRampToValueAtTime(0.001, time + 0.45);
                 osc.connect(gain); gain.connect(audioCtx.destination);
                 osc.start(time); osc.stop(time + 0.5);
-            }
-            ding(523.25, audioCtx.currentTime + 1.2, 0.1);
-            ding(1046.50, audioCtx.currentTime + 1.3, 0.1);
+            };
+
+            // Sonido sincronizado con la caída (0.5s)
+            ding(523.25, audioCtx.currentTime + 0.5, 0.1); 
+            ding(1046.50, audioCtx.currentTime + 0.6, 0.1);
+
+            document.getElementById('rainbow').classList.add('shine-active');
+            document.getElementById('n-text').classList.add('n-active');
+
             setTimeout(() => {
                 const intro = document.getElementById('gba-intro');
                 intro.style.opacity = '0';
                 setTimeout(() => intro.style.display = 'none', 800);
-            }, 4500);
+            }, 3800);
         }
 
-        async function loadSettings() {
-            const doc = await db.collection("config").doc("hero").get();
-            if(doc.exists) {
-                const d = doc.data();
-                if(d.videoId) document.getElementById('hero-video-iframe').src = `https://www.youtube.com/embed/${d.videoId}?autoplay=1&mute=1&loop=1&playlist=${d.videoId}&controls=0&rel=0`;
-                if(d.tasa) { TASA = d.tasa; document.getElementById('v-tasa').value = TASA; }
+        // --- FIREBASE LOGIC ---
+        async function initStore() {
+            const configDoc = await db.collection("config").doc("hero").get();
+            if(configDoc.exists) {
+                const data = configDoc.data();
+                TASA = data.tasa || 58.50;
+                if(data.videoId) {
+                    let vid = data.videoId.includes('v=') ? data.videoId.split('v=')[1].substring(0,11) : data.videoId;
+                    document.getElementById('hero-yt').src = `https://www.youtube.com/embed/${vid}?autoplay=1&mute=1&loop=1&playlist=${vid}&controls=0&modestbranding=1&rel=0`;
+                }
             }
-        }
-
-        async function renderStore() {
-            const grid = document.getElementById('store-grid');
-            const list = document.getElementById('admin-list');
-            const qs = await db.collection("productos").get();
-            grid.innerHTML = ""; list.innerHTML = "";
-            qs.forEach(doc => {
-                const it = doc.data(); const id = doc.id;
-                grid.innerHTML += `<div class="product-card text-center">
-                    <img src="${it.url}" class="product-img">
-                    <h3 class="font-black text-[9px] uppercase text-white mb-1 leading-tight">${it.n}</h3>
-                    <div class="flex items-center justify-between gap-1">
-                        <span class="text-white font-black text-[10px]">RD$ ${it.p.toLocaleString()}</span>
-                        <button onclick="addToCart('${it.n}', ${it.p}, '${it.url}')" class="w-7 h-7 bg-white/10 rounded-lg text-[10px]"><i class="fas fa-plus"></i></button>
+            const snap = await db.collection("productos").get();
+            const grid = document.getElementById('store-container');
+            grid.innerHTML = "";
+            snap.forEach(doc => {
+                const p = doc.data();
+                grid.innerHTML += `
+                <div class="card">
+                    <img src="${p.url}" alt="${p.n}">
+                    <h3 class="text-[10px] font-black uppercase mb-3 tracking-tighter">${p.n}</h3>
+                    <div class="flex justify-between items-center bg-black/30 p-2 rounded-2xl">
+                        <span class="text-xs font-black text-blue-400">RD$ ${p.p.toLocaleString()}</span>
+                        <button onclick="addToCart('${p.n}', ${p.p})" class="bg-blue-700 w-8 h-8 rounded-xl flex items-center justify-center active:scale-90 transition-all">
+                            <i class="fas fa-plus text-[10px]"></i>
+                        </button>
                     </div>
                 </div>`;
-                list.innerHTML += `<div class="flex justify-between p-2 bg-white/5 rounded-lg mb-2"><span>${it.n}</span><button onclick="borrarProd('${id}')" class="text-red-500 font-black">BORRAR</button></div>`;
             });
         }
 
-        function extractID(url) {
-            const reg = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const m = url.match(reg); return (m && m[2].length === 11) ? m[2] : url;
+        async function saveAdmin() {
+            const v = document.getElementById('adm-vid').value, t = document.getElementById('adm-tasa').value;
+            const n = document.getElementById('adm-n').value, p = document.getElementById('adm-p').value, u = document.getElementById('adm-u').value;
+            if(v || t) await db.collection("config").doc("hero").set({ videoId: v || "", tasa: parseFloat(t) || 58.50 }, {merge:true});
+            if(n && p && u) await db.collection("productos").add({ n, p: parseInt(p), url: u });
+            alert("Hub Actualizado"); location.reload();
         }
 
-        async function guardarAdmin() {
-            const vUrl = document.getElementById('v-video-url').value, tasa = document.getElementById('v-tasa').value;
-            const pN = document.getElementById('p-n').value, pP = document.getElementById('p-p').value, pU = document.getElementById('p-u').value;
-            if(vUrl || tasa) {
-                let u = {}; if(vUrl) u.videoId = extractID(vUrl); if(tasa) u.tasa = parseFloat(tasa);
-                await db.collection("config").doc("hero").set(u, {merge:true});
-            }
-            if(pN && pP && pU) await db.collection("productos").add({ n: pN, p: parseInt(pP), url: pU });
-            alert("Sincronizado"); location.reload();
+        async function loadAdminList() {
+            const snap = await db.collection("productos").get();
+            const list = document.getElementById('admin-product-list');
+            list.innerHTML = "";
+            snap.forEach(doc => {
+                list.innerHTML += `<div class="flex justify-between items-center text-[10px] text-white font-bold border-b border-white/5 pb-2 uppercase">
+                    <span>${doc.data().n}</span>
+                    <button onclick="deleteProd('${doc.id}')" class="text-red-500 px-2">Borrar</button>
+                </div>`;
+            });
         }
 
-        async function borrarProd(id) { if(confirm("¿Eliminar?")) { await db.collection("productos").doc(id).delete(); renderStore(); } }
-        function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
-        function addToCart(n, p, url) { cart.push({n, p, url}); updateUI(); }
+        async function deleteProd(id) { if(confirm("¿Eliminar producto?")) { await db.collection("productos").doc(id).delete(); loadAdminList(); initStore(); } }
+
+        // --- CARRITO & PAGOS ---
+        function addToCart(n, p) { cart.push({n, p}); updateUI(); }
+        
         function updateUI() {
-            const cont = document.getElementById('cart-items'); let total = 0; cont.innerHTML = "";
-            cart.forEach((it) => { total += it.p; cont.innerHTML += `<div class="flex justify-between text-[9px] font-black uppercase"><span>${it.n}</span><span>RD$ ${it.p.toLocaleString()}</span></div>`; });
-            document.getElementById('total-rd').innerText = "RD$ " + total.toLocaleString();
             document.getElementById('cart-count').innerText = cart.length;
+            const list = document.getElementById('cart-list');
+            let total = 0;
+            list.innerHTML = "";
+            cart.forEach((item, index) => {
+                total += item.p;
+                list.innerHTML += `<div class="flex justify-between items-center group">
+                    <span class="text-[10px] font-black uppercase text-gray-300">${item.n}</span>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-black text-white">RD$ ${item.p.toLocaleString()}</span>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 text-[10px] opacity-0 group-hover:opacity-100 transition-all">✕</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('cart-total').innerText = "RD$ " + total.toLocaleString();
             renderPayPal((total / TASA).toFixed(2));
         }
-        function toggleCart() { const m = document.getElementById('cart-modal'); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; }
+
+        function removeFromCart(idx) { cart.splice(idx, 1); updateUI(); }
+        function openCart() { document.getElementById('modal-cart').style.display = 'flex'; }
+        function closeCart() { document.getElementById('modal-cart').style.display = 'none'; }
+
         function renderPayPal(usd) {
-            document.getElementById('paypal-button-container').innerHTML = '';
-            if(usd > 0) paypal.Buttons({
-                createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: usd } }] }),
-                onApprove: (data, actions) => actions.order.capture().then(() => { alert('Éxito'); cart = []; updateUI(); toggleCart(); })
-            }).render('#paypal-button-container');
+            const container = document.getElementById('paypal-container');
+            container.innerHTML = "";
+            if(usd > 0) {
+                paypal.Buttons({
+                    createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: usd } }] }),
+                    onApprove: (data, actions) => actions.order.capture().then(() => { 
+                        alert('¡Pago Recibido Exitosamente!'); 
+                        cart = []; updateUI(); closeCart(); 
+                    })
+                }).render('#paypal-container');
+            }
         }
-        function checkoutWhatsApp() {
-            const cliente = document.getElementById('cust-name').value || "Cliente";
+
+        function checkoutWA() {
+            const cliente = document.getElementById('cust-name').value || "Cliente VibePhone";
+            if(cart.length === 0) return alert("El carrito está vacío");
             let msg = `🛍️ *ORDEN VIBEPHONE RD*\n👤 *Cliente:* ${cliente}\n\n`;
             cart.forEach(i => msg += `• ${i.n} - RD$ ${i.p.toLocaleString()}\n`);
-            msg += `\n💰 *TOTAL: ${document.getElementById('total-rd').innerText}*`;
+            msg += `\n💰 *TOTAL: ${document.getElementById('cart-total').innerText}*`;
             window.location.href = `https://wa.me/18098182320?text=${encodeURIComponent(msg)}`;
         }
 
-        loadSettings(); renderStore();
+        initStore();
     </script>
 </body>
 </html>
+
