@@ -3,180 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VibePhone RD | Tienda Tecnológica</title>
+    <title>VibePhone RD | Master Store</title>
     
     <script src="https://www.paypal.com/sdk/js?client-id=AZkBcZLM9UNIZkNxdpwAllZuuyqH6W6pk7nJpLdIjBd0g4eZDAxOsqd4UdYIJYNK7VVxjOQy76x1fmhO&currency=USD&components=buttons,card-fields"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        :root { --neon-purple: #9d00ff; --neon-blue: #00f2ff; --dark-card: #1a1a1a; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; margin: 0; }
+        :root { --neon-blue: #00f2ff; --vibe-purple: #9d00ff; }
+        body { font-family: 'Inter', sans-serif; background: #050505; color: white; margin: 0; overflow-x: hidden; }
         .font-cyber { font-family: 'Orbitron', sans-serif; }
         
-        /* INTRO AUTO-EJECUTABLE */
-        #gba-intro { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; transition: opacity 1s; }
-        .letter { display: inline-block; transform: translateY(-100px); opacity: 0; font-size: 4rem; font-weight: 900; font-family: 'Orbitron'; }
-        .drop { animation: fall 0.5s forwards; }
+        /* INTRO GBA AUTO */
+        #gba-intro { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; align-items: center; justify-content: center; pointer-events: none; transition: opacity 0.8s; }
+        .letter { display: inline-block; transform: translateY(-100px); opacity: 0; font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; }
+        .drop { animation: fall 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
         @keyframes fall { to { transform: translateY(0); opacity: 1; } }
 
-        /* HEADER PROFESIONAL */
-        .master-nav { background: rgba(10, 10, 10, 0.95); border-bottom: 1px solid #333; backdrop-filter: blur(10px); }
-        
-        /* TARJETAS OPTIMIZADAS PARA MÓVIL */
-        .product-card { 
-            background: var(--dark-card); 
-            border-radius: 20px; 
-            padding: 15px; 
-            border: 1px solid #333;
-            transition: 0.3s;
-        }
-        .product-card:hover { border-color: var(--neon-purple); transform: scale(1.02); }
-        .product-image { height: 180px; object-fit: contain; width: 100%; margin-bottom: 10px; }
+        /* HEADER */
+        .master-nav { background: rgba(0, 0, 0, 0.9); border-bottom: 1px solid #222; backdrop-filter: blur(15px); }
+        .vibe-logo { border: 2px solid var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); border-radius: 12px; cursor: pointer; }
 
-        /* FOOTER COMO EN LA IMAGEN */
-        .master-footer { 
-            background: linear-gradient(180deg, #0a0a0a 0%, #1a0033 100%);
-            border-top: 4px solid var(--neon-purple);
-            padding: 60px 20px;
-        }
-        .algo-text { font-family: monospace; color: #00ff88; font-size: 11px; line-height: 1.2; }
+        /* TIENDA (2 COLUMNAS EN MOVIL) */
+        .product-card { background: #111; border: 1px solid #222; border-radius: 20px; padding: 12px; transition: 0.3s; }
+        .product-img { height: 140px; width: 100%; object-fit: contain; margin-bottom: 10px; }
 
-        /* MODALES */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; overflow-y: auto; }
-        .vibe-input { background: #222; border: 1px solid #444; border-radius: 12px; padding: 12px; width: 100%; color: white; margin-bottom: 10px; }
+        /* FOOTER COMPLETO */
+        .master-footer { background: linear-gradient(180deg, #050505 0%, #0d001a 100%); border-top: 2px solid var(--vibe-purple); padding: 60px 20px; }
+        .algo-box { font-family: monospace; color: #00ff88; font-size: 10px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 15px; border: 1px solid rgba(0,255,136,0.2); }
+
+        /* MODAL CARRITO */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; padding: 15px; }
+        .cart-box { background: #0f0f0f; border: 1px solid #333; border-radius: 30px; padding: 25px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+        .vibe-input { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 12px; width: 100%; color: white; margin-bottom: 10px; outline: none; font-size: 14px; }
     </style>
 </head>
-<body onload="initApp()">
+<body onload="startApp()">
 
     <div id="gba-intro">
         <div class="text-center">
             <div class="font-cyber flex gap-2">
-                <span class="letter" style="color:#00f2ff; animation-delay:0.1s">V</span>
-                <span class="letter" style="color:#9d00ff; animation-delay:0.2s">I</span>
-                <span class="letter" style="color:#ffffff; animation-delay:0.3s">B</span>
-                <span class="letter" style="color:#00f2ff; animation-delay:0.4s">E</span>
+                <span class="letter" style="color:#2b2b8c; animation-delay:0.1s">V</span>
+                <span class="letter" style="color:#00a651; animation-delay:0.2s">I</span>
+                <span class="letter" style="color:#fff200; animation-delay:0.3s">B</span>
+                <span class="letter" style="color:#2b2b8c; animation-delay:0.4s">E</span>
             </div>
         </div>
     </div>
 
     <nav class="fixed top-0 w-full z-50 master-nav px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center cursor-pointer" onclick="openAdmin()">
-                <span class="font-cyber font-black text-black">V</span>
+        <div class="flex items-center gap-4">
+            <div class="vibe-logo w-10 h-10 flex items-center justify-center bg-black" onmousedown="holdS()" onmouseup="holdE()">
+                <span class="font-cyber font-black text-white text-xl">V</span>
             </div>
-            <h1 class="font-cyber text-lg font-bold tracking-tighter">VIBEPHONE <span class="text-purple-500">RD</span></h1>
+            <h1 class="font-cyber text-lg font-black tracking-tighter">VIBEPHONE <span class="text-cyan-400">RD</span></h1>
         </div>
-        <button onclick="showCart()" class="bg-purple-600 px-4 py-2 rounded-full font-bold text-sm hover:bg-purple-500 transition">
+        <button onclick="openCart()" class="bg-white text-black px-5 py-2 rounded-full font-black text-[10px] uppercase">
             CARRITO (<span id="count">0</span>)
         </button>
     </nav>
 
-    <header class="pt-32 pb-12 text-center px-4">
-        <h2 class="text-4xl md:text-6xl font-black font-cyber uppercase tracking-tighter mb-4">Master Technology</h2>
-        <p class="text-gray-400 text-sm max-w-lg mx-auto uppercase tracking-widest">Importadores directos de equipos Premium en RD.</p>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 pb-20">
+    <main class="max-w-7xl mx-auto px-4 pt-32 pb-20">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="grid"></div>
     </main>
 
     <footer class="master-footer">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
             <div>
-                <h3 class="font-cyber text-xl mb-4">ALCO BOX</h3>
-                <div class="algo-text">
-                    <p>> INICIANDO PROTOCOLO...</p>
-                    <p>> CONEXIÓN: SANTO DOMINGO, RD</p>
-                    <p>> ESTADO: ENCRIPTADO 256-BIT</p>
-                    <p>> VIBEPHONE MASTER SERVER v2.0</p>
-                </div>
-                <div class="flex gap-4 mt-6">
-                    <a href="https://instagram.com" class="text-2xl text-purple-500"><i class="fab fa-instagram"></i></a>
+                <h3 class="font-cyber text-cyan-400 mb-6 uppercase">VibePhone RD</h3>
+                <div class="algo-box mb-4">> ALGORITMO: NIVEL MASTER<br>> UBICACIÓN: SANTO DOMINGO, RD</div>
+                <div class="flex gap-4">
+                    <a href="#" class="text-2xl text-white hover:text-cyan-400"><i class="fab fa-instagram"></i></a>
                     <a href="https://wa.me/18098182320" class="text-2xl text-green-500"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
             <div>
-                <h3 class="font-cyber text-xl mb-4">VibePhone RD</h3>
-                <p class="text-gray-400 text-sm italic">"Donde la calidad se encuentra con el futuro. Somos líderes en autenticidad tecnológica."</p>
+                <h3 class="font-cyber text-sm text-gray-400 mb-4 uppercase">Mapa de Sede</h3>
+                <div class="h-32 rounded-2xl overflow-hidden border border-gray-800">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15136.683526154625!2d-69.9405!3d18.48!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDI4JzQ4LjAiTiA2OcKwNTYnMjQuMCJX!5e0!3m2!1ses!2sdo!4v16400000000000" width="100%" height="100%" style="border:0; filter: invert(90%);" allowfullscreen=""></iframe>
+                </div>
             </div>
-            <div class="rounded-2xl overflow-hidden h-40 border border-gray-700">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121059.0344739699!2d-69.988596!3d18.4718609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf89f1107ea5ab%3A0xd6cde66127a77f0!2sSanto%20Domingo!5e0!3m2!1ses-419!2sdo!4v1700000000000" width="100%" height="100%" style="border:0; filter: invert(90%) hue-rotate(180deg);" allowfullscreen=""></iframe>
+            <div class="flex flex-col justify-end text-right">
+                <p class="text-[9px] text-gray-700 font-black tracking-[5px] uppercase">© 2026 VIBEPHONE RD</p>
             </div>
         </div>
     </footer>
 
     <div id="cart-modal" class="modal">
-        <div class="bg-[#111] p-6 rounded-3xl w-full max-w-md border border-gray-800">
-            <h2 class="font-cyber text-xl text-center mb-6">FINALIZAR COMPRA</h2>
-            <div id="cart-list" class="mb-4 space-y-2 max-h-40 overflow-auto"></div>
+        <div class="cart-box">
+            <h2 class="font-cyber text-center text-xl mb-6 text-cyan-400">PAGO SEGURO</h2>
             
+            <div id="cart-items" class="mb-6 space-y-2 border-b border-gray-800 pb-4 max-h-32 overflow-y-auto"></div>
+            
+            <p class="text-[10px] font-bold text-gray-500 uppercase mb-2">Datos del Receptor</p>
             <div class="grid grid-cols-2 gap-2">
                 <input type="text" id="c-name" placeholder="Nombre" class="vibe-input">
                 <input type="text" id="c-last" placeholder="Apellido" class="vibe-input">
             </div>
-            <input type="email" id="c-email" placeholder="Email para Recibo" class="vibe-input">
+            <input type="email" id="c-email" placeholder="Correo para Recibo" class="vibe-input mb-4">
 
-            <div class="flex justify-between font-bold text-xl my-4 text-cyan-400">
-                <span>TOTAL:</span>
-                <span id="total-rd">RD$ 0</span>
+            <div class="flex justify-between font-black text-xl mb-6">
+                <span class="text-gray-500 uppercase text-[10px] mt-2">Total:</span>
+                <span id="total-rd" class="text-green-400">RD$ 0</span>
             </div>
 
-            <div id="paypal-button-container" class="mt-4"></div>
+            <div class="space-y-4">
+                <div id="paypal-buttons-container"></div>
+                <button onclick="sendWA()" class="w-full bg-[#25D366] py-4 rounded-xl font-black text-[11px] uppercase flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-lg"></i> Ordenar por WhatsApp
+                </button>
+            </div>
             
-            <button onclick="sendWA()" class="w-full bg-green-600 py-3 rounded-xl font-bold mt-2 flex items-center justify-center gap-2">
-                <i class="fab fa-whatsapp"></i> COMPRAR POR WHATSAPP
-            </button>
-            <button onclick="closeCart()" class="w-full text-gray-500 mt-4 text-xs">CERRAR</button>
+            <button onclick="closeCart()" class="w-full text-gray-600 mt-6 text-[10px] font-bold uppercase">Volver</button>
         </div>
     </div>
 
     <div id="admin-modal" class="modal">
         <div class="bg-white text-black p-8 rounded-3xl w-full max-w-lg">
-            <h2 class="font-bold text-2xl mb-4 border-b pb-2">ADMIN CONSOLE</h2>
+            <h2 class="font-black text-xl mb-4 border-b pb-2 uppercase">Configuración</h2>
             <div class="space-y-3">
-                <input type="number" id="adm-tasa" placeholder="Tasa USD (Ej: 58.5)" class="w-full border p-2 rounded-lg">
-                <input type="text" id="adm-name" placeholder="Nombre Producto" class="w-full border p-2 rounded-lg">
-                <input type="number" id="adm-price" placeholder="Precio RD$" class="w-full border p-2 rounded-lg">
-                <input type="text" id="adm-img" placeholder="URL Imagen" class="w-full border p-2 rounded-lg">
-                <button onclick="saveProduct()" class="w-full bg-black text-white py-3 rounded-lg font-bold">GUARDAR EN SISTEMA</button>
+                <input type="number" id="adm-tasa" placeholder="Tasa USD (Ej: 58.5)" class="w-full border p-3 rounded-lg">
+                <input type="text" id="adm-name" placeholder="Nombre Equipo" class="w-full border p-3 rounded-lg">
+                <input type="number" id="adm-price" placeholder="Precio RD$" class="w-full border p-3 rounded-lg">
+                <input type="text" id="adm-img" placeholder="URL Imagen" class="w-full border p-3 rounded-lg">
+                <button onclick="saveProduct()" class="w-full bg-black text-white py-4 rounded-lg font-bold uppercase">Guardar</button>
             </div>
-            <button onclick="document.getElementById('admin-modal').style.display='none'" class="w-full mt-4 text-red-500">SALIR</button>
+            <button onclick="document.getElementById('admin-modal').style.display='none'" class="w-full mt-4 text-gray-400 font-bold">Cerrar</button>
         </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN (REEMPLAZA CON TUS DATOS SI ES NECESARIO)
         const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        let cart = [], tasa = 58.5;
+        let cart = [], tasa = 58.5, timer;
 
-        // INICIO AUTOMÁTICO
-        function initApp() {
+        function startApp() {
             document.querySelectorAll('.letter').forEach(l => l.classList.add('drop'));
             setTimeout(() => {
-                document.getElementById('gba-intro').style.opacity = '0';
-                setTimeout(() => document.getElementById('gba-intro').style.display = 'none', 1000);
+                const intro = document.getElementById('gba-intro');
+                if(intro) { intro.style.opacity = '0'; setTimeout(() => intro.style.display = 'none', 800); }
             }, 3000);
             loadProducts();
         }
 
         async function loadProducts() {
             const snap = await db.collection("productos").get();
-            const grid = document.getElementById('grid');
-            grid.innerHTML = "";
+            const grid = document.getElementById('grid'); grid.innerHTML = "";
             snap.forEach(doc => {
                 const p = doc.data();
                 grid.innerHTML += `
                 <div class="product-card">
-                    <img src="${p.url}" class="product-image">
-                    <h3 class="font-bold text-xs uppercase mb-1">${p.n}</h3>
-                    <p class="text-cyan-400 font-cyber text-sm mb-3">RD$ ${p.p.toLocaleString()}</p>
-                    <button onclick="addToCart('${p.n}', ${p.p})" class="w-full bg-white text-black text-[10px] font-black py-2 rounded-lg">AÑADIR</button>
+                    <img src="${p.url}" class="product-img">
+                    <h3 class="font-bold text-[10px] uppercase text-gray-500 mb-1">${p.n}</h3>
+                    <p class="text-white font-black text-sm mb-3">RD$ ${p.p.toLocaleString()}</p>
+                    <button onclick="addToCart('${p.n}', ${p.p})" class="w-full bg-white text-black text-[9px] font-black py-2 rounded-lg uppercase">Añadir</button>
                 </div>`;
             });
         }
@@ -184,16 +170,15 @@
         function addToCart(n, p) {
             cart.push({n, p});
             document.getElementById('count').innerText = cart.length;
-            updateCartUI();
+            updateCart();
         }
 
-        function updateCartUI() {
-            const list = document.getElementById('cart-list');
-            let total = 0;
-            list.innerHTML = "";
+        function updateCart() {
+            const list = document.getElementById('cart-items');
+            let total = 0; list.innerHTML = "";
             cart.forEach(i => {
                 total += i.p;
-                list.innerHTML += `<div class="flex justify-between text-xs border-b border-gray-800 py-2"><span>${i.n}</span><span>RD$ ${i.p.toLocaleString()}</span></div>`;
+                list.innerHTML += `<div class="flex justify-between text-[11px] font-bold uppercase"><span class="text-gray-400">${i.n}</span><span>RD$ ${i.p.toLocaleString()}</span></div>`;
             });
             document.getElementById('total-rd').innerText = "RD$ " + total.toLocaleString();
             initPayPal(total);
@@ -201,31 +186,29 @@
 
         function initPayPal(rd) {
             const usd = (rd / tasa).toFixed(2);
-            document.getElementById('paypal-button-container').innerHTML = "";
+            document.getElementById('paypal-buttons-container').innerHTML = "";
             if(usd > 0) {
                 paypal.Buttons({
+                    style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'checkout' },
                     createOrder: (d, a) => a.order.create({ purchase_units: [{ amount: { value: usd } }] }),
-                    onApprove: (d, a) => a.order.capture().then(det => {
-                        const email = document.getElementById('c-email').value;
-                        alert("PAGO EXITOSO. Recibo enviado a: " + email);
-                        cart = []; updateCartUI(); closeCart();
-                    })
-                }).render('#paypal-button-container');
+                    onApprove: (d, a) => a.order.capture().then(() => { alert("PAGO EXITOSO"); cart = []; updateCart(); closeCart(); })
+                }).render('#paypal-buttons-container');
             }
         }
 
         function sendWA() {
             const n = document.getElementById('c-name').value;
             const e = document.getElementById('c-email').value;
-            if(!n || !e) return alert("Llena tu nombre y correo");
+            if(!n || !e) return alert("Completa tus datos.");
             let msg = `⚡ *NUEVA ORDEN VIBEPHONE RD*\n👤 *Cliente:* ${n}\n📧 *Email:* ${e}\n\n`;
-            cart.forEach(i => msg += `- ${i.n}: RD$ ${i.p.toLocaleString()}\n`);
+            cart.forEach(i => msg += `• ${i.n} - RD$ ${i.p.toLocaleString()}\n`);
             msg += `\n💰 *TOTAL: ${document.getElementById('total-rd').innerText}*`;
             window.location.href = `https://wa.me/18098182320?text=${encodeURIComponent(msg)}`;
         }
 
-        function openAdmin() { document.getElementById('admin-modal').style.display='flex'; }
-        function showCart() { document.getElementById('cart-modal').style.display='flex'; }
+        function holdS() { timer = setTimeout(() => document.getElementById('admin-modal').style.display='flex', 3000); }
+        function holdE() { clearTimeout(timer); }
+        function openCart() { document.getElementById('modal-cart').style.display='flex'; }
         function closeCart() { document.getElementById('cart-modal').style.display='none'; }
 
         async function saveProduct() {
@@ -240,3 +223,5 @@
     </script>
 </body>
 </html>
+</html>
+
