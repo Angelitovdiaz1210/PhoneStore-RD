@@ -19,15 +19,15 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background: var(--bg-deep); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        #video-bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.4; }
+        #video-bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.4; transition: opacity 1s; }
         .bg-overlay { position: fixed; inset: 0; background: radial-gradient(circle, transparent 20%, #000 100%); z-index: -1; }
 
-        /* HEADER: LOGO V + NOMBRE */
+        /* HEADER */
         header {
             height: 120px; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222;
             display: flex; flex-direction: column; align-items: center; justify-content: center; position: sticky; top: 0; z-index: 1000;
         }
-        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
         .logo-v { 
             font-size: 3.5rem; font-weight: 900; font-style: italic; font-family: 'Times New Roman', serif;
             background: var(--metal); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -43,12 +43,12 @@
         .promo-banner h2 { color: var(--gold); font-size: 2rem; margin: 0; }
         .promo-banner p { color: #aaa; line-height: 1.6; max-width: 600px; font-size: 1rem; }
 
-        /* NAVEGACIÓN SUB-MENÚ */
+        /* NAVEGACIÓN */
         .sub-nav { display: flex; gap: 10px; padding: 15px; background: #000; overflow-x: auto; position: sticky; top: 120px; z-index: 999; border-bottom: 1px solid #222; }
         .nav-tab { padding: 10px 25px; border-radius: 40px; border: 1px solid #333; color: #666; font-weight: 800; font-size: 0.85rem; white-space: nowrap; cursor: pointer; }
         .nav-tab.active { background: var(--metal); color: #000; border: none; }
 
-        /* VENTAS / GRID */
+        /* GRID */
         .wrapper { padding: 20px; max-width: 1200px; margin: 0 auto; padding-bottom: 350px; }
         .section-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .section-title::after { content: ""; height: 2px; flex: 1; background: #222; }
@@ -56,16 +56,13 @@
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 25px; } }
 
-        .card {
-            background: var(--glass); border-radius: 25px; padding: 20px; text-align: center;
-            border: 1px solid #222; position: relative; transition: 0.3s;
-        }
+        .card { background: var(--glass); border-radius: 25px; padding: 20px; text-align: center; border: 1px solid #222; position: relative; transition: 0.3s; }
         .reserva-tag { position: absolute; top: 10px; left: 10px; background: #fff; color: #000; font-size: 0.6rem; font-weight: 900; padding: 4px 8px; border-radius: 5px; }
         .card img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 15px; }
         .price { font-size: 1.3rem; font-weight: 900; color: var(--gold); }
         .btn-buy { width: 100%; padding: 15px; border: none; border-radius: 40px; background: #fff; color: #000; font-weight: 900; margin-top: 15px; cursor: pointer; }
 
-        /* FOOTER DETALLADO */
+        /* FOOTER */
         footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; padding: 30px 20px; border-top: 1px solid #222; border-radius: 40px 40px 0 0; z-index: 1500; }
         .footer-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto; }
         @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1.5fr 1.5fr; } }
@@ -77,10 +74,21 @@
         .ws-float { position: fixed; bottom: 310px; right: 20px; width: 60px; height: 60px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         .ws-float img { width: 30px; filter: invert(1); }
 
-        /* MODAL */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #0a0a0a; border-radius: 30px; padding: 30px; width: 100%; max-width: 450px; border: 1px solid #333; }
-        input, select { width: 100%; padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid #222; background: #000; color: #fff; }
+        /* ADMIN PANEL COMPACTO */
+        .modal { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); 
+            z-index: 5000; align-items: center; justify-content: center; padding: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .modal-content { 
+            background: #0d0d0d; border-radius: 20px; padding: 20px; width: 100%; 
+            max-width: 380px; border: 1px solid #333; max-height: 90vh; overflow-y: auto;
+        }
+        .modal-content h3 { font-size: 1.2rem; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; text-align: center; }
+        .admin-group { margin-bottom: 10px; }
+        .admin-group label { font-size: 0.7rem; color: #666; text-transform: uppercase; margin-left: 5px; }
+        input, select { width: 100%; padding: 12px; margin: 5px 0; border-radius: 10px; border: 1px solid #222; background: #151515; color: #fff; font-size: 0.9rem; }
+        .btn-admin { background: var(--metal); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 900; width: 100%; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -98,7 +106,7 @@
     <section class="promo-section">
         <div class="promo-banner">
             <h2>TECNOLOGÍA SIN LÍMITES</h2>
-            <p>En VibePhone-RD garantizamos la mejor experiencia de compra en alta gama. Equipos 100% originales con soporte técnico especializado.</p>
+            <p>En VibePhone-RD garantizamos la mejor experiencia de compra en alta gama.</p>
             <div class="aviso-importante">⚠️ AVISO: El equipo se aparta con un 70% y se entrega al completar el pago.</div>
         </div>
     </section>
@@ -111,7 +119,7 @@
     </nav>
 
     <div class="wrapper">
-        <div class="section-title">NUESTROS EQUIPOS</div>
+        <div class="section-title">EQUIPOS DISPONIBLES</div>
         <div class="grid" id="mainGrid"></div>
     </div>
 
@@ -123,43 +131,43 @@
         <div class="footer-grid">
             <div class="footer-box">
                 <h4>VIBEPHONE-RD</h4>
-                <p>Expertos en dispositivos móviles de última generación. Calidad, confianza y rapidez.</p>
-                <p style="margin-top:10px;">✉️ <b>anger1012@hotmail.com</b></p>
-                <p>📞 <b>+1 (809) 818-2320</b></p>
+                <p>📞 +1 (809) 818-2320</p>
+                <p>📍 Santo Domingo, Rep. Dom.</p>
             </div>
             <div class="footer-box">
-                <h4>POLÍTICA DE PAGO</h4>
-                <p class="aviso-importante">El equipo se aparta con un 70% y se entrega al completar el pago final.</p>
-            </div>
-            <div class="footer-box">
-                <h4>UBICACIÓN</h4>
-                <li>📍 Santo Domingo, Rep. Dom.</li>
-                <li>Horario: 9:00 AM - 7:00 PM</li>
+                <p class="aviso-importante">Reserva con el 70% del valor total.</p>
             </div>
         </div>
     </footer>
 
     <div id="adminPanel" class="modal">
         <div class="modal-content">
-            <h3 style="color:var(--gold)">MASTER CONFIG</h3>
-            <input type="text" id="admVideo" placeholder="URL Video Fondo">
-            <input type="text" id="admInsta" placeholder="Instagram URL">
-            <input type="text" id="admFace" placeholder="Facebook URL">
-            <hr style="border:0; border-top:1px solid #222; margin:15px 0;">
-            <input type="text" id="aName" placeholder="Modelo">
-            <input type="text" id="aPrice" placeholder="Precio RD$">
-            <input type="text" id="aImg" placeholder="Imagen URL">
-            <select id="aCat">
-                <option value="IPHONE">IPHONE</option>
-                <option value="GALAXY">GALAXY</option>
-                <option value="OFERTAS">OFERTAS</option>
-            </select>
-            <button onclick="saveCloud()" class="btn-buy" style="background:var(--metal);">GUARDAR CAMBIOS</button>
-            <p onclick="closeModal('adminPanel')" style="text-align:center; cursor:pointer; color:#444; margin-top:20px;">CERRAR</p>
+            <h3 style="color:var(--gold)">ADMIN DASHBOARD</h3>
+            
+            <div class="admin-group">
+                <label>Multimedia</label>
+                <input type="text" id="admVideo" placeholder="URL Video de Fondo (.mp4)">
+            </div>
+
+            <div class="admin-group">
+                <label>Nuevo Producto</label>
+                <input type="text" id="aName" placeholder="Modelo del equipo">
+                <input type="text" id="aPrice" placeholder="Precio (Ej: RD$ 45,000)">
+                <input type="text" id="aImg" placeholder="URL de Imagen">
+                <select id="aCat">
+                    <option value="IPHONE">IPHONE</option>
+                    <option value="GALAXY">GALAXY</option>
+                    <option value="OFERTAS">OFERTAS</option>
+                </select>
+            </div>
+
+            <button onclick="saveCloud()" class="btn-admin">GUARDAR CAMBIOS</button>
+            <p onclick="closeModal('adminPanel')" style="text-align:center; cursor:pointer; color:#ef4444; font-size:0.8rem; margin-top:15px; font-weight:800;">SALIR DEL PANEL</p>
         </div>
     </div>
 
     <script>
+        // Configuración de Firebase
         const firebaseConfig = { databaseURL: "https://mi-tienda-aaf07-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
@@ -167,8 +175,24 @@
         let items = [];
         let config = { video:"", cat:"TODOS" };
 
-        db.ref('store').on('value', snap => { items = snap.val() ? Object.values(snap.val()) : []; render(); });
-        db.ref('config').on('value', snap => { if(snap.val()) config = snap.val(); if(config.video) document.getElementById('video-bg').src = config.video; });
+        // Sincronización en tiempo real
+        db.ref('store').on('value', snap => { 
+            items = snap.val() ? Object.values(snap.val()) : []; 
+            render(); 
+        });
+
+        db.ref('config').on('value', snap => { 
+            if(snap.val()) {
+                config = snap.val();
+                if(config.video) {
+                    const v = document.getElementById('video-bg');
+                    if(v.src !== config.video) {
+                        v.src = config.video;
+                        v.load();
+                    }
+                }
+            } 
+        });
 
         function render() {
             const grid = document.getElementById('mainGrid');
@@ -196,23 +220,52 @@
 
         function saveCloud() {
             const id = Date.now(), n = document.getElementById('aName').value;
+            // Guardar producto si tiene nombre
             if(n) {
                 db.ref('store/' + id).set({
                     id: id, name: n, price: document.getElementById('aPrice').value,
                     img: document.getElementById('aImg').value, cat: document.getElementById('aCat').value
                 });
             }
-            db.ref('config').set({ video: document.getElementById('admVideo').value || config.video, cat: "TODOS" });
-            alert("NUBE ACTUALIZADA");
+            // Guardar configuración de video
+            const videoUrl = document.getElementById('admVideo').value;
+            db.ref('config').set({ 
+                video: videoUrl || (config.video || ""), 
+                cat: "TODOS" 
+            });
+            
+            alert("SISTEMA ACTUALIZADO");
+            closeModal('adminPanel');
         }
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        let hold;
-        document.getElementById('vibeLogo').addEventListener('mousedown', () => hold = setTimeout(() => openModal('adminPanel'), 3000));
-        document.getElementById('vibeLogo').addEventListener('mouseup', () => clearTimeout(hold));
-        
+        // --- LÓGICA DE APERTURA ---
+
+        // 1. PC: Atajo Alt + A
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key.toLowerCase() === 'a') {
+                openModal('adminPanel');
+            }
+        });
+
+        // 2. MÓVIL/TABLET: Pulsar logo por 2 segundos
+        const logo = document.getElementById('vibeLogo');
+        let pressTimer;
+
+        logo.addEventListener('touchstart', (e) => {
+            pressTimer = setTimeout(() => {
+                openModal('adminPanel');
+            }, 2000);
+        });
+
+        logo.addEventListener('touchend', () => clearTimeout(pressTimer));
+        logo.addEventListener('mousedown', () => { // Soporte para click largo en PC también
+            pressTimer = setTimeout(() => openModal('adminPanel'), 2000);
+        });
+        logo.addEventListener('mouseup', () => clearTimeout(pressTimer));
+
         render();
     </script>
 </body>
