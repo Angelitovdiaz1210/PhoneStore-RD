@@ -14,81 +14,83 @@
             --gold: #d4af37;
             --bg-deep: #050505;
             --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background: var(--bg-deep); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        #video-bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.4; transition: opacity 1s; }
+        #video-bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.4; }
         .bg-overlay { position: fixed; inset: 0; background: radial-gradient(circle, transparent 20%, #000 100%); z-index: -1; }
 
-        /* HEADER */
+        /* HEADER PROFESIONAL */
         header {
-            height: 120px; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; position: sticky; top: 0; z-index: 1000;
+            height: 100px; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center; position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
         }
-        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+        .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; transform: scale(0.9); }
         .logo-v { 
-            font-size: 3.5rem; font-weight: 900; font-style: italic; font-family: 'Times New Roman', serif;
+            font-size: 3rem; font-weight: 900; font-style: italic; font-family: 'Times New Roman', serif;
             background: var(--metal); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .brand-name { font-size: 1.2rem; font-weight: 900; letter-spacing: 4px; color: #fff; border-left: 2px solid var(--gold); padding-left: 10px; }
+        .brand-name { font-size: 1rem; font-weight: 900; letter-spacing: 3px; color: #fff; border-left: 2px solid var(--gold); padding-left: 10px; }
 
-        /* SECCIÓN PUBLICIDAD */
-        .promo-section { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+        /* BANNER COMPACTO */
+        .promo-section { padding: 20px; max-width: 1200px; margin: 0 auto; }
         .promo-banner { 
-            background: linear-gradient(90deg, #111, #000); border-radius: 30px; padding: 40px; 
-            border: 1px solid #222; position: relative; overflow: hidden;
+            background: linear-gradient(145deg, #111, #050505); border-radius: 20px; padding: 25px; 
+            border: 1px solid var(--border); text-align: center;
         }
-        .promo-banner h2 { color: var(--gold); font-size: 2rem; margin: 0; }
-        .promo-banner p { color: #aaa; line-height: 1.6; max-width: 600px; font-size: 1rem; }
+        .promo-banner h2 { color: var(--gold); font-size: 1.4rem; margin-bottom: 10px; letter-spacing: 1px; }
+        .promo-banner p { color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0 auto 15px; max-width: 500px; }
+        .aviso-importante { background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3); padding: 8px; border-radius: 10px; color: var(--gold); font-size: 0.75rem; font-weight: 600; display: inline-block; }
 
         /* NAVEGACIÓN */
-        .sub-nav { display: flex; gap: 10px; padding: 15px; background: #000; overflow-x: auto; position: sticky; top: 120px; z-index: 999; border-bottom: 1px solid #222; }
-        .nav-tab { padding: 10px 25px; border-radius: 40px; border: 1px solid #333; color: #666; font-weight: 800; font-size: 0.85rem; white-space: nowrap; cursor: pointer; }
-        .nav-tab.active { background: var(--metal); color: #000; border: none; }
+        .sub-nav { display: flex; gap: 8px; padding: 12px; background: rgba(0,0,0,0.8); overflow-x: auto; position: sticky; top: 100px; z-index: 999; border-bottom: 1px solid var(--border); scrollbar-width: none; }
+        .nav-tab { padding: 8px 20px; border-radius: 30px; border: 1px solid #222; color: #555; font-weight: 700; font-size: 0.75rem; white-space: nowrap; cursor: pointer; transition: 0.3s; }
+        .nav-tab.active { background: var(--metal); color: #000; border-color: transparent; }
 
-        /* GRID */
-        .wrapper { padding: 20px; max-width: 1200px; margin: 0 auto; padding-bottom: 350px; }
-        .section-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .section-title::after { content: ""; height: 2px; flex: 1; background: #222; }
+        /* GRID DE PRODUCTOS */
+        .wrapper { padding: 20px; max-width: 1200px; margin: 0 auto; padding-bottom: 280px; }
+        .section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 20px; color: #fff; display: flex; align-items: center; gap: 10px; opacity: 0.8; }
+        .section-title::after { content: ""; height: 1px; flex: 1; background: var(--border); }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 25px; } }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
 
-        .card { background: var(--glass); border-radius: 25px; padding: 20px; text-align: center; border: 1px solid #222; position: relative; transition: 0.3s; }
-        .reserva-tag { position: absolute; top: 10px; left: 10px; background: #fff; color: #000; font-size: 0.6rem; font-weight: 900; padding: 4px 8px; border-radius: 5px; }
-        .card img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 15px; }
-        .price { font-size: 1.3rem; font-weight: 900; color: var(--gold); }
-        .btn-buy { width: 100%; padding: 15px; border: none; border-radius: 40px; background: #fff; color: #000; font-weight: 900; margin-top: 15px; cursor: pointer; }
+        .card {
+            background: rgba(255,255,255,0.02); border-radius: 20px; padding: 15px; text-align: center;
+            border: 1px solid var(--border); transition: 0.3s;
+        }
+        .reserva-tag { position: absolute; top: 10px; left: 10px; background: var(--gold); color: #000; font-size: 0.55rem; font-weight: 900; padding: 3px 7px; border-radius: 4px; }
+        .card img { width: 100%; height: 140px; object-fit: contain; margin-bottom: 12px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
+        .card h3 { font-size: 0.85rem; margin: 0 0 8px 0; font-weight: 600; color: #eee; }
+        .price { font-size: 1.1rem; font-weight: 800; color: var(--gold); }
+        .btn-buy { width: 100%; padding: 12px; border: none; border-radius: 12px; background: #fff; color: #000; font-weight: 800; font-size: 0.8rem; margin-top: 12px; cursor: pointer; }
 
-        /* FOOTER */
-        footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; padding: 30px 20px; border-top: 1px solid #222; border-radius: 40px 40px 0 0; z-index: 1500; }
-        .footer-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1.5fr 1.5fr; } }
-        .footer-box h4 { color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-box p, .footer-box li { color: #888; font-size: 0.8rem; line-height: 1.6; list-style: none; }
-        .aviso-importante { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold); padding: 10px; border-radius: 10px; color: #fff !important; font-weight: 700; }
+        /* FOOTER ELEGANTE */
+        footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; padding: 25px 20px; border-top: 1px solid var(--border); border-radius: 30px 30px 0 0; z-index: 1500; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 15px; max-width: 1200px; margin: 0 auto; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr; } }
+        .footer-box h4 { color: var(--gold); font-size: 0.8rem; margin-bottom: 8px; letter-spacing: 1px; }
+        .footer-box p, .footer-box li { color: #666; font-size: 0.75rem; line-height: 1.4; margin: 2px 0; }
 
         /* WHATSAPP */
-        .ws-float { position: fixed; bottom: 310px; right: 20px; width: 60px; height: 60px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .ws-float img { width: 30px; filter: invert(1); }
+        .ws-float { position: fixed; bottom: 260px; right: 20px; width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .ws-float img { width: 25px; filter: invert(1); }
 
-        /* ADMIN PANEL COMPACTO */
-        .modal { 
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); 
-            z-index: 5000; align-items: center; justify-content: center; padding: 15px;
-            backdrop-filter: blur(10px);
-        }
+        /* PANEL ADMIN (SOLO SE VE SI SE ACTIVA) */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(15px); }
         .modal-content { 
-            background: #0d0d0d; border-radius: 20px; padding: 20px; width: 100%; 
-            max-width: 380px; border: 1px solid #333; max-height: 90vh; overflow-y: auto;
+            background: #0a0a0a; border-radius: 25px; padding: 20px; width: 100%; 
+            max-width: 360px; border: 1px solid #333; box-shadow: 0 20px 50px rgba(0,0,0,1);
         }
-        .modal-content h3 { font-size: 1.2rem; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; text-align: center; }
-        .admin-group { margin-bottom: 10px; }
-        .admin-group label { font-size: 0.7rem; color: #666; text-transform: uppercase; margin-left: 5px; }
-        input, select { width: 100%; padding: 12px; margin: 5px 0; border-radius: 10px; border: 1px solid #222; background: #151515; color: #fff; font-size: 0.9rem; }
-        .btn-admin { background: var(--metal); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 900; width: 100%; cursor: pointer; margin-top: 10px; }
+        .modal-content h3 { font-size: 1rem; color: var(--gold); margin-top: 0; text-align: center; }
+        .modal-content input, .modal-content select { 
+            width: 100%; padding: 12px; margin: 6px 0; border-radius: 10px; 
+            border: 1px solid #222; background: #111; color: #fff; font-size: 0.85rem; outline: none;
+        }
+        .btn-save-admin { background: var(--metal); color: #000; font-weight: 900; border: none; width: 100%; padding: 14px; border-radius: 10px; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -106,8 +108,8 @@
     <section class="promo-section">
         <div class="promo-banner">
             <h2>TECNOLOGÍA SIN LÍMITES</h2>
-            <p>En VibePhone-RD garantizamos la mejor experiencia de compra en alta gama.</p>
-            <div class="aviso-importante">⚠️ AVISO: El equipo se aparta con un 70% y se entrega al completar el pago.</div>
+            <p>Equipos 100% originales con soporte técnico especializado en alta gama.</p>
+            <div class="aviso-importante">⚠️ SE APARTA CON UN 70% Y SE ENTREGA AL COMPLETAR</div>
         </div>
     </section>
 
@@ -119,7 +121,7 @@
     </nav>
 
     <div class="wrapper">
-        <div class="section-title">EQUIPOS DISPONIBLES</div>
+        <div class="section-title">STOCK DISPONIBLE</div>
         <div class="grid" id="mainGrid"></div>
     </div>
 
@@ -131,43 +133,37 @@
         <div class="footer-grid">
             <div class="footer-box">
                 <h4>VIBEPHONE-RD</h4>
-                <p>📞 +1 (809) 818-2320</p>
-                <p>📍 Santo Domingo, Rep. Dom.</p>
+                <p>📞 +1 (809) 818-2320 | Santo Domingo, RD</p>
+                <p>✉️ anger1012@hotmail.com</p>
             </div>
             <div class="footer-box">
-                <p class="aviso-importante">Reserva con el 70% del valor total.</p>
+                <h4>PAGOS</h4>
+                <p class="aviso-importante" style="display:block; text-align:center;">Aparta con el 70% del valor.</p>
             </div>
         </div>
     </footer>
 
     <div id="adminPanel" class="modal">
         <div class="modal-content">
-            <h3 style="color:var(--gold)">ADMIN DASHBOARD</h3>
-            
-            <div class="admin-group">
-                <label>Multimedia</label>
-                <input type="text" id="admVideo" placeholder="URL Video de Fondo (.mp4)">
-            </div>
-
-            <div class="admin-group">
-                <label>Nuevo Producto</label>
-                <input type="text" id="aName" placeholder="Modelo del equipo">
-                <input type="text" id="aPrice" placeholder="Precio (Ej: RD$ 45,000)">
-                <input type="text" id="aImg" placeholder="URL de Imagen">
+            <h3>ADMIN MASTER</h3>
+            <input type="text" id="admVideo" placeholder="URL Video Fondo (.mp4)">
+            <div style="border-top: 1px solid #222; margin: 10px 0; padding-top: 10px;">
+                <input type="text" id="aName" placeholder="Modelo del Equipo">
+                <input type="text" id="aPrice" placeholder="Precio RD$">
+                <input type="text" id="aImg" placeholder="Link de la Imagen">
                 <select id="aCat">
                     <option value="IPHONE">IPHONE</option>
                     <option value="GALAXY">GALAXY</option>
                     <option value="OFERTAS">OFERTAS</option>
                 </select>
             </div>
-
-            <button onclick="saveCloud()" class="btn-admin">GUARDAR CAMBIOS</button>
-            <p onclick="closeModal('adminPanel')" style="text-align:center; cursor:pointer; color:#ef4444; font-size:0.8rem; margin-top:15px; font-weight:800;">SALIR DEL PANEL</p>
+            <button onclick="saveCloud()" class="btn-save-admin">ACTUALIZAR NUBE</button>
+            <p onclick="closeModal('adminPanel')" style="text-align:center; cursor:pointer; color:#666; font-size:0.75rem; margin-top:15px;">VOLVER A LA TIENDA</p>
         </div>
     </div>
 
     <script>
-        // Configuración de Firebase
+        // Configuración Firebase
         const firebaseConfig = { databaseURL: "https://mi-tienda-aaf07-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
@@ -175,23 +171,10 @@
         let items = [];
         let config = { video:"", cat:"TODOS" };
 
-        // Sincronización en tiempo real
-        db.ref('store').on('value', snap => { 
-            items = snap.val() ? Object.values(snap.val()) : []; 
-            render(); 
-        });
-
+        db.ref('store').on('value', snap => { items = snap.val() ? Object.values(snap.val()) : []; render(); });
         db.ref('config').on('value', snap => { 
-            if(snap.val()) {
-                config = snap.val();
-                if(config.video) {
-                    const v = document.getElementById('video-bg');
-                    if(v.src !== config.video) {
-                        v.src = config.video;
-                        v.load();
-                    }
-                }
-            } 
+            if(snap.val()) config = snap.val(); 
+            if(config.video) document.getElementById('video-bg').src = config.video; 
         });
 
         function render() {
@@ -204,7 +187,7 @@
                 <div class="card">
                     <div class="reserva-tag">70% BOOKING</div>
                     <img src="${p.img}">
-                    <h3 style="font-size:0.9rem; margin:0 0 10px 0;">${p.name}</h3>
+                    <h3>${p.name}</h3>
                     <div class="price">${p.price}</div>
                     <button class="btn-buy" onclick="window.open('https://wa.me/18098182320?text=Hola, me interesa el ${p.name}')">ORDENAR</button>
                 </div>`;
@@ -220,51 +203,33 @@
 
         function saveCloud() {
             const id = Date.now(), n = document.getElementById('aName').value;
-            // Guardar producto si tiene nombre
             if(n) {
                 db.ref('store/' + id).set({
                     id: id, name: n, price: document.getElementById('aPrice').value,
                     img: document.getElementById('aImg').value, cat: document.getElementById('aCat').value
                 });
             }
-            // Guardar configuración de video
-            const videoUrl = document.getElementById('admVideo').value;
-            db.ref('config').set({ 
-                video: videoUrl || (config.video || ""), 
-                cat: "TODOS" 
-            });
-            
-            alert("SISTEMA ACTUALIZADO");
+            if(document.getElementById('admVideo').value) {
+                db.ref('config').update({ video: document.getElementById('admVideo').value });
+            }
+            alert("SISTEMA SINCRONIZADO");
             closeModal('adminPanel');
         }
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // --- LÓGICA DE APERTURA ---
-
-        // 1. PC: Atajo Alt + A
+        // --- ACCESOS ---
         document.addEventListener('keydown', (e) => {
-            if (e.altKey && e.key.toLowerCase() === 'a') {
-                openModal('adminPanel');
-            }
+            if (e.altKey && e.key.toLowerCase() === 'a') openModal('adminPanel');
         });
 
-        // 2. MÓVIL/TABLET: Pulsar logo por 2 segundos
         const logo = document.getElementById('vibeLogo');
-        let pressTimer;
-
-        logo.addEventListener('touchstart', (e) => {
-            pressTimer = setTimeout(() => {
-                openModal('adminPanel');
-            }, 2000);
-        });
-
-        logo.addEventListener('touchend', () => clearTimeout(pressTimer));
-        logo.addEventListener('mousedown', () => { // Soporte para click largo en PC también
-            pressTimer = setTimeout(() => openModal('adminPanel'), 2000);
-        });
-        logo.addEventListener('mouseup', () => clearTimeout(pressTimer));
+        let timer;
+        logo.addEventListener('touchstart', () => timer = setTimeout(() => openModal('adminPanel'), 2000));
+        logo.addEventListener('touchend', () => clearTimeout(timer));
+        logo.addEventListener('mousedown', () => timer = setTimeout(() => openModal('adminPanel'), 2000));
+        logo.addEventListener('mouseup', () => clearTimeout(timer));
 
         render();
     </script>
