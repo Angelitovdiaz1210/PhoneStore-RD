@@ -30,11 +30,11 @@
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; max-width: 1400px; margin: 0 auto; }
         @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
         
-        .vibe-card { background: #f5f5f7; border-radius: 45px; overflow: hidden; transition: 0.5s; border: 1px solid #f0f0f2; }
+        .vibe-card { background: #f5f5f7; border-radius: 45px; overflow: hidden; transition: 0.5s; border: 1px solid #f0f0f2; display: flex; flex-direction: column; height: 100%; }
         .vibe-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.08); }
-        .vibe-card img { width: 100%; height: 200px; object-fit: cover; }
+        .vibe-card img { width: 100%; height: 220px; object-fit: contain; background: white; padding: 20px; }
         
-        .btn-buy { background: black; color: white; padding: 16px; border-radius: 25px; font-weight: 800; font-size: 12px; margin: 0 20px 20px 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-buy { background: black; color: white; padding: 16px; border-radius: 25px; font-weight: 800; font-size: 12px; margin: 0 20px 20px 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: auto; }
 
         .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); z-index: 4000; align-items: center; justify-content: center; padding: 20px; }
         .modal-box { background: white; border-radius: 50px; width: 100%; max-width: 600px; padding: 45px; position: relative; max-height: 90vh; overflow-y: auto; }
@@ -55,7 +55,10 @@
         <div class="max-w-[1400px] mx-auto px-8 py-5 flex justify-between items-center">
             <div class="flex items-center gap-4 cursor-pointer select-none" id="admin-trigger">
                 <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-xl">V</div>
-                <div><h1 class="text-2xl font-black tracking-tighter leading-none">VibePhone RD</h1><p class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1">Premium Technology</p></div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tighter leading-none">VibePhone RD</h1>
+                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1">Premium Technology</p>
+                </div>
             </div>
             
             <div class="flex items-center gap-5">
@@ -84,7 +87,7 @@
             <div class="flex-1">
                 <span class="text-blue-600 font-black uppercase tracking-widest text-sm italic">Nuestro Compromiso</span>
                 <h3 class="text-5xl font-black mt-4 mb-8 tracking-tighter leading-[0.9]">Calidad Real. Trato Humano.</h3>
-                <p class="text-gray-500 text-lg leading-relaxed mb-10">En VibePhone RD no solo vendemos equipos, construimos confianza. Cada dispositivo es verificado minuciosamente para garantizar que recibas lo mejor.</p>
+                <p class="text-gray-500 text-lg leading-relaxed mb-10">En VibePhone RD no solo vendemos equipos, construimos confianza.</p>
                 <div class="inline-flex items-center gap-4 bg-white p-2 pr-8 rounded-full shadow-sm border border-gray-100">
                     <div class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl shadow-lg"><i class="fas fa-check"></i></div>
                     <p class="text-sm font-black uppercase italic tracking-tighter">Equipos 100% Originales</p>
@@ -104,33 +107,32 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center gap-4 mb-8"><div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black">V</div><h3 class="text-2xl font-black tracking-tighter">VibePhone RD</h3></div>
-                    <p class="text-gray-400 font-medium max-w-sm leading-relaxed">Ubicados en Santo Domingo, RD. Especialistas en tecnología Apple y accesorios premium.</p>
+                    <p class="text-gray-400 font-medium max-w-sm leading-relaxed">Ubicados en Santo Domingo, RD.</p>
                 </div>
                 <div>
                     <h4 class="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600 mb-8">Navegación</h4>
                     <ul class="space-y-4 text-sm font-bold text-gray-500">
                         <li><button onclick="setTab('phones')" class="hover:text-black">Smartphones</button></li>
                         <li><button onclick="setTab('accs')" class="hover:text-black">Accesorios</button></li>
-                        <li><button onclick="openPolicies()" class="hover:text-black text-red-500 italic">Políticas y Condiciones</button></li>
+                        <li><button onclick="openPolicies()" class="hover:text-black text-red-500 italic">Políticas</button></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600 mb-8">Contacto Directo</h4>
-                    <p class="text-sm font-bold text-gray-800 mb-2">WhatsApp: +1 (809) 818-2320</p>
-                    <p class="text-sm font-bold text-gray-400">Instagram: @vibephone_rd</p>
+                    <h4 class="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600 mb-8">Redes</h4>
+                    <div class="flex gap-4">
+                        <a href="https://www.instagram.com/vibephone_rd" class="text-2xl text-gray-300 hover:text-black"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/18098182320" class="text-2xl text-gray-300 hover:text-black"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
             </div>
-            <div class="flex justify-between items-center border-t pt-12">
-                <p class="text-[11px] font-black text-gray-300 uppercase">© 2026 VibePhone RD. Todos los derechos reservados.</p>
-                <div class="flex gap-6 text-gray-300"><i class="fab fa-instagram"></i><i class="fab fa-whatsapp"></i></div>
-            </div>
+            <p class="text-[11px] font-black text-gray-300 uppercase">© 2026 VibePhone RD.</p>
         </div>
     </footer>
 
     <div id="cart-panel" class="cart-panel">
         <div class="flex justify-between items-center mb-10"><h2 class="text-3xl font-black tracking-tighter">Cesta</h2><button onclick="toggleCart()" class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center"><i class="fas fa-times"></i></button></div>
         
-        <div id="cart-items" class="flex-grow overflow-y-auto space-y-6"></div>
+        <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
 
         <div class="payment-form border-t pt-8 mt-5">
             <h4 class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Método de Pago</h4>
@@ -164,6 +166,7 @@
     </div>
 
     <script>
+        // Configuración de Firebase
         const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -173,6 +176,7 @@
         let paymentMethod = 'Tarjeta';
         let timer;
 
+        // Admin Trigger (Mantener presionado 3 segundos)
         const trigger = document.getElementById('admin-trigger');
         trigger.onmousedown = () => timer = setTimeout(() => openAdmin(), 3000);
         trigger.onmouseup = () => clearTimeout(timer);
@@ -182,40 +186,47 @@
         function openAdmin() {
             if(prompt("CLAVE:") === "Avd121094") {
                 document.getElementById('modal-content').innerHTML = `
-                <h2 class="text-2xl font-black mb-8">ADMIN CONFIG</h2>
-                <div class="space-y-3 mb-8">
-                    <input type="text" id="in-name" placeholder="Nombre" class="w-full p-4 bg-gray-50 rounded-2xl border-none"><input type="number" id="in-price" placeholder="Precio" class="w-full p-4 bg-gray-50 rounded-2xl border-none"><input type="text" id="in-url" placeholder="URL Imagen" class="w-full p-4 bg-gray-50 rounded-2xl border-none"><select id="in-cat" class="w-full p-4 bg-gray-50 rounded-2xl border-none"><option value="phones">Phones</option><option value="accs">Accesorios</option></select><button onclick="saveProduct()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black">AÑADIR PRODUCTO</button>
-                </div>
-                <div class="border-t pt-8">
-                    <input type="text" id="admin-address" placeholder="Tu Dirección Privada" class="w-full p-3 bg-gray-50 rounded-xl mb-2 text-xs border-none"><input type="text" id="admin-card" placeholder="Tu Tarjeta Privada" class="w-full p-3 bg-gray-50 rounded-xl mb-2 text-xs border-none"><input type="text" id="admin-vid-url" placeholder="URL Video Título (.mp4)" class="w-full p-3 bg-gray-50 rounded-xl mb-4 text-xs border-none"><button onclick="saveAdminConfig()" class="w-full bg-black text-white p-4 rounded-2xl font-black uppercase text-xs">Guardar Todo</button>
-                </div>`;
+                    <h2 class="text-2xl font-black mb-8">ADMIN CONFIG</h2>
+                    <div class="space-y-3 mb-8">
+                        <input type="text" id="in-name" placeholder="Nombre" class="w-full p-4 bg-gray-50 rounded-2xl">
+                        <input type="number" id="in-price" placeholder="Precio" class="w-full p-4 bg-gray-50 rounded-2xl">
+                        <input type="text" id="in-url" placeholder="URL Imagen" class="w-full p-4 bg-gray-50 rounded-2xl">
+                        <select id="in-cat" class="w-full p-4 bg-gray-50 rounded-2xl"><option value="phones">Phones</option><option value="accs">Accesorios</option></select>
+                        <button onclick="saveProduct()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black">AÑADIR PRODUCTO</button>
+                    </div>
+                    <div class="border-t pt-8">
+                        <input type="text" id="admin-vid-url" placeholder="URL Video (.mp4)" class="w-full p-3 bg-gray-50 rounded-xl mb-4 text-xs">
+                        <button onclick="saveAdminConfig()" class="w-full bg-black text-white p-4 rounded-2xl font-black uppercase text-xs">Guardar Video</button>
+                    </div>`;
                 document.getElementById('modal-container').style.display = 'flex';
             }
         }
 
+        async function saveProduct() {
+            const n = document.getElementById('in-name').value;
+            const p = document.getElementById('in-price').value;
+            const url = document.getElementById('in-url').value;
+            const cat = document.getElementById('in-cat').value;
+            await db.collection("productos").add({ n, p, url, cat });
+            alert("Añadido"); closeModal(); renderStore();
+        }
+
         async function saveAdminConfig() {
-            await db.collection("config").doc("tienda").set({
-                direccion: document.getElementById('admin-address').value,
-                tarjeta: document.getElementById('admin-card').value,
-                videoHeader: document.getElementById('admin-vid-url').value
-            }, { merge: true });
+            await db.collection("config").doc("tienda").set({ videoHeader: document.getElementById('admin-vid-url').value }, { merge: true });
             location.reload();
         }
 
         async function loadConfig() {
             const doc = await db.collection("config").doc("tienda").get();
-            if(doc.exists) {
-                const data = doc.data();
-                if(data.videoHeader) {
-                    const v = document.getElementById('header-video');
-                    v.src = data.videoHeader; v.style.display = 'block'; 
-                    v.onloadeddata = () => {
-                        v.style.opacity = '0.5';
-                        document.getElementById('header-main').style.background = '#000';
-                        document.getElementById('main-title').classList.remove('bg-clip-text', 'text-transparent', 'bg-gradient-to-r');
-                        document.getElementById('main-title').style.color = 'white';
-                        document.getElementById('main-subtitle').style.color = 'rgba(255,255,255,0.7)';
-                    }
+            if(doc.exists && doc.data().videoHeader) {
+                const v = document.getElementById('header-video');
+                v.src = doc.data().videoHeader;
+                v.style.display = 'block';
+                v.onloadeddata = () => {
+                    v.style.opacity = '0.4';
+                    document.getElementById('header-main').style.background = '#000';
+                    document.getElementById('main-title').style.color = 'white';
+                    document.getElementById('main-title').classList.remove('text-transparent', 'bg-clip-text');
                 }
             }
         }
@@ -231,180 +242,44 @@
         function addToCart(n, p) { cart.push({ n, p }); updateCart(); toggleCart(); }
         function removeItem(i) { cart.splice(i, 1); updateCart(); }
         function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-        
+
         function updateCart() {
             const list = document.getElementById('cart-items');
             document.getElementById('cart-count').innerText = cart.length;
             list.innerHTML = ""; let total = 0;
             cart.forEach((item, i) => {
                 total += Number(item.p);
-                list.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-5 rounded-[25px]"><div class="font-black text-xs uppercase italic">${item.n}</div><button onclick="removeItem(${i})" class="text-red-500 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm"><i class="fas fa-trash"></i></button></div>`;
+                list.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-5 rounded-[25px]"><div class="font-black text-xs uppercase italic">${item.n}</div><button onclick="removeItem(${i})" class="text-red-500"><i class="fas fa-trash"></i></button></div>`;
             });
             document.getElementById('cart-total').innerText = `RD$ ${total.toLocaleString()}`;
         }
 
         async function checkout() {
             if(cart.length === 0) return;
-            
-            let paymentInfo = `%0A%0A*MÉTODO DE PAGO:* ${paymentMethod}`;
+            let paymentInfo = `%0A*MÉTODO:* ${paymentMethod}`;
             if(paymentMethod === 'Tarjeta') {
-                const num = document.getElementById('pay-number').value;
-                paymentInfo += `%0A- Tarjeta: ****${num.slice(-4)}`;
-            } else {
-                paymentInfo += `%0A- Email: ${document.getElementById('pay-email').value}`;
+                const n = document.getElementById('pay-number').value;
+                paymentInfo += `%0A*CARD:* ****${n.slice(-4)}`;
             }
-
-            let msg = "*PEDIDO VIBEPHONE RD*%0A%0A";
+            let msg = "*ORDEN VIBEPHONE*%0A%0A";
             cart.forEach(i => msg += `- ${i.n}%0A`);
-            msg += `%0A*TOTAL:* ${document.getElementById('cart-total').innerText}`;
-            msg += paymentInfo;
-            
-            window.location.href = `https://wa.me/8098182320?text=${msg}`;
-        }
-
-        async function renderStore() {
-            const grid = document.getElementById('store-grid');
-            grid.innerHTML = '<p class="col-span-full text-center font-bold uppercase text-[10px] py-20 tracking-widest opacity-30">Sincronizando Inventario...</p>';
-            const qs = await db.collection("productos").where("cat", "==", currentTab).get();
-            grid.innerHTML = "";
-            qs.forEach(doc => {
-                const item = doc.data();
-                grid.innerHTML += `<div class="vibe-card"><img src="${item.url}" style="width:100%; height:200px; object-fit:cover;"><div class="px-6 pb-6 pt-4"><h3 class="text-xl font-black uppercase italic mb-2">${item.n}</h3><p class="text-blue-600 font-black text-2xl mb-6">RD$ ${Number(item.p).toLocaleString()}</p><button class="btn-buy w-full m-0" onclick="addToCart('${item.n}', ${item.p})">Añadir al Carrito</button></div></div>`;
-            });
-        }
-
-        async function saveProduct() {
-            const n = document.getElementById('in-name').value;
-            const p = document.getElementById('in-price').value;
-            const url = document.getElementById('in-url').value;
-            const cat = document.getElementById('in-cat').value;
-            await db.collection("productos").add({ n, p, url, cat });
-            renderStore(); alert("Producto Añadido");
-        }
-
-        function openPolicies() {
-            document.getElementById('modal-content').innerHTML = `<h2 class="text-3xl font-black mb-8 italic uppercase tracking-tighter">Políticas VibePhone</h2><div class="text-gray-500 font-medium space-y-6"><p>• Para apartar un equipo se requiere el 70% del valor total.</p><p>• Los datos de pago bancar-total" class="text-blue-600">RD$ 0</span></div>
-            <button onclick="checkout()" class="w-full bg-black text-white p-6 rounded-3xl font-black uppercase italic shadow-2xl">Finalizar por WhatsApp</button>
-        </div>
-    </div>
-
-    <div id="modal-container" class="modal-blur" onclick="closeModal()">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <div id="modal-content"></div>
-        </div>
-    </div>
-
-    <script>
-        const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        let cart = [];
-        let currentTab = 'phones';
-        let timer;
-
-        const trigger = document.getElementById('admin-trigger');
-        trigger.onmousedown = () => timer = setTimeout(() => openAdmin(), 3000);
-        trigger.onmouseup = () => clearTimeout(timer);
-        trigger.ontouchstart = () => timer = setTimeout(() => openAdmin(), 3000);
-        trigger.ontouchend = () => clearTimeout(timer);
-
-        function openAdmin() {
-            if(prompt("CLAVE:") === "Avd121094") {
-                document.getElementById('modal-content').innerHTML = `
-                <h2 class="text-2xl font-black mb-8">ADMIN CONFIG</h2>
-                <div class="space-y-3 mb-8">
-                    <input type="text" id="in-name" placeholder="Nombre" class="w-full p-4 bg-gray-50 rounded-2xl border-none">
-                    <input type="number" id="in-price" placeholder="Precio" class="w-full p-4 bg-gray-50 rounded-2xl border-none">
-                    <input type="text" id="in-url" placeholder="URL Imagen" class="w-full p-4 bg-gray-50 rounded-2xl border-none">
-                    <select id="in-cat" class="w-full p-4 bg-gray-50 rounded-2xl border-none"><option value="phones">Phones</option><option value="accs">Accesorios</option></select>
-                    <button onclick="saveProduct()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black">AÑADIR PRODUCTO</button>
-                </div>
-                <div class="border-t pt-8">
-                    <input type="text" id="admin-address" placeholder="Tu Dirección Privada" class="w-full p-3 bg-gray-50 rounded-xl mb-2 text-xs border-none">
-                    <input type="text" id="admin-card" placeholder="Tu Tarjeta Privada" class="w-full p-3 bg-gray-50 rounded-xl mb-2 text-xs border-none">
-                    <input type="text" id="admin-vid-url" placeholder="URL Video Título (.mp4)" class="w-full p-3 bg-gray-50 rounded-xl mb-4 text-xs border-none">
-                    <button onclick="saveAdminConfig()" class="w-full bg-black text-white p-4 rounded-2xl font-black uppercase text-xs">Guardar Todo</button>
-                </div>`;
-                document.getElementById('modal-container').style.display = 'flex';
-            }
-        }
-
-        async function saveAdminConfig() {
-            await db.collection("config").doc("tienda").set({
-                direccion: document.getElementById('admin-address').value,
-                tarjeta: document.getElementById('admin-card').value,
-                videoHeader: document.getElementById('admin-vid-url').value
-            }, { merge: true });
-            location.reload();
-        }
-
-        async function loadConfig() {
-            const doc = await db.collection("config").doc("tienda").get();
-            if(doc.exists) {
-                const data = doc.data();
-                if(data.videoHeader) {
-                    const v = document.getElementById('header-video');
-                    v.src = data.videoHeader; v.style.display = 'block'; 
-                    v.onloadeddata = () => {
-                        v.style.opacity = '0.5';
-                        document.getElementById('header-main').style.background = '#000';
-                        document.getElementById('main-title').classList.remove('bg-clip-text', 'text-transparent', 'bg-gradient-to-r');
-                        document.getElementById('main-title').style.color = 'white';
-                        document.getElementById('main-subtitle').style.color = 'rgba(255,255,255,0.7)';
-                    }
-                }
-            }
-        }
-
-        function addToCart(n, p) { cart.push({ n, p }); updateCart(); toggleCart(); }
-        function removeItem(i) { cart.splice(i, 1); updateCart(); }
-        function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-        
-        function updateCart() {
-            const list = document.getElementById('cart-items');
-            document.getElementById('cart-count').innerText = cart.length;
-            list.innerHTML = ""; let total = 0;
-            cart.forEach((item, i) => {
-                total += Number(item.p);
-                list.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-5 rounded-[25px]"><div class="font-black text-xs uppercase italic">${item.n}</div><button onclick="removeItem(${i})" class="text-red-500 w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm"><i class="fas fa-trash"></i></button></div>`;
-            });
-            document.getElementById('cart-total').innerText = `RD$ ${total.toLocaleString()}`;
-        }
-
-        async function checkout() {
-            if(cart.length === 0) return;
-            let msg = "*PEDIDO VIBEPHONE RD*%0A%0A";
-            cart.forEach(i => msg += `- ${i.n}%0A`);
-            msg += `%0A*TOTAL:* ${document.getElementById('cart-total').innerText}`;
+            msg += `%0A*TOTAL:* ${document.getElementById('cart-total').innerText}${paymentInfo}`;
             window.location.href = `https://wa.me/18098182320?text=${msg}`;
         }
 
         async function renderStore() {
             const grid = document.getElementById('store-grid');
-            grid.innerHTML = '<p class="col-span-full text-center font-bold uppercase text-[10px] py-20 tracking-widest opacity-30">Sincronizando Inventario...</p>';
+            grid.innerHTML = '<p class="col-span-full text-center py-20 opacity-30">Cargando...</p>';
             const qs = await db.collection("productos").where("cat", "==", currentTab).get();
             grid.innerHTML = "";
             qs.forEach(doc => {
                 const item = doc.data();
-                grid.innerHTML += `<div class="vibe-card"><img src="${item.url}" onerror="this.src='https://via.placeholder.com/400x300?text=VibePhone+RD'"><div class="px-6 pb-6 pt-4"><h3 class="text-xl font-black uppercase italic mb-2">${item.n}</h3><p class="text-blue-600 font-black text-2xl mb-6">RD$ ${Number(item.p).toLocaleString()}</p><button class="btn-buy w-full m-0" onclick="addToCart('${item.n}', ${item.p})">Añadir al Carrito</button></div></div>`;
+                grid.innerHTML += `<div class="vibe-card"><img src="${item.url}"><div class="px-6 pb-6 pt-4"><h3 class="text-xl font-black uppercase italic mb-2">${item.n}</h3><p class="text-blue-600 font-black text-2xl mb-6">RD$ ${Number(item.p).toLocaleString()}</p><button class="btn-buy w-full m-0" onclick="addToCart('${item.n}', ${item.p})">Añadir</button></div></div>`;
             });
         }
 
-        async function saveProduct() {
-            const n = document.getElementById('in-name').value;
-            const p = document.getElementById('in-price').value;
-            const url = document.getElementById('in-url').value;
-            const cat = document.getElementById('in-cat').value;
-            if(!n || !p || !url) return alert("Por favor llene todos los campos");
-            await db.collection("productos").add({ n, p: Number(p), url, cat });
-            renderStore();
-            closeModal();
-            alert("Producto Añadido");
-        }
-
         function openPolicies() {
-            document.getElementById('modal-content').innerHTML = `<h2 class="text-3xl font-black mb-8 italic uppercase tracking-tighter">Políticas VibePhone</h2><div class="text-gray-500 font-medium space-y-6"><p>• Para apartar un equipo se requiere el 70% del valor total.</p><p>• Los datos de pago bancarios son compartidos de manera privada tras confirmar el pedido.</p><p>• No se aceptan devoluciones por errores de elección del cliente.</p></div>`;
+            document.getElementById('modal-content').innerHTML = `<h2 class="text-3xl font-black mb-8 italic uppercase tracking-tighter">Políticas</h2><p class="text-gray-500">• 70% para apartar.<br>• Equipos 100% originales.<br>• Sin devoluciones por error de cliente.</p>`;
             document.getElementById('modal-container').style.display = 'flex';
         }
 
@@ -412,97 +287,6 @@
         function setTab(t) { currentTab = t; renderStore(); }
 
         loadConfig(); renderStore();
-    </script>
-</body>
-</html>
-"max-w-[1400px] mx-auto px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-                <div><div class="flex items-center gap-3 mb-6"><div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black">V</div><h3 class="text-xl font-black tracking-tighter">VibePhone RD</h3></div><p class="text-gray-400 text-sm font-medium leading-relaxed">La tienda más confiable de Santo Domingo.</p></div>
-                <div><h4 class="font-black text-xs uppercase mb-6">Navegación</h4><ul class="space-y-4 text-sm font-bold text-gray-500"><li><button onclick="setTab('phones')" class="hover:text-blue-600 transition">Smartphones</button></li><li><button onclick="setTab('accs')" class="hover:text-blue-600 transition">Accesorios</button></li></ul></div>
-                <div><h4 class="font-black text-xs uppercase mb-6">Contacto</h4><ul class="space-y-4 text-sm font-bold text-gray-500"><li>+1 (809) 818-2320</li><li>Santo Domingo, RD</li></ul></div>
-                <div><h4 class="font-black text-xs uppercase mb-6">Redes</h4><div class="flex gap-4"><a href="https://www.instagram.com/vibephone_rd" target="_blank" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:text-purple-500 transition-all"><i class="fab fa-instagram"></i></a><a href="https://wa.me/8098182320" target="_blank" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:text-green-500 transition-all"><i class="fab fa-whatsapp"></i></a></div></div>
-            </div>
-            <div class="text-[11px] font-black text-gray-300 uppercase">© 2026 VibePhone RD. Premium Technology.</div>
-        </div>
-    </footer>
-
-    <script>
-        const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        
-        // --- VINCULACIÓN DE EMAILJS (TUS DATOS) ---
-        (function(){ emailjs.init("YFdmH2dv7ubtkjzod"); })();
-
-        let currentTab = 'phones', currentProd = null, count = 0;
-        document.getElementById('logo-trigger').onclick = () => { count++; if(count === 5) { if(prompt("CLAVE ADMIN:") === "Avd121094") { document.getElementById('admin-modal').style.display='flex'; loadAdminItems(); } count = 0; } };
-
-        async function renderStore() {
-            const grid = document.getElementById('store-grid');
-            grid.innerHTML = '<div class="col-span-full py-20 text-center font-black animate-pulse uppercase">Cargando Stock...</div>';
-            const qs = await db.collection("productos").where("cat", "==", currentTab).get();
-            grid.innerHTML = "";
-            qs.forEach(doc => {
-                const item = doc.data();
-                grid.innerHTML += `<div class="vibe-card"><img src="${item.url}"><div class="px-10 pb-4"><h3 class="text-2xl font-black italic">${item.n}</h3><p class="text-gray-400 text-xs font-medium mb-6 uppercase tracking-widest">${item.d}</p><p class="text-3xl font-black mb-8">RD$ ${Number(item.p).toLocaleString()}</p></div><button onclick="openForm('${item.n}', '${item.p}', '${item.url}')" class="btn-buy">Adquirir Equipo</button></div>`;
-            });
-        }
-
-        function openForm(n, p, img) {
-            currentProd = { n, p, img };
-            document.getElementById('receipt-id').innerText = "VP-" + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('prod-summary').innerHTML = `<img src="${img}" class="w-20 h-20 object-contain"><div><p class="font-black text-lg uppercase">${n}</p><p class="text-blue-600 font-black">RD$ ${Number(p).toLocaleString()}</p></div>`;
-            document.getElementById('price-total').innerText = "RD$ " + Number(p).toLocaleString();
-            document.getElementById('buy-modal').style.display = 'flex';
-        }
-
-        function handleOrderSubmit(event) {
-            event.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            btn.innerText = "PROCESANDO..."; btn.disabled = true;
-
-            const templateParams = {
-                order_id: document.getElementById('receipt-id').innerText,
-                email: document.getElementById('c-email').value,
-                name: currentProd.n,
-                image_url: currentProd.img,
-                units: "1",
-                price: Number(currentProd.p).toLocaleString(),
-                "cost.shipping": "GRATIS",
-                "cost.tax": "0",
-                "cost.total": Number(currentProd.p).toLocaleString()
-            };
-
-            // VINCULACIÓN DE SERVICE ID Y TEMPLATE ID
-            emailjs.send('Avd121094', 'template_r0pc5qe', templateParams)
-                .then(() => {
-                    alert("¡Gracias! Tu recibo ha sido enviado por correo.");
-                    closeM(); btn.innerText = "Finalizar y recibir comprobante"; btn.disabled = false;
-                    document.getElementById('email-form').reset();
-                }, (error) => {
-                    alert("Error al enviar. Intenta nuevamente."); 
-                    btn.disabled = false; btn.innerText = "Finalizar y recibir comprobante";
-                });
-        }
-
-        async function saveToFirebase() {
-            const n = document.getElementById('in-name').value;
-            const p = document.getElementById('in-price').value;
-            await db.collection("productos").add({ n, p, d: document.getElementById('in-desc').value, url: document.getElementById('in-url').value, cat: document.getElementById('in-cat').value, fecha: Date.now() });
-            location.reload();
-        }
-
-        async function loadAdminItems() {
-            const list = document.getElementById('admin-list');
-            const qs = await db.collection("productos").get();
-            list.innerHTML = "";
-            qs.forEach(doc => { list.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-2 font-bold text-xs"><span>${doc.data().n}</span><button onclick="deleteItem('${doc.id}')" class="text-red-500">Eliminar</button></div>`; });
-        }
-
-        async function deleteItem(id) { if(confirm("¿Eliminar?")) { await db.collection("productos").doc(id).delete(); loadAdminItems(); } }
-        function setTab(t) { currentTab = t; renderStore(); }
-        function closeM() { document.querySelectorAll('.modal-blur').forEach(m => m.style.display='none'); }
-        renderStore();
     </script>
 </body>
 </html>
