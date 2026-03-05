@@ -3,292 +3,645 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibePhone RD | Exclusive Store</title>
+    <title>VibePhone RD | La Tienda Tech #1 de Santo Domingo</title>
     
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
     <style>
-        :root { --vibe-blue: #0071e3; --vibe-bg: #ffffff; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--vibe-bg); color: #1d1d1f; overflow-x: hidden; }
+        :root { 
+            --vibe-blue: #0071e3; 
+            --vibe-purple: #5e5ce6;
+            --vibe-bg: #ffffff; 
+            --vibe-gradient: linear-gradient(135deg, #0071e3 0%, #5e5ce6 100%); 
+        }
         
-        .watermark { position: fixed; top: 15%; right: -5%; font-size: 15rem; font-weight: 900; color: rgba(0, 113, 227, 0.03); transform: rotate(-15deg); pointer-events: none; z-index: -1; user-select: none; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--vibe-bg); 
+            color: #1d1d1f; 
+            scroll-behavior: smooth; 
+            overflow-x: hidden; 
+        }
 
-        .header-container { position: relative; width: 100%; height: 55vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8f9fa; transition: background 0.5s; }
-        #header-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; opacity: 0; display: none; transition: opacity 1s; }
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #0071e3; border-radius: 10px; }
 
-        .nav-glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .nav-glass { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(25px); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(0,0,0,0.05); 
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(94, 92, 230, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(1, 1fr); 
+            gap: 25px; 
+            padding: 20px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
         
-        .cart-panel { position: fixed; right: -100%; top: 0; width: 380px; height: 100%; background: white; z-index: 3000; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -20px 0 50px rgba(0,0,0,0.1); padding: 40px; display: flex; flex-direction: column; }
-        .cart-panel.active { right: 0; }
-        .cart-badge { position: absolute; top: -5px; right: -5px; background: #ff3b30; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 35px; } }
+        @media (min-width: 1100px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
 
-        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; max-width: 1400px; margin: 0 auto; }
-        @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
-        
-        .vibe-card { background: #f5f5f7; border-radius: 45px; overflow: hidden; transition: 0.5s; border: 1px solid #f0f0f2; display: flex; flex-direction: column; height: 100%; }
-        .vibe-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.08); }
-        .vibe-card img { width: 100%; height: 220px; object-fit: contain; background: white; padding: 20px; }
-        
-        .btn-buy { background: black; color: white; padding: 16px; border-radius: 25px; font-weight: 800; font-size: 12px; margin: 0 20px 20px 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: auto; }
+        .vibe-card { 
+            background: #ffffff; 
+            border-radius: 45px; 
+            border: 1px solid #f0f0f2;
+            overflow: hidden; 
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; 
+            flex-direction: column; 
+            position: relative;
+        }
 
-        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); z-index: 4000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: white; border-radius: 50px; width: 100%; max-width: 600px; padding: 45px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .vibe-card:hover { 
+            transform: translateY(-15px); 
+            box-shadow: 0 50px 100px rgba(0,0,0,0.08); 
+            border-color: #0071e3;
+        }
 
-        /* Estilos Formulario de Pago */
-        .payment-form input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #eee; font-size: 13px; outline: none; transition: border-color 0.3s; }
-        .payment-form input:focus { border-color: var(--vibe-blue); }
-        .payment-method { display: flex; gap: 10px; margin-bottom: 15px; }
-        .pay-btn-opt { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid #eee; font-size: 11px; font-weight: 800; text-align: center; cursor: pointer; transition: 0.3s; }
-        .pay-btn-opt.active { background: black; color: white; border-color: black; }
+        .vibe-card img { 
+            width: 100%; 
+            height: 320px; 
+            object-fit: contain; 
+            padding: 40px; 
+            transition: transform 0.5s ease;
+        }
+
+        .vibe-card:hover img { transform: scale(1.08); }
+
+        .btn-buy { 
+            background: var(--vibe-gradient); 
+            color: white; 
+            padding: 20px 35px; 
+            border-radius: 25px; 
+            font-weight: 800; 
+            font-size: 16px; 
+            margin: 0 35px 35px 35px; 
+            transition: 0.4s; 
+            cursor: pointer; 
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-buy:hover { box-shadow: 0 15px 30px rgba(0, 113, 227, 0.4); transform: scale(1.02); }
+
+        .modal-blur { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.7); 
+            backdrop-filter: blur(15px); 
+            z-index: 2000; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+
+        .modal-box { 
+            background: white; 
+            border-radius: 45px; 
+            width: 100%; 
+            max-width: 650px; 
+            padding: 50px; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            animation: modalSlide 0.5s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .wsp-float { 
+            position: fixed; 
+            bottom: 35px; 
+            right: 35px; 
+            background: #25d366; 
+            color: white; 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 35px; 
+            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4); 
+            z-index: 1500; 
+            transition: 0.3s;
+        }
+
+        .wsp-float:hover { transform: scale(1.1) rotate(10deg); }
+
+        .tag-promo {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: #ff3b30;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
 
-    <div class="watermark">VIBE</div>
+    <a href="https://wa.me/8098182320" target="_blank" class="wsp-float" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <nav class="nav-glass">
-        <div class="max-w-[1400px] mx-auto px-8 py-5 flex justify-between items-center">
-            <div class="flex items-center gap-4 cursor-pointer select-none" id="admin-trigger">
-                <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-xl">V</div>
+        <div class="max-w-[1440px] mx-auto px-8 py-6 flex justify-between items-center">
+            <div class="flex items-center gap-5 cursor-pointer" id="logo-trigger">
+                <div class="w-14 h-14 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-[18px] flex items-center justify-center text-white font-black text-3xl shadow-xl">V</div>
                 <div>
                     <h1 class="text-2xl font-black tracking-tighter leading-none">VibePhone RD</h1>
-                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1">Premium Technology</p>
+                    <span class="text-[11px] font-bold text-blue-600 uppercase tracking-[0.2em] leading-none">The Apple Specialists</span>
                 </div>
             </div>
-            
-            <div class="flex items-center gap-5">
-                <div class="hidden md:flex gap-8 text-[10px] font-black uppercase tracking-widest text-gray-400">
-                    <button onclick="setTab('phones')" class="hover:text-black transition">Smartphones</button>
-                    <button onclick="setTab('accs')" class="hover:text-black transition">Accesorios</button>
-                </div>
-                <button onclick="toggleCart()" class="relative w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-800 hover:bg-black hover:text-white transition-all">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span id="cart-count" class="cart-badge">0</span>
-                </button>
+            <div class="hidden md:flex gap-12 text-[11px] font-black uppercase tracking-widest text-gray-400">
+                <button onclick="setTab('phones')" class="hover:text-blue-600 transition border-b-2 border-transparent hover:border-blue-600 pb-1">Equipos</button>
+                <button onclick="setTab('accs')" class="hover:text-blue-600 transition border-b-2 border-transparent hover:border-blue-600 pb-1">Accesorios</button>
+                <a href="#about" class="hover:text-blue-600 transition border-b-2 border-transparent hover:border-blue-600 pb-1">Sobre Nosotros</a>
+                <a href="#contact" class="hover:text-blue-600 transition border-b-2 border-transparent hover:border-blue-600 pb-1">Contacto</a>
+            </div>
+            <div class="md:hidden">
+                <i class="fas fa-bars text-2xl text-blue-600"></i>
             </div>
         </div>
     </nav>
 
-    <header class="header-container" id="header-main">
-        <video autoplay muted loop playsinline id="header-video"></video>
-        <div class="relative z-10 text-center px-8" id="header-content">
-            <h2 class="text-6xl md:text-8xl font-black tracking-tighter mb-4 italic bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600" id="main-title">VibePhone RD.</h2>
-            <p class="text-lg md:text-xl font-medium text-gray-400 max-w-2xl mx-auto" id="main-subtitle">La tienda más confiable para adquirir tu próximo iPhone en República Dominicana.</p>
+    <header class="hero-gradient pt-24 pb-32 px-8 overflow-hidden">
+        <div class="max-w-[1400px] mx-auto text-center" data-aos="fade-up">
+            <span class="bg-blue-50 text-blue-600 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-10 inline-block border border-blue-100">Official Premium Store 2026</span>
+            <h2 class="text-6xl md:text-[110px] font-black tracking-tighter mb-10 leading-[0.9] italic bg-clip-text text-transparent bg-gradient-to-br from-black via-blue-800 to-purple-600">
+                Lleva el futuro <br> en tus manos.
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-500 font-medium max-w-3xl mx-auto mb-16 leading-relaxed">
+                Descubre la colección más exclusiva de iPhones y accesorios en República Dominicana. Tecnología certificada con entrega inmediata.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <button onclick="document.getElementById('store-grid').scrollIntoView()" class="px-12 py-6 bg-black text-white rounded-[25px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-2xl">Explorar Catálogo</button>
+                <a href="https://wa.me/8098182320" class="px-12 py-6 bg-white text-black border-2 border-gray-100 rounded-[25px] font-black uppercase tracking-widest hover:border-blue-600 transition-all">Hablar con un experto</a>
+            </div>
         </div>
     </header>
 
-    <section class="max-w-[1200px] mx-auto px-8 my-20">
-        <div class="bg-gray-50 rounded-[60px] p-12 md:p-20 flex flex-col md:flex-row items-center gap-16">
-            <div class="flex-1">
-                <span class="text-blue-600 font-black uppercase tracking-widest text-sm italic">Nuestro Compromiso</span>
-                <h3 class="text-5xl font-black mt-4 mb-8 tracking-tighter leading-[0.9]">Calidad Real. Trato Humano.</h3>
-                <p class="text-gray-500 text-lg leading-relaxed mb-10">En VibePhone RD no solo vendemos equipos, construimos confianza.</p>
-                <div class="inline-flex items-center gap-4 bg-white p-2 pr-8 rounded-full shadow-sm border border-gray-100">
-                    <div class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl shadow-lg"><i class="fas fa-check"></i></div>
-                    <p class="text-sm font-black uppercase italic tracking-tighter">Equipos 100% Originales</p>
+    <section id="about" class="max-w-[1300px] mx-auto px-8 mb-32 -mt-16 relative z-10">
+        <div class="bg-white rounded-[60px] p-12 md:p-24 shadow-[0_50px_100px_rgba(0,0,0,0.05)] border border-gray-50">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div>
+                    <span class="text-blue-600 font-black uppercase tracking-[0.3em] text-sm italic">Premium Service</span>
+                    <h3 class="text-5xl md:text-6xl font-black mt-6 mb-10 tracking-tight leading-tight">¿Por qué elegir <br> VibePhone?</h3>
+                    <p class="text-gray-500 text-xl leading-relaxed mb-12 font-medium">No somos solo una tienda de celulares; somos un ecosistema de confianza. Cada equipo es inspeccionado para garantizar el 100% de su rendimiento original.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-6 p-6 bg-gray-50 rounded-[30px] border border-gray-100 transition-hover hover:bg-blue-50 cursor-default">
+                            <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg"><i class="fas fa-truck-fast"></i></div>
+                            <div>
+                                <h4 class="font-black text-lg">Envío Express Gratis</h4>
+                                <p class="text-gray-400 font-bold text-sm">Recibe tu equipo en menos de 24 horas.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6 p-6 bg-gray-50 rounded-[30px] border border-gray-100 transition-hover hover:bg-purple-50 cursor-default">
+                            <div class="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg"><i class="fas fa-handshake"></i></div>
+                            <div>
+                                <h4 class="font-black text-lg">Garantía Real Local</h4>
+                                <p class="text-gray-400 font-bold text-sm">Respaldo total en todas tus compras.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="w-full md:w-1/3 space-y-4">
-                <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100"><i class="fas fa-star text-3xl text-yellow-400 mb-4"></i><p class="font-black text-xs uppercase">Garantía VIP</p></div>
-                <div class="bg-blue-600 p-8 rounded-[40px] text-white shadow-xl"><i class="fas fa-bolt text-3xl mb-4"></i><p class="font-black text-xs uppercase">Aparta con 70%</p></div>
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-blue-50 to-white p-10 rounded-[45px] border border-blue-100 text-center transform translate-y-8">
+                        <i class="fas fa-fingerprint text-4xl mb-6 text-blue-600"></i>
+                        <h4 class="font-black text-sm uppercase tracking-widest">Originalidad<br>Certificada</h4>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-white p-10 rounded-[45px] border border-purple-100 text-center">
+                        <i class="fas fa-bolt text-4xl mb-6 text-purple-600"></i>
+                        <h4 class="font-black text-sm uppercase tracking-widest">Atención<br>Inmediata</h4>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-white p-10 rounded-[45px] border border-green-100 text-center transform translate-y-8">
+                        <i class="fas fa-credit-card text-4xl mb-6 text-green-600"></i>
+                        <h4 class="font-black text-sm uppercase tracking-widest">Pagos<br>Seguros</h4>
+                    </div>
+                    <div class="bg-gradient-to-br from-orange-50 to-white p-10 rounded-[45px] border border-orange-100 text-center">
+                        <i class="fas fa-star text-4xl mb-6 text-orange-400"></i>
+                        <h4 class="font-black text-sm uppercase tracking-widest">Reviews<br>5 Estrellas</h4>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <main id="store-grid" class="product-grid"></main>
+    <div class="max-w-[1400px] mx-auto px-8 mb-16">
+        <div class="flex flex-wrap justify-center gap-4">
+            <button onclick="setTab('phones')" id="btn-phones" class="px-10 py-5 bg-black text-white rounded-full font-black uppercase text-xs tracking-[0.2em] shadow-xl transition-all">iPhones & Celulares</button>
+            <button onclick="setTab('accs')" id="btn-accs" class="px-10 py-5 bg-gray-100 text-gray-400 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-blue-600 hover:text-white transition-all">Accesorios Apple</button>
+        </div>
+    </div>
 
-    <footer class="bg-white border-t border-gray-100 pt-32 pb-12 mt-20 px-8">
-        <div class="max-w-[1400px] mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-4 mb-8"><div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black">V</div><h3 class="text-2xl font-black tracking-tighter">VibePhone RD</h3></div>
-                    <p class="text-gray-400 font-medium max-w-sm leading-relaxed">Ubicados en Santo Domingo, RD.</p>
+    <main id="store-grid" class="product-grid mb-32"></main>
+
+    <section class="bg-black py-32 text-white mb-32 overflow-hidden">
+        <div class="max-w-[1400px] mx-auto px-8">
+            <div class="text-center mb-20">
+                <h3 class="text-5xl md:text-7xl font-black italic mb-6">Clientes Felices.</h3>
+                <p class="text-gray-400 text-xl">Lo que dicen nuestros VibeFans en Santo Domingo.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-zinc-900 p-12 rounded-[40px] border border-zinc-800">
+                    <div class="flex text-yellow-500 mb-6 gap-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-lg italic mb-8 font-medium">"El servicio es increíble. Compré un iPhone 15 Pro Max y me lo entregaron el mismo día en mi oficina. ¡Súper recomendados!"</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center font-black">M</div>
+                        <div><p class="font-black">Marcos Peña</p><p class="text-xs text-gray-500 uppercase">Empresario</p></div>
+                    </div>
                 </div>
-                <div>
-                    <h4 class="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600 mb-8">Navegación</h4>
-                    <ul class="space-y-4 text-sm font-bold text-gray-500">
-                        <li><button onclick="setTab('phones')" class="hover:text-black">Smartphones</button></li>
-                        <li><button onclick="setTab('accs')" class="hover:text-black">Accesorios</button></li>
-                        <li><button onclick="openPolicies()" class="hover:text-black text-red-500 italic">Políticas</button></li>
-                    </ul>
+                <div class="bg-zinc-900 p-12 rounded-[40px] border border-zinc-800 transform md:-translate-y-8">
+                    <div class="flex text-yellow-500 mb-6 gap-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-lg italic mb-8 font-medium">"Atención personalizada y precios que no encuentras en otros lados. Son mi tienda tech de confianza de ahora en adelante."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center font-black">L</div>
+                        <div><p class="font-black">Laura Mejía</p><p class="text-xs text-gray-500 uppercase">Diseñadora</p></div>
+                    </div>
                 </div>
-                <div>
-                    <h4 class="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600 mb-8">Redes</h4>
-                    <div class="flex gap-4">
-                        <a href="https://www.instagram.com/vibephone_rd" class="text-2xl text-gray-300 hover:text-black"><i class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/18098182320" class="text-2xl text-gray-300 hover:text-black"><i class="fab fa-whatsapp"></i></a>
+                <div class="bg-zinc-900 p-12 rounded-[40px] border border-zinc-800">
+                    <div class="flex text-yellow-500 mb-6 gap-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-lg italic mb-8 font-medium">"Facilidad de pago y equipos impecables. El sistema de apartado me ayudó mucho para comprar mi regalo."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center font-black">R</div>
+                        <div><p class="font-black">Ricardo Díaz</p><p class="text-xs text-gray-500 uppercase">Estudiante</p></div>
                     </div>
                 </div>
             </div>
-            <p class="text-[11px] font-black text-gray-300 uppercase">© 2026 VibePhone RD.</p>
+        </div>
+    </section>
+
+    <section class="max-w-[1000px] mx-auto px-8 mb-32">
+        <h3 class="text-4xl font-black text-center mb-16 uppercase tracking-tighter">Preguntas Frecuentes</h3>
+        <div class="space-y-6">
+            <details class="group bg-gray-50 rounded-[30px] p-8 border border-gray-100 cursor-pointer">
+                <summary class="list-none flex justify-between items-center font-black text-xl">¿Hacen envíos a provincias?<span class="text-blue-600 group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down"></i></span></summary>
+                <p class="mt-6 text-gray-500 font-medium leading-relaxed">Sí, realizamos envíos seguros a todo el territorio nacional a través de agencias de confianza o delivery privado según la zona.</p>
+            </details>
+            <details class="group bg-gray-50 rounded-[30px] p-8 border border-gray-100 cursor-pointer">
+                <summary class="list-none flex justify-between items-center font-black text-xl">¿Qué métodos de pago aceptan?<span class="text-blue-600 group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down"></i></span></summary>
+                <p class="mt-6 text-gray-500 font-medium leading-relaxed">Aceptamos efectivo, transferencias bancarias (BHD, Popular, Reservas) y pagos con tarjeta de crédito mediante enlace seguro.</p>
+            </details>
+            <details class="group bg-gray-50 rounded-[30px] p-8 border border-gray-100 cursor-pointer">
+                <summary class="list-none flex justify-between items-center font-black text-xl">¿Los equipos tienen garantía?<span class="text-blue-600 group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down"></i></span></summary>
+                <p class="mt-6 text-gray-500 font-medium leading-relaxed">Absolutamente. Todos nuestros equipos nuevos y seminuevos cuentan con una garantía técnica real directamente con nosotros.</p>
+            </details>
+        </div>
+    </section>
+
+    <div id="buy-modal" class="modal-blur">
+        <div class="modal-box shadow-2xl">
+            <div class="flex justify-between items-start mb-10">
+                <div>
+                    <h2 class="text-4xl font-black italic tracking-tighter">Tu Compra</h2>
+                    <p class="text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Orden de Reserva Especial</p>
+                </div>
+                <div class="bg-blue-600 text-white px-5 py-3 rounded-2xl font-black text-sm shadow-lg" id="receipt-id"></div>
+            </div>
+            
+            <div id="prod-summary" class="bg-gray-50 rounded-[35px] p-8 mb-10 flex items-center gap-8 border border-gray-100 shadow-inner"></div>
+            
+            <form id="email-form" onsubmit="handleOrderSubmit(event)" class="space-y-5">
+                <div class="relative">
+                    <i class="fas fa-user absolute left-6 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                    <input type="text" id="c-name" placeholder="Nombre completo" required class="w-full pl-14 p-6 bg-gray-50 rounded-[25px] outline-none border-2 border-transparent focus:border-blue-500 transition-all font-bold">
+                </div>
+                <div class="relative">
+                    <i class="fas fa-envelope absolute left-6 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                    <input type="email" id="c-email" placeholder="Correo electrónico" required class="w-full pl-14 p-6 bg-gray-50 rounded-[25px] outline-none border-2 border-transparent focus:border-blue-500 transition-all font-bold">
+                </div>
+                <div class="relative">
+                    <i class="fas fa-map-marker-alt absolute left-6 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                    <input type="text" id="c-address" placeholder="Dirección de entrega en RD" required class="w-full pl-14 p-6 bg-gray-50 rounded-[25px] outline-none border-2 border-transparent focus:border-blue-500 transition-all font-bold">
+                </div>
+                
+                <div class="bg-black p-10 rounded-[40px] text-white my-10 flex justify-between items-center shadow-2xl overflow-hidden relative">
+                    <div class="relative z-10">
+                        <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Total a Pagar</p>
+                        <div class="text-5xl font-black italic" id="price-total">RD$ 0</div>
+                    </div>
+                    <i class="fas fa-receipt absolute -right-5 -bottom-5 text-8xl text-zinc-800 rotate-12"></i>
+                </div>
+                
+                <button type="submit" id="btn-submit" class="w-full py-7 bg-blue-600 text-white rounded-[30px] font-black text-xl shadow-[0_20px_40px_rgba(0,113,227,0.3)] uppercase tracking-[0.1em] hover:bg-blue-700 transition-all">Confirmar Pedido</button>
+                <button type="button" onclick="closeM()" class="w-full py-4 text-gray-400 font-bold text-[10px] uppercase tracking-widest mt-4">Tal vez más tarde</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal-blur">
+        <div class="modal-box !max-w-4xl p-12">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-4xl font-black text-blue-600 italic tracking-tighter">Panel Maestro</h2>
+                <div class="bg-gray-100 px-4 py-2 rounded-full text-[10px] font-black text-gray-500">CONTROL DE INVENTARIO</div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50 p-10 rounded-[45px] mb-12 border border-gray-200 shadow-inner">
+                <input type="text" id="in-name" placeholder="Nombre del Equipo (ej: iPhone 15 Pro)" class="p-6 rounded-[20px] font-bold border-2 border-white focus:border-blue-500 outline-none transition-all">
+                <input type="number" id="in-price" placeholder="Precio en RD$" class="p-6 rounded-[20px] font-bold border-2 border-white focus:border-blue-500 outline-none transition-all">
+                <input type="text" id="in-url" placeholder="URL Imagen (Directa)" class="p-6 rounded-[20px] border-2 border-white focus:border-blue-500 outline-none transition-all">
+                <select id="in-cat" class="p-6 rounded-[20px] font-black border-2 border-white focus:border-blue-500 outline-none appearance-none bg-white">
+                    <option value="phones">CATEGORÍA: CELULARES</option>
+                    <option value="accs">CATEGORÍA: ACCESORIOS</option>
+                </select>
+                <textarea id="in-desc" placeholder="Especificaciones técnicas y estado..." class="p-6 rounded-[20px] md:col-span-2 min-h-[120px] border-2 border-white focus:border-blue-500 outline-none"></textarea>
+                <button onclick="saveToFirebase()" class="md:col-span-2 py-6 bg-black text-white rounded-[25px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl">Publicar en Tienda</button>
+            </div>
+            
+            <div id="admin-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar"></div>
+            <button onclick="closeM()" class="mt-12 text-gray-400 font-black text-xs uppercase tracking-widest">Cerrar Sesión Admin</button>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-gray-100 pt-32 pb-16 relative overflow-hidden">
+        <div class="max-w-[1400px] mx-auto px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-20 mb-24">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-black text-2xl">V</div>
+                        <h3 class="text-2xl font-black tracking-tighter">VibePhone RD</h3>
+                    </div>
+                    <p class="text-gray-400 text-lg font-medium leading-relaxed mb-10">Liderando el mercado tecnológico en Santo Domingo con autenticidad y pasión.</p>
+                    <div class="flex gap-5">
+                        <a href="https://www.instagram.com/vibephone_rd" target="_blank" class="w-14 h-14 bg-gray-50 rounded-[20px] flex items-center justify-center text-2xl text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-all"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/8098182320" target="_blank" class="w-14 h-14 bg-gray-50 rounded-[20px] flex items-center justify-center text-2xl text-gray-400 hover:text-green-500 hover:bg-green-50 transition-all"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600 mb-10">Navegación</h4>
+                    <ul class="space-y-6 text-lg font-bold text-gray-500">
+                        <li><button onclick="setTab('phones')" class="hover:text-black transition">Smartphones</button></li>
+                        <li><button onclick="setTab('accs')" class="hover:text-black transition">Accesorios</button></li>
+                        <li><a href="#" class="hover:text-black transition">Servicio Técnico</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600 mb-10">Soporte</h4>
+                    <ul class="space-y-6 text-lg font-bold text-gray-500">
+                        <li><a href="#" class="hover:text-black transition">Términos de Garantía</a></li>
+                        <li><a href="#" class="hover:text-black transition">Rastreo de Envío</a></li>
+                        <li><a href="#" class="hover:text-black transition">Contacto Directo</a></li>
+                    </ul>
+                </div>
+                
+                <div id="contact">
+                    <h4 class="font-black text-[10px] uppercase tracking-[0.3em] text-blue-600 mb-10">Contacto RD</h4>
+                    <p class="text-lg font-bold text-gray-500 mb-4">+1 (809) 818-2320</p>
+                    <p class="text-lg font-bold text-gray-500 mb-10">Santo Domingo, <br>Distrito Nacional.</p>
+                    <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100">
+                        <p class="text-[10px] font-black text-gray-400 uppercase leading-none mb-2">Horario de Atención</p>
+                        <p class="font-bold text-sm">Lun - Sáb: 9AM - 7PM</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-16 border-t border-gray-100 flex flex-col md:row justify-between items-center gap-8">
+                <div class="text-[11px] font-black text-gray-300 uppercase tracking-widest text-center md:text-left">© 2026 VibePhone RD. Premium Technology. Todos los derechos reservados.</div>
+                <div class="flex gap-10">
+                    <i class="fab fa-cc-visa text-gray-200 text-3xl"></i>
+                    <i class="fab fa-cc-mastercard text-gray-200 text-3xl"></i>
+                    <i class="fab fa-apple-pay text-gray-200 text-3xl"></i>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <div id="cart-panel" class="cart-panel">
-        <div class="flex justify-between items-center mb-10"><h2 class="text-3xl font-black tracking-tighter">Cesta</h2><button onclick="toggleCart()" class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center"><i class="fas fa-times"></i></button></div>
-        
-        <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
-
-        <div class="payment-form border-t pt-8 mt-5">
-            <h4 class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Método de Pago</h4>
-            <div class="payment-method">
-                <div id="method-card" class="pay-btn-opt active" onclick="setPaymentMethod('Tarjeta')">TARJETA</div>
-                <div id="method-paypal" class="pay-btn-opt" onclick="setPaymentMethod('PayPal')">PAYPAL</div>
-            </div>
-            <div id="card-fields">
-                <input type="text" id="pay-name" placeholder="Nombre en la Tarjeta">
-                <input type="text" id="pay-number" placeholder="0000 0000 0000 0000">
-                <div class="flex gap-3">
-                    <input type="text" id="pay-expiry" placeholder="MM/AA">
-                    <input type="text" id="pay-cvc" placeholder="CVC">
-                </div>
-            </div>
-            <div id="paypal-fields" style="display:none;">
-                <input type="email" id="pay-email" placeholder="Correo de PayPal">
-            </div>
-        </div>
-        
-        <div class="border-t pt-8 mt-5">
-            <div class="flex justify-between font-black text-2xl mb-8"><span>Total:</span><span id="cart-total" class="text-blue-600">RD$ 0</span></div>
-            <button onclick="checkout()" class="w-full bg-black text-white p-6 rounded-3xl font-black uppercase italic shadow-2xl">Finalizar por WhatsApp</button>
-        </div>
-    </div>
-
-    <div id="modal-container" class="modal-blur" onclick="closeModal()">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <div id="modal-content"></div>
-        </div>
-    </div>
-
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        // Configuración de Firebase
-        const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
+        // Inicializar animaciones de entrada
+        AOS.init({ duration: 1000, once: true });
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", 
+            authDomain: "phonestorerd.firebaseapp.com", 
+            projectId: "phonestorerd", 
+            storageBucket: "phonestorerd.appspot.com", 
+            messagingSenderId: "360706963034", 
+            appId: "1:360706963034:web:49d1102e8ca73d55918a63" 
+        };
+        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        
+        (function(){ emailjs.init("YFdmH2dv7ubtkjzod"); })();
 
-        let cart = [];
-        let currentTab = 'phones';
-        let paymentMethod = 'Tarjeta';
-        let timer;
+        let currentTab = 'phones', currentProd = null, count = 0;
 
-        // Admin Trigger (Mantener presionado 3 segundos)
-        const trigger = document.getElementById('admin-trigger');
-        trigger.onmousedown = () => timer = setTimeout(() => openAdmin(), 3000);
-        trigger.onmouseup = () => clearTimeout(timer);
-        trigger.ontouchstart = () => timer = setTimeout(() => openAdmin(), 3000);
-        trigger.ontouchend = () => clearTimeout(timer);
+        // Admin Trigger
+        document.getElementById('logo-trigger').onclick = () => { 
+            count++; 
+            if(count === 5) { 
+                if(prompt("CLAVE MAESTRA:") === "Avd121094") { 
+                    document.getElementById('admin-modal').style.display='flex'; 
+                    loadAdminItems(); 
+                } 
+                count = 0; 
+            } 
+        };
 
-        function openAdmin() {
-            if(prompt("CLAVE:") === "Avd121094") {
-                document.getElementById('modal-content').innerHTML = `
-                    <h2 class="text-2xl font-black mb-8">ADMIN CONFIG</h2>
-                    <div class="space-y-3 mb-8">
-                        <input type="text" id="in-name" placeholder="Nombre" class="w-full p-4 bg-gray-50 rounded-2xl">
-                        <input type="number" id="in-price" placeholder="Precio" class="w-full p-4 bg-gray-50 rounded-2xl">
-                        <input type="text" id="in-url" placeholder="URL Imagen" class="w-full p-4 bg-gray-50 rounded-2xl">
-                        <select id="in-cat" class="w-full p-4 bg-gray-50 rounded-2xl"><option value="phones">Phones</option><option value="accs">Accesorios</option></select>
-                        <button onclick="saveProduct()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black">AÑADIR PRODUCTO</button>
-                    </div>
-                    <div class="border-t pt-8">
-                        <input type="text" id="admin-vid-url" placeholder="URL Video (.mp4)" class="w-full p-3 bg-gray-50 rounded-xl mb-4 text-xs">
-                        <button onclick="saveAdminConfig()" class="w-full bg-black text-white p-4 rounded-2xl font-black uppercase text-xs">Guardar Video</button>
-                    </div>`;
-                document.getElementById('modal-container').style.display = 'flex';
+        async function renderStore() {
+            const grid = document.getElementById('store-grid');
+            grid.innerHTML = `
+                <div class="col-span-full py-40 text-center">
+                    <div class="inline-block w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-8"></div>
+                    <p class="font-black text-gray-400 uppercase tracking-widest">Sincronizando Stock Premium...</p>
+                </div>`;
+            
+            try {
+                const qs = await db.collection("productos").where("cat", "==", currentTab).get();
+                grid.innerHTML = "";
+                
+                if(qs.empty) {
+                    grid.innerHTML = `<div class="col-span-full py-20 text-center font-black text-gray-300">No hay equipos disponibles en esta categoría.</div>`;
+                    return;
+                }
+
+                qs.forEach(doc => {
+                    const item = doc.data();
+                    grid.innerHTML += `
+                        <div class="vibe-card" data-aos="fade-up">
+                            ${item.p > 50000 ? '<span class="tag-promo">Top Choice</span>' : ''}
+                            <img src="${item.url}" alt="${item.n}">
+                            <div class="px-10 pb-4 flex-grow">
+                                <h3 class="text-3xl font-black italic mb-3 tracking-tighter">${item.n}</h3>
+                                <p class="text-gray-400 text-sm font-semibold mb-8 line-clamp-2 leading-relaxed uppercase tracking-tighter">${item.d}</p>
+                                <div class="flex justify-between items-end mb-8">
+                                    <div>
+                                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">Precio Exclusive</p>
+                                        <p class="text-4xl font-black tracking-tighter">RD$ ${Number(item.p).toLocaleString()}</p>
+                                    </div>
+                                    <div class="bg-gray-100 p-3 rounded-xl"><i class="fas fa-arrow-right text-gray-300"></i></div>
+                                </div>
+                            </div>
+                            <button onclick="openForm('${item.n}', '${item.p}', '${item.url}')" class="btn-buy">Adquirir Ahora</button>
+                        </div>`;
+                });
+            } catch (err) {
+                console.error(err);
+                grid.innerHTML = `<div class="col-span-full py-20 text-center font-black text-red-500 uppercase">Error de conexión. Intenta recargar.</div>`;
             }
         }
 
-        async function saveProduct() {
+        function openForm(n, p, img) {
+            currentProd = { n, p, img };
+            const rid = "VP-" + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('receipt-id').innerText = rid;
+            document.getElementById('prod-summary').innerHTML = `
+                <img src="${img}" class="w-32 h-32 object-contain bg-white rounded-3xl p-2 shadow-sm">
+                <div>
+                    <p class="font-black text-2xl tracking-tighter uppercase italic leading-none mb-2">${n}</p>
+                    <p class="text-blue-600 font-black text-xl">RD$ ${Number(p).toLocaleString()}</p>
+                    <p class="text-green-500 text-[10px] font-black uppercase tracking-widest mt-2"><i class="fas fa-check-circle mr-1"></i> Disponible para entrega</p>
+                </div>`;
+            document.getElementById('price-total').innerText = "RD$ " + Number(p).toLocaleString();
+            document.getElementById('buy-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function handleOrderSubmit(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            const originalText = btn.innerText;
+            
+            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin mr-3"></i>PROCESANDO...'; 
+            btn.disabled = true;
+
+            const templateParams = {
+                order_id: document.getElementById('receipt-id').innerText,
+                email: document.getElementById('c-email').value,
+                name: currentProd.n,
+                image_url: currentProd.img,
+                customer_name: document.getElementById('c-name').value,
+                address: document.getElementById('c-address').value,
+                price: Number(currentProd.p).toLocaleString(),
+                "cost.total": Number(currentProd.p).toLocaleString()
+            };
+
+            emailjs.send('Avd121094', 'template_r0pc5qe', templateParams)
+                .then(() => {
+                    alert("¡ORDEN RECIBIDA! Revisaremos tu pedido y te contactaremos por WhatsApp. Tu recibo ha sido enviado al correo.");
+                    closeM();
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    document.getElementById('email-form').reset();
+                }, (error) => {
+                    alert("Hubo un error al procesar tu orden. Por favor, contáctanos directamente por WhatsApp."); 
+                    btn.disabled = false; 
+                    btn.innerText = originalText;
+                });
+        }
+
+        async function saveToFirebase() {
             const n = document.getElementById('in-name').value;
             const p = document.getElementById('in-price').value;
             const url = document.getElementById('in-url').value;
             const cat = document.getElementById('in-cat').value;
-            await db.collection("productos").add({ n, p, url, cat });
-            alert("Añadido"); closeModal(); renderStore();
-        }
+            const d = document.getElementById('in-desc').value;
 
-        async function saveAdminConfig() {
-            await db.collection("config").doc("tienda").set({ videoHeader: document.getElementById('admin-vid-url').value }, { merge: true });
-            location.reload();
-        }
+            if(!n || !p || !url) return alert("Completa los campos principales");
 
-        async function loadConfig() {
-            const doc = await db.collection("config").doc("tienda").get();
-            if(doc.exists && doc.data().videoHeader) {
-                const v = document.getElementById('header-video');
-                v.src = doc.data().videoHeader;
-                v.style.display = 'block';
-                v.onloadeddata = () => {
-                    v.style.opacity = '0.4';
-                    document.getElementById('header-main').style.background = '#000';
-                    document.getElementById('main-title').style.color = 'white';
-                    document.getElementById('main-title').classList.remove('text-transparent', 'bg-clip-text');
-                }
+            try {
+                await db.collection("productos").add({ n, p, d, url, cat, fecha: Date.now() });
+                alert("¡Producto publicado con éxito!");
+                location.reload();
+            } catch (e) {
+                alert("Error al guardar: " + e.message);
             }
         }
 
-        function setPaymentMethod(method) {
-            paymentMethod = method;
-            document.getElementById('method-card').classList.toggle('active', method === 'Tarjeta');
-            document.getElementById('method-paypal').classList.toggle('active', method === 'PayPal');
-            document.getElementById('card-fields').style.display = method === 'Tarjeta' ? 'block' : 'none';
-            document.getElementById('paypal-fields').style.display = method === 'PayPal' ? 'block' : 'none';
-        }
-
-        function addToCart(n, p) { cart.push({ n, p }); updateCart(); toggleCart(); }
-        function removeItem(i) { cart.splice(i, 1); updateCart(); }
-        function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-
-        function updateCart() {
-            const list = document.getElementById('cart-items');
-            document.getElementById('cart-count').innerText = cart.length;
-            list.innerHTML = ""; let total = 0;
-            cart.forEach((item, i) => {
-                total += Number(item.p);
-                list.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-5 rounded-[25px]"><div class="font-black text-xs uppercase italic">${item.n}</div><button onclick="removeItem(${i})" class="text-red-500"><i class="fas fa-trash"></i></button></div>`;
+        async function loadAdminItems() {
+            const list = document.getElementById('admin-list');
+            list.innerHTML = '<p class="text-center font-bold">Cargando catálogo...</p>';
+            const qs = await db.collection("productos").orderBy("fecha", "desc").get();
+            list.innerHTML = "";
+            qs.forEach(doc => { 
+                const data = doc.data();
+                list.innerHTML += `
+                    <div class="flex justify-between items-center bg-white p-5 rounded-2xl border border-gray-100 shadow-sm transition-hover hover:border-blue-300">
+                        <div class="flex items-center gap-4">
+                            <img src="${data.url}" class="w-10 h-10 object-contain">
+                            <div>
+                                <p class="font-black text-sm uppercase">${data.n}</p>
+                                <p class="text-blue-600 font-bold text-xs">RD$ ${Number(data.p).toLocaleString()}</p>
+                            </div>
+                        </div>
+                        <button onclick="deleteItem('${doc.id}')" class="w-10 h-10 bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>`; 
             });
-            document.getElementById('cart-total').innerText = `RD$ ${total.toLocaleString()}`;
         }
 
-        async function checkout() {
-            if(cart.length === 0) return;
-            let paymentInfo = `%0A*MÉTODO:* ${paymentMethod}`;
-            if(paymentMethod === 'Tarjeta') {
-                const n = document.getElementById('pay-number').value;
-                paymentInfo += `%0A*CARD:* ****${n.slice(-4)}`;
+        async function deleteItem(id) { 
+            if(confirm("¿Estás seguro de que quieres eliminar este equipo del catálogo?")) { 
+                await db.collection("productos").doc(id).delete(); 
+                loadAdminItems(); 
+                renderStore();
+            } 
+        }
+
+        function setTab(t) { 
+            currentTab = t; 
+            // Update buttons UI
+            const bPhones = document.getElementById('btn-phones');
+            const bAccs = document.getElementById('btn-accs');
+            
+            if(t === 'phones') {
+                bPhones.className = "px-10 py-5 bg-black text-white rounded-full font-black uppercase text-xs tracking-[0.2em] shadow-xl transition-all";
+                bAccs.className = "px-10 py-5 bg-gray-100 text-gray-400 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-blue-600 hover:text-white transition-all";
+            } else {
+                bAccs.className = "px-10 py-5 bg-black text-white rounded-full font-black uppercase text-xs tracking-[0.2em] shadow-xl transition-all";
+                bPhones.className = "px-10 py-5 bg-gray-100 text-gray-400 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-blue-600 hover:text-white transition-all";
             }
-            let msg = "*ORDEN VIBEPHONE*%0A%0A";
-            cart.forEach(i => msg += `- ${i.n}%0A`);
-            msg += `%0A*TOTAL:* ${document.getElementById('cart-total').innerText}${paymentInfo}`;
-            window.location.href = `https://wa.me/18098182320?text=${msg}`;
+            renderStore(); 
         }
 
-        async function renderStore() {
-            const grid = document.getElementById('store-grid');
-            grid.innerHTML = '<p class="col-span-full text-center py-20 opacity-30">Cargando...</p>';
-            const qs = await db.collection("productos").where("cat", "==", currentTab).get();
-            grid.innerHTML = "";
-            qs.forEach(doc => {
-                const item = doc.data();
-                grid.innerHTML += `<div class="vibe-card"><img src="${item.url}"><div class="px-6 pb-6 pt-4"><h3 class="text-xl font-black uppercase italic mb-2">${item.n}</h3><p class="text-blue-600 font-black text-2xl mb-6">RD$ ${Number(item.p).toLocaleString()}</p><button class="btn-buy w-full m-0" onclick="addToCart('${item.n}', ${item.p})">Añadir</button></div></div>`;
-            });
+        function closeM() { 
+            document.querySelectorAll('.modal-blur').forEach(m => m.style.display='none'); 
+            document.body.style.overflow = 'auto';
         }
 
-        function openPolicies() {
-            document.getElementById('modal-content').innerHTML = `<h2 class="text-3xl font-black mb-8 italic uppercase tracking-tighter">Políticas</h2><p class="text-gray-500">• 70% para apartar.<br>• Equipos 100% originales.<br>• Sin devoluciones por error de cliente.</p>`;
-            document.getElementById('modal-container').style.display = 'flex';
-        }
+        // Close modal on click outside
+        window.onclick = (event) => {
+            if (event.target.classList.contains('modal-blur')) {
+                closeM();
+            }
+        };
 
-        function closeModal() { document.getElementById('modal-container').style.display = 'none'; }
-        function setTab(t) { currentTab = t; renderStore(); }
-
-        loadConfig(); renderStore();
+        // Initial Load
+        renderStore();
     </script>
 </body>
 </html>
-
-
