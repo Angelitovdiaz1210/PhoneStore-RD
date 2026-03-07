@@ -2,484 +2,249 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibePhone RD | La Tienda Tech #1 de Santo Domingo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VibePhone RD | Apple Specialists</title>
     
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <style>
-        :root { 
-            --vibe-blue: #0071e3; 
-            --vibe-purple: #5e5ce6;
-            --vibe-bg: #ffffff; 
-            --vibe-gradient: linear-gradient(135deg, #0071e3 0%, #5e5ce6 100%); 
-        }
+        :root { --vibe-blue: #0071e3; --vibe-gradient: linear-gradient(135deg, #0071e3 0%, #5e5ce6 100%); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #1d1d1f; overflow-x: hidden; scroll-behavior: smooth; }
         
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--vibe-bg); 
-            color: #1d1d1f; 
-            scroll-behavior: smooth; 
-            overflow-x: hidden; 
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #0071e3; border-radius: 10px; }
-
-        .nav-glass { 
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(25px); 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-            border-bottom: 1px solid rgba(0,0,0,0.05); 
-        }
-
-        .hero-gradient {
-            background: radial-gradient(circle at 50% 50%, rgba(94, 92, 230, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-        }
-
-        .product-grid { 
-            display: grid; 
-            grid-template-columns: repeat(1, 1fr); 
-            gap: 25px; 
-            padding: 20px; 
-            max-width: 1400px; 
-            margin: 0 auto; 
-        }
+        .nav-glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .vibe-card { background: #fff; border-radius: 45px; border: 1px solid #f0f0f2; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
+        .vibe-card:hover { transform: translateY(-12px); box-shadow: 0 40px 80px rgba(0,0,0,0.08); }
         
-        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 35px; } }
-        @media (min-width: 1100px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
-
-        .vibe-card { 
-            background: #ffffff; 
-            border-radius: 45px; 
-            border: 1px solid #f0f0f2;
-            overflow: hidden; 
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex; 
-            flex-direction: column; 
-            position: relative;
-        }
-
-        .vibe-card:hover { 
-            transform: translateY(-15px); 
-            box-shadow: 0 50px 100px rgba(0,0,0,0.08); 
-            border-color: #0071e3;
-        }
-
-        .vibe-card img { 
-            width: 100%; 
-            height: 320px; 
-            object-fit: contain; 
-            padding: 40px; 
-            transition: transform 0.5s ease;
-        }
-
-        .vibe-card:hover img { transform: scale(1.08); }
-
-        .btn-buy { 
-            background: var(--vibe-gradient); 
-            color: white; 
-            padding: 20px 35px; 
-            border-radius: 25px; 
-            font-weight: 800; 
-            font-size: 16px; 
-            margin: 0 35px 35px 35px; 
-            transition: 0.4s; 
-            cursor: pointer; 
-            border: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-buy:hover { box-shadow: 0 15px 30px rgba(0, 113, 227, 0.4); transform: scale(1.02); }
-
-        .modal-blur { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.7); 
-            backdrop-filter: blur(15px); 
-            z-index: 2000; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px; 
-        }
-
-        .modal-box { 
-            background: white; 
-            border-radius: 45px; 
-            width: 100%; 
-            max-width: 650px; 
-            padding: 50px; 
-            max-height: 90vh; 
-            overflow-y: auto; 
-            animation: modalSlide 0.5s ease-out;
-        }
-
-        @keyframes modalSlide {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .wsp-float { 
-            position: fixed; 
-            bottom: 35px; 
-            right: 35px; 
-            background: #25d366; 
-            color: white; 
-            width: 70px; 
-            height: 70px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 35px; 
-            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4); 
-            z-index: 1500; 
-            transition: 0.3s;
-        }
-
-        .wsp-float:hover { transform: scale(1.1) rotate(10deg); }
-
-        .tag-promo {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            background: #ff3b30;
-            color: white;
-            padding: 6px 15px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
+        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: white; border-radius: 45px; width: 100%; max-width: 650px; padding: 40px; max-height: 90vh; overflow-y: auto; }
+        
+        .wsp-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; z-index: 1500; box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3); transition: 0.3s; }
+        .badge-promo { position: absolute; top: 25px; right: 25px; background: #ff3b30; color: white; padding: 6px 15px; border-radius: 12px; font-size: 10px; font-weight: 900; text-transform: uppercase; }
+        .sold-out { opacity: 0.5; filter: grayscale(1); pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <a href="https://wa.me/8098182320" target="_blank" class="wsp-float" aria-label="WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <a href="https://wa.me/18098182320" target="_blank" class="wsp-float"><i class="fab fa-whatsapp"></i></a>
 
     <nav class="nav-glass">
-        <div class="max-w-[1440px] mx-auto px-8 py-6 flex justify-between items-center">
-            <div class="flex items-center gap-5 cursor-pointer" id="logo-trigger">
-                <div class="w-14 h-14 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-[18px] flex items-center justify-center text-white font-black text-3xl shadow-xl">V</div>
-                <div>
-                    <h1 class="text-2xl font-black tracking-tighter leading-none">VibePhone RD</h1>
-                    <span class="text-[11px] font-bold text-blue-600 uppercase tracking-[0.2em] leading-none">The Apple Specialists</span>
-                </div>
+        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+            <div class="flex items-center gap-4 cursor-pointer" id="logo-trigger">
+                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-xl">V</div>
+                <h1 class="text-2xl font-black tracking-tighter">VibePhone RD</h1>
             </div>
-            <div class="hidden md:flex gap-12 text-[11px] font-black uppercase tracking-widest text-gray-400">
-                <button onclick="setTab('phones')" class="hover:text-blue-600 transition border-b-2 border-transparent hover:border-blue-600 pb-1">Equipos</button>
-                <button onclick="setTab('accs')" class="hover:text-blue-600 transition border-b-2 border-transparent hover:border-blue-600 pb-1">Accesorios</button>
-                <a href="#about" class="hover:text-blue-600 transition border-b-2 border-transparent hover:border-blue-600 pb-1">Sobre Nosotros</a>
-                <a href="#contact" class="hover:text-blue-600 transition border-b-2 border-transparent hover:border-blue-600 pb-1">Contacto</a>
-            </div>
-            <div class="md:hidden">
-                <i class="fas fa-bars text-2xl text-blue-600"></i>
+            <div class="hidden md:flex gap-10 text-[11px] font-black uppercase tracking-widest text-gray-400">
+                <button onclick="setTab('phones')" class="hover:text-blue-600">Equipos</button>
+                <button onclick="setTab('accs')" class="hover:text-blue-600">Accesorios</button>
+                <a href="https://wa.me/18098182320" class="text-green-500 font-bold italic">+1 809-818-2320</a>
             </div>
         </div>
     </nav>
 
-    <header class="hero-gradient pt-24 pb-32 px-8 overflow-hidden">
-        <div class="max-w-[1400px] mx-auto text-center" data-aos="fade-up">
-            <span class="bg-blue-50 text-blue-600 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-10 inline-block border border-blue-100">Official Premium Store 2026</span>
-            <h2 class="text-6xl md:text-[110px] font-black tracking-tighter mb-10 leading-[0.9] italic bg-clip-text text-transparent bg-gradient-to-br from-black via-blue-800 to-purple-600">
-                Lleva el futuro <br> en tus manos.
-            </h2>
-            <p class="text-xl md:text-2xl text-gray-500 font-medium max-w-3xl mx-auto mb-16 leading-relaxed">
-                Descubre la colección más exclusiva de iPhones y accesorios en República Dominicana. Tecnología certificada con entrega inmediata.
-            </p>
-            <div class="flex flex-col md:flex-row justify-center gap-6">
-                <button onclick="document.getElementById('store-grid').scrollIntoView()" class="px-12 py-6 bg-black text-white rounded-[25px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-2xl">Explorar Catálogo</button>
-                <a href="https://wa.me/8098182320" class="px-12 py-6 bg-white text-black border-2 border-gray-100 rounded-[25px] font-black uppercase tracking-widest hover:border-blue-600 transition-all">Hablar con un experto</a>
-            </div>
+    <header class="py-24 px-8 text-center bg-radial-gradient">
+        <h2 class="text-6xl md:text-[100px] font-black tracking-tighter mb-8 leading-[0.9] italic">Lleva el futuro <br> en tus manos.</h2>
+        <p class="text-xl text-gray-500 mb-12 max-w-2xl mx-auto">Official Premium Store 2026 - República Dominicana</p>
+        <div class="flex flex-wrap justify-center gap-6">
+            <button onclick="document.getElementById('store-grid').scrollIntoView()" class="px-10 py-5 bg-black text-white rounded-[25px] font-black uppercase tracking-widest hover:bg-blue-600 shadow-2xl transition-all">Explorar Tienda</button>
+            <a href="https://wa.me/18098182320" class="px-10 py-5 bg-white text-black border-2 border-gray-100 rounded-[25px] font-black uppercase tracking-widest hover:border-blue-600 transition-all">Soporte Directo</a>
         </div>
     </header>
 
-    <section id="about" class="max-w-[1300px] mx-auto px-8 mb-32 -mt-16 relative z-10">
-        <div class="bg-white rounded-[60px] p-12 md:p-24 shadow-[0_50px_100px_rgba(0,0,0,0.05)] border border-gray-50">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                <div>
-                    <span class="text-blue-600 font-black uppercase tracking-[0.3em] text-sm italic">Premium Service</span>
-                    <h3 class="text-5xl md:text-6xl font-black mt-6 mb-10 tracking-tight leading-tight">¿Por qué elegir <br> VibePhone?</h3>
-                    <p class="text-gray-500 text-xl leading-relaxed mb-12 font-medium">No somos solo una tienda de celulares; somos un ecosistema de confianza. Cada equipo es inspeccionado para garantizar el 100% de su rendimiento original.</p>
-                    
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-6 p-6 bg-gray-50 rounded-[30px] border border-gray-100 transition-hover hover:bg-blue-50 cursor-default">
-                            <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg"><i class="fas fa-truck-fast"></i></div>
-                            <div>
-                                <h4 class="font-black text-lg">Envío Express Gratis</h4>
-                                <p class="text-gray-400 font-bold text-sm">Recibe tu equipo en menos de 24 horas.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-6 p-6 bg-gray-50 rounded-[30px] border border-gray-100 transition-hover hover:bg-purple-50 cursor-default">
-                            <div class="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg"><i class="fas fa-handshake"></i></div>
-                            <div>
-                                <h4 class="font-black text-lg">Garantía Real Local</h4>
-                                <p class="text-gray-400 font-bold text-sm">Respaldo total en todas tus compras.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="bg-gradient-to-br from-blue-50 to-white p-10 rounded-[45px] border border-blue-100 text-center transform translate-y-8">
-                        <i class="fas fa-fingerprint text-4xl mb-6 text-blue-600"></i>
-                        <h4 class="font-black text-sm uppercase tracking-widest">Originalidad<br>Certificada</h4>
-                    </div>
-                    <div class="bg-gradient-to-br from-purple-50 to-white p-10 rounded-[45px] border border-purple-100 text-center">
-                        <i class="fas fa-bolt text-4xl mb-6 text-purple-600"></i>
-                        <h4 class="font-black text-sm uppercase tracking-widest">Atención<br>Inmediata</h4>
-                    </div>
-                    <div class="bg-gradient-to-br from-green-50 to-white p-10 rounded-[45px] border border-green-100 text-center transform translate-y-8">
-                        <i class="fas fa-credit-card text-4xl mb-6 text-green-600"></i>
-                        <h4 class="font-black text-sm uppercase tracking-widest">Pagos<br>Seguros</h4>
-                    </div>
-                    <div class="bg-gradient-to-br from-orange-50 to-white p-10 rounded-[45px] border border-orange-100 text-center">
-                        <i class="fas fa-star text-4xl mb-6 text-orange-400"></i>
-                        <h4 class="font-black text-sm uppercase tracking-widest">Reviews<br>5 Estrellas</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="max-w-[1400px] mx-auto px-8 mb-16">
-        <div class="flex flex-wrap justify-center gap-4">
-            <button onclick="setTab('phones')" id="btn-phones" class="px-10 py-5 bg-black text-white rounded-full font-black uppercase text-xs tracking-[0.2em] shadow-xl transition-all">iPhones & Celulares</button>
-            <button onclick="setTab('accs')" id="btn-accs" class="px-10 py-5 bg-gray-100 text-gray-400 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-blue-600 hover:text-white transition-all">Accesorios Apple</button>
-        </div>
+    <div class="flex justify-center gap-5 mb-16 px-6">
+        <button id="btn-phones" onclick="setTab('phones')" class="px-10 py-5 bg-black text-white rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-xl">Celulares</button>
+        <button id="btn-accs" onclick="setTab('accs')" class="px-10 py-5 bg-gray-100 text-gray-400 rounded-full text-xs font-black uppercase tracking-[0.2em]">Accesorios</button>
     </div>
 
-    <main id="store-grid" class="product-grid mb-32"></main>
+    <main id="store-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-6 max-w-7xl mx-auto mb-32"></main>
 
     <div id="buy-modal" class="modal-blur">
         <div class="modal-box shadow-2xl">
-            <div class="flex justify-between items-start mb-10">
-                <div>
-                    <h2 class="text-4xl font-black italic tracking-tighter">Tu Compra</h2>
-                    <p class="text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Orden de Reserva Especial</p>
-                </div>
-                <div class="bg-blue-600 text-white px-5 py-3 rounded-2xl font-black text-sm shadow-lg" id="receipt-id"></div>
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-black italic">Tu Pedido</h2>
+                <div class="bg-blue-600 text-white px-4 py-2 rounded-xl font-black text-xs" id="receipt-id"></div>
             </div>
             
-            <div id="prod-summary" class="bg-gray-50 rounded-[35px] p-8 mb-10 flex items-center gap-8 border border-gray-100 shadow-inner"></div>
+            <div id="prod-summary" class="bg-gray-50 rounded-[30px] p-6 mb-8 flex items-center gap-6 border border-gray-100"></div>
             
-            <form id="email-form" onsubmit="handleOrderSubmit(event)" class="space-y-5">
-                <div class="relative">
-                    <i class="fas fa-user absolute left-6 top-1/2 -translate-y-1/2 text-gray-300"></i>
-                    <input type="text" id="c-name" placeholder="Nombre completo" required class="w-full pl-14 p-6 bg-gray-50 rounded-[25px] outline-none border-2 border-transparent focus:border-blue-500 transition-all font-bold">
-                </div>
-                <div class="relative">
-                    <i class="fas fa-envelope absolute left-6 top-1/2 -translate-y-1/2 text-gray-300"></i>
-                    <input type="email" id="c-email" placeholder="Correo electrónico" required class="w-full pl-14 p-6 bg-gray-50 rounded-[25px] outline-none border-2 border-transparent focus:border-blue-500 transition-all font-bold">
-                </div>
-                <div class="relative">
-                    <i class="fas fa-map-marker-alt absolute left-6 top-1/2 -translate-y-1/2 text-gray-300"></i>
-                    <input type="text" id="c-address" placeholder="Dirección de entrega en RD" required class="w-full pl-14 p-6 bg-gray-50 rounded-[25px] outline-none border-2 border-transparent focus:border-blue-500 transition-all font-bold">
-                </div>
+            <form id="email-form" onsubmit="handleOrderSubmit(event)" class="space-y-4">
+                <input type="text" id="c-name" placeholder="Nombre completo" required class="w-full p-5 bg-gray-50 rounded-2xl outline-none font-bold">
+                <input type="email" id="c-email" placeholder="Correo electrónico" required class="w-full p-5 bg-gray-50 rounded-2xl outline-none font-bold">
+                <input type="text" id="c-address" placeholder="Dirección de entrega" required class="w-full p-5 bg-gray-50 rounded-2xl outline-none font-bold">
 
-                <div class="p-6 bg-gray-50 rounded-[25px] border border-gray-100">
-                    <label class="font-black text-[10px] uppercase text-gray-400 mb-3 block">Método de Pago</label>
-                    <select id="payment-method" class="w-full p-4 rounded-xl border-none font-bold bg-white shadow-sm mb-4 appearance-none cursor-pointer">
-                        <option value="Efectivo">Efectivo / Transferencia</option>
-                        <option value="PayPal">PayPal (Tarjeta de Crédito)</option>
+                <div class="p-5 bg-blue-50 rounded-2xl border border-blue-100">
+                    <label class="font-black text-[10px] uppercase text-blue-600 block mb-3">Método de Pago / Bancos</label>
+                    <select id="payment-method" class="w-full p-3 rounded-xl border-none font-bold bg-white mb-3">
+                        <option value="Transferencia">Transferencia (Banreservas/BHD)</option>
+                        <option value="PayPal">PayPal / Tarjeta</option>
+                        <option value="Efectivo">Efectivo contra entrega</option>
                     </select>
-                    <div id="paypal-button-container" class="mt-4"></div>
+                    <div id="paypal-button-container"></div>
                 </div>
                 
-                <div class="bg-black p-10 rounded-[40px] text-white my-10 flex justify-between items-center shadow-2xl overflow-hidden relative">
-                    <div class="relative z-10">
-                        <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Total a Pagar</p>
-                        <div class="text-5xl font-black italic" id="price-total">RD$ 0</div>
+                <div class="bg-black p-8 rounded-[35px] text-white my-8 flex justify-between items-center">
+                    <div>
+                        <p class="text-zinc-500 text-[10px] font-black uppercase mb-1">Total RD</p>
+                        <div class="text-4xl font-black italic" id="price-total">RD$ 0</div>
                     </div>
-                    <i class="fas fa-receipt absolute -right-5 -bottom-5 text-8xl text-zinc-800 rotate-12"></i>
                 </div>
                 
-                <button type="submit" id="btn-submit" class="w-full py-7 bg-blue-600 text-white rounded-[30px] font-black text-xl shadow-[0_20px_40px_rgba(0,113,227,0.3)] uppercase tracking-[0.1em] hover:bg-blue-700 transition-all">Confirmar Pedido vía WhatsApp</button>
-                <button type="button" onclick="closeM()" class="w-full py-4 text-gray-400 font-bold text-[10px] uppercase tracking-widest mt-4">Tal vez más tarde</button>
+                <button type="submit" class="w-full py-6 bg-blue-600 text-white rounded-[25px] font-black text-lg shadow-xl uppercase">Confirmar Pedido</button>
+                <button type="button" onclick="closeM()" class="w-full py-2 text-gray-400 font-bold text-[10px] uppercase mt-2">Cerrar</button>
             </form>
         </div>
     </div>
 
     <div id="admin-modal" class="modal-blur">
-        <div class="modal-box !max-w-4xl p-12">
-            <h2 class="text-4xl font-black text-blue-600 italic mb-8">Panel Maestro</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50 p-10 rounded-[45px] mb-12 border border-gray-200 shadow-inner">
-                <input type="text" id="in-name" placeholder="Nombre del Equipo" class="p-6 rounded-[20px] font-bold outline-none border-2 border-white focus:border-blue-500">
-                <input type="number" id="in-price" placeholder="Precio RD$" class="p-6 rounded-[20px] font-bold outline-none border-2 border-white focus:border-blue-500">
-                <input type="text" id="in-url" placeholder="URL Imagen" class="p-6 rounded-[20px] outline-none border-2 border-white focus:border-blue-500">
-                <select id="in-cat" class="p-6 rounded-[20px] font-black bg-white">
+        <div class="modal-box !max-w-4xl p-10">
+            <h2 class="text-4xl font-black text-blue-600 italic mb-8">Administración Maestro</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-8 rounded-[40px] mb-8 border border-gray-200">
+                <input type="text" id="in-name" placeholder="Nombre" class="p-4 rounded-xl font-bold">
+                <input type="number" id="in-price" placeholder="Precio RD$" class="p-4 rounded-xl font-bold">
+                <input type="number" id="in-old-price" placeholder="Precio Viejo (Oferta)" class="p-4 rounded-xl font-bold">
+                <input type="text" id="in-url" placeholder="URL Imagen" class="p-4 rounded-xl font-bold">
+                <select id="in-cat" class="p-4 rounded-xl font-black bg-white">
                     <option value="phones">CELULARES</option>
                     <option value="accs">ACCESORIOS</option>
                 </select>
-                <button onclick="saveToFirebase()" class="md:col-span-2 py-6 bg-black text-white rounded-[25px] font-black uppercase tracking-widest hover:bg-blue-600">Publicar en Tienda</button>
+                <div class="flex items-center gap-3 p-4">
+                    <input type="checkbox" id="in-stock" checked class="w-5 h-5">
+                    <label class="font-bold text-xs uppercase">Disponible</label>
+                </div>
+                <button onclick="saveToFirebase()" class="md:col-span-2 py-5 bg-black text-white rounded-2xl font-black uppercase">Subir Producto</button>
             </div>
-
-            <h3 class="font-black text-xs uppercase tracking-widest text-gray-400 mb-6">Órdenes de Clientes</h3>
-            <div id="orders-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-4"></div>
-            
-            <button onclick="closeM()" class="mt-12 text-gray-400 font-black text-xs uppercase tracking-widest">Cerrar Sesión Admin</button>
+            <div id="inventory-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
+            <button onclick="closeM()" class="mt-8 text-gray-400 font-black text-xs uppercase">Cerrar Sesión</button>
         </div>
     </div>
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 1000, once: true });
+    <footer class="bg-gray-50 py-20 px-8 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
+            <div>
+                <h4 class="text-2xl font-black mb-6 italic">VibePhone RD</h4>
+                <p class="text-gray-400 font-medium leading-relaxed">Expertos en productos Apple con garantía local certificada en República Dominicana.</p>
+            </div>
+            <div>
+                <h4 class="font-black text-xs uppercase tracking-widest mb-6">Contacto Directo</h4>
+                <p class="text-blue-600 font-black text-xl mb-2">+1 809-818-2320</p>
+                <p class="text-gray-400 font-bold">Santo Domingo, RD</p>
+            </div>
+            <div>
+                <h4 class="font-black text-xs uppercase tracking-widest mb-6">Horarios</h4>
+                <p class="text-gray-400 font-bold italic">Lunes - Sábado: 9:00 AM - 7:00 PM</p>
+            </div>
+        </div>
+        <div class="text-center mt-20 pt-10 border-t border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-300">
+            © 2026 VibePhone RD - Todos los derechos reservados.
+        </div>
+    </footer>
 
-        const firebaseConfig = { 
-            apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", 
-            authDomain: "phonestorerd.firebaseapp.com", 
-            projectId: "phonestorerd", 
-            storageBucket: "phonestorerd.appspot.com", 
-            messagingSenderId: "360706963034", 
-            appId: "1:360706963034:web:49d1102e8ca73d55918a63" 
-        };
+    <script>
+        // FIREBASE CONFIG
+        const firebaseConfig = { apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4", authDomain: "phonestorerd.firebaseapp.com", projectId: "phonestorerd", storageBucket: "phonestorerd.appspot.com", messagingSenderId: "360706963034", appId: "1:360706963034:web:49d1102e8ca73d55918a63" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let currentTab = 'phones', currentProd = null, clickCount = 0;
+        let currentTab = 'phones', clickCount = 0, currentProd = null;
 
-        // Admin Trigger
-        document.getElementById('logo-trigger').onclick = () => { 
-            clickCount++; 
-            if(clickCount === 5) { 
-                if(prompt("CLAVE MAESTRA:") === "Avd121094") { 
-                    document.getElementById('admin-modal').style.display='flex'; 
-                    loadOrders(); 
-                } 
-                clickCount = 0; 
-            } 
+        // Admin Access
+        document.getElementById('logo-trigger').onclick = () => {
+            clickCount++;
+            if(clickCount >= 5) {
+                if(prompt("PASSWORD:") === "Avd121094") {
+                    document.getElementById('admin-modal').style.display = 'flex';
+                    renderInventory();
+                }
+                clickCount = 0;
+            }
         };
+
+        function closeM() { document.querySelectorAll('.modal-blur').forEach(m => m.style.display = 'none'); }
+
+        async function saveToFirebase() {
+            const name = document.getElementById('in-name').value;
+            const price = document.getElementById('in-price').value;
+            const oldPrice = document.getElementById('in-old-price').value;
+            const url = document.getElementById('in-url').value;
+            const cat = document.getElementById('in-cat').value;
+            const inStock = document.getElementById('in-stock').checked;
+            if(!name || !price) return;
+            await db.collection("productos").add({ name, price: parseInt(price), oldPrice: oldPrice ? parseInt(oldPrice) : null, url, cat, inStock, date: Date.now() });
+            renderStore(); renderInventory();
+        }
 
         async function renderStore() {
             const grid = document.getElementById('store-grid');
-            grid.innerHTML = "<div class='col-span-full py-20 text-center animate-pulse'>Sincronizando...</div>";
-            const qs = await db.collection("productos").where("cat", "==", currentTab).get();
+            grid.innerHTML = "<p class='col-span-full text-center py-20 font-black text-gray-200 uppercase'>Cargando...</p>";
+            const snapshot = await db.collection("productos").where("cat", "==", currentTab).orderBy("date", "desc").get();
             grid.innerHTML = "";
-            qs.forEach(doc => {
-                const item = doc.data();
+            snapshot.forEach(doc => {
+                const p = doc.data();
+                const isPromo = p.oldPrice && p.oldPrice > p.price;
                 grid.innerHTML += `
-                    <div class="vibe-card" data-aos="fade-up">
-                        ${item.p > 50000 ? '<span class="tag-promo">Top Choice</span>' : ''}
-                        <img src="${item.url}" alt="${item.n}">
-                        <div class="px-10 pb-4 flex-grow">
-                            <h3 class="text-3xl font-black italic mb-3 tracking-tighter">${item.n}</h3>
-                            <div class="flex justify-between items-end mb-8">
-                                <div>
-                                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">Precio Exclusive</p>
-                                    <p class="text-4xl font-black tracking-tighter">RD$ ${Number(item.p).toLocaleString()}</p>
-                                </div>
-                            </div>
+                    <div class="vibe-card p-10 ${!p.inStock ? 'sold-out' : ''}">
+                        ${isPromo ? '<div class="badge-promo">Oferta</div>' : ''}
+                        <img src="${p.url}" class="h-64 w-full object-contain mb-8">
+                        <h3 class="font-black text-2xl tracking-tighter mb-4">${p.name}</h3>
+                        <div class="flex items-center gap-4 mb-8">
+                            <p class="text-blue-600 font-black text-3xl">RD$ ${p.price.toLocaleString()}</p>
+                            ${isPromo ? `<p class="text-gray-400 line-through font-bold">RD$ ${p.oldPrice.toLocaleString()}</p>` : ''}
                         </div>
-                        <button onclick="openForm('${item.n}', '${item.p}', '${item.url}')" class="btn-buy">Adquirir Ahora</button>
+                        <button onclick="openBuyModal('${doc.id}', '${p.name}', ${p.price}, '${p.url}')" class="w-full py-5 bg-black text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl">
+                            ${p.inStock ? 'Comprar Ahora' : 'Agotado'}
+                        </button>
                     </div>`;
             });
         }
 
-        function openForm(n, p, img) {
-            currentProd = { n, p, img };
-            const rid = "VP-" + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('receipt-id').innerText = rid;
-            document.getElementById('price-total').innerText = "RD$ " + Number(p).toLocaleString();
-            document.getElementById('prod-summary').innerHTML = `
-                <img src="${img}" class="w-32 h-32 object-contain bg-white rounded-3xl p-2 shadow-sm">
-                <div>
-                    <p class="font-black text-2xl tracking-tighter uppercase italic leading-none mb-2">${n}</p>
-                    <p class="text-blue-600 font-black text-xl">RD$ ${Number(p).toLocaleString()}</p>
-                </div>`;
+        function openBuyModal(id, name, price, url) {
+            currentProd = { id, name, price };
             document.getElementById('buy-modal').style.display = 'flex';
+            document.getElementById('receipt-id').innerText = "VIBE-" + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('price-total').innerText = "RD$ " + price.toLocaleString();
+            document.getElementById('prod-summary').innerHTML = `<img src="${url}" class="w-20 h-20 object-contain"><p class="font-black text-xl">${name}</p>`;
         }
 
-        function closeM() { 
-            document.getElementById('buy-modal').style.display = 'none';
-            document.getElementById('admin-modal').style.display = 'none';
-        }
-
-        // LÓGICA DE ÓRDENES Y WHATSAPP
-        function handleOrderSubmit(e) {
-            if(e) e.preventDefault();
-            const name = document.getElementById('c-name').value;
-            const email = document.getElementById('c-email').value;
-            const address = document.getElementById('c-address').value;
-            const metodo = document.getElementById('payment-method').value;
-            const rid = document.getElementById('receipt-id').innerText;
-
-            db.collection("orders").add({
-                orderId: rid, cliente: name, email: email, direccion: address, 
-                producto: currentProd.n, precio: currentProd.p, metodo: metodo, fecha: new Date()
-            });
-
-            let msg = `*NUEVO PEDIDO VIBE*%0AOrden: ${rid}%0ACliente: ${name}%0AProducto: ${currentProd.n}%0APrecio: RD$ ${currentProd.p}%0AMétodo: ${metodo}`;
-            window.open(`https://wa.me/8098182320?text=${msg}`);
+        async function handleOrderSubmit(e) {
+            e.preventDefault();
+            const method = document.getElementById('payment-method').value;
+            const msg = `Hola VibePhone RD! Mi pedido es: ${currentProd.name} por RD$ ${currentProd.price.toLocaleString()}. Pago vía ${method}. +18098182320`;
+            window.open(`https://wa.me/18098182320?text=${encodeURIComponent(msg)}`);
             closeM();
         }
 
-        // PAYPAL INTEGRATION
-        paypal.Buttons({
-            createOrder: function(data, actions) {
-                return actions.order.create({
-                    purchase_units: [{ amount: { value: (currentProd.p / 58).toFixed(2) } }]
-                });
-            },
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    alert("Pago Completado: " + details.payer.name.given_name);
-                    handleOrderSubmit();
-                });
-            }
-        }).render('#paypal-button-container');
-
-        // ADMIN FUNCTIONS
-        function saveToFirebase() {
-            const n = document.getElementById('in-name').value;
-            const p = document.getElementById('in-price').value;
-            const url = document.getElementById('in-url').value;
-            const cat = document.getElementById('in-cat').value;
-            db.collection("productos").add({ n, p: Number(p), url, cat }).then(() => {
-                alert("Producto Publicado!");
-                renderStore();
+        async function renderInventory() {
+            const list = document.getElementById('inventory-list');
+            const snapshot = await db.collection("productos").orderBy("date", "desc").get();
+            list.innerHTML = "";
+            snapshot.forEach(doc => {
+                const p = doc.data();
+                list.innerHTML += `<div class="flex justify-between items-center p-4 bg-white border rounded-2xl">
+                    <p class="text-[10px] font-black uppercase">${p.name}</p>
+                    <div class="flex gap-2">
+                        <button onclick="toggleStock('${doc.id}', ${p.inStock})" class="px-3 py-1 bg-gray-100 rounded-lg text-[8px] font-black">${p.inStock ? 'AGOTAR' : 'REESTOCK'}</button>
+                        <button onclick="deleteProduct('${doc.id}')" class="text-red-500 p-2"><i class="fas fa-trash text-sm"></i></button>
+                    </div>
+                </div>`;
             });
         }
 
-        function loadOrders() {
-            db.collection("orders").orderBy("fecha", "desc").get().then(qs => {
-                let html = "";
-                qs.forEach(doc => {
-                    let d = doc.data();
-                    html += `<div class="p-6 bg-white border border-gray-100 rounded-3xl shadow-sm">
-                        <div class="flex justify-between font-black text-sm mb-2"><span>${d.cliente}</span><span class="text-blue-600">${d.orderId}</span></div>
-                        <p class="text-xs text-gray-500">${d.producto} - RD$ ${d.precio}</p>
-                        <p class="text-[10px] uppercase font-bold text-gray-400 mt-2">${d.metodo} | ${d.direccion}</p>
-                    </div>`;
-                });
-                document.getElementById('orders-list').innerHTML = html;
-            });
-        }
-
+        async function toggleStock(id, status) { await db.collection("productos").doc(id).update({ inStock: !status }); renderInventory(); renderStore(); }
+        async function deleteProduct(id) { if(confirm("¿Eliminar?")) { await db.collection("productos").doc(id).delete(); renderInventory(); renderStore(); } }
+        
         function setTab(t) {
             currentTab = t;
-            document.getElementById('btn-phones').className = t === 'phones' ? 'px-10 py-5 bg-black text-white rounded-full font-black uppercase text-xs tracking-[0.2em] shadow-xl transition-all' : 'px-10 py-5 bg-gray-100 text-gray-400 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-blue-600 hover:text-white transition-all';
-            document.getElementById('btn-accs').className = t === 'accs' ? 'px-10 py-5 bg-black text-white rounded-full font-black uppercase text-xs tracking-[0.2em] shadow-xl transition-all' : 'px-10 py-5 bg-gray-100 text-gray-400 rounded-full font-black uppercase text-xs tracking-[0.2em] hover:bg-blue-600 hover:text-white transition-all';
+            document.getElementById('btn-phones').className = t === 'phones' ? 'px-10 py-5 bg-black text-white rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-xl' : 'px-10 py-5 bg-gray-100 text-gray-400 rounded-full text-xs font-black uppercase tracking-[0.2em]';
+            document.getElementById('btn-accs').className = t === 'accs' ? 'px-10 py-5 bg-black text-white rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-xl' : 'px-10 py-5 bg-gray-100 text-gray-400 rounded-full text-xs font-black uppercase tracking-[0.2em]';
             renderStore();
         }
 
-        renderStore();
+        window.onload = renderStore;
     </script>
 </body>
 </html>
